@@ -28,3 +28,5 @@ db_backups/
 
 # Temp files
 .tmp/
+
+reports/
