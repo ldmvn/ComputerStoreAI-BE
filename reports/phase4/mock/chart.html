@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 — RAG Triad Evaluation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+:root { --bg: #ffffff; --text: #1e293b; --card: #f8fafc; --border: #e2e8f0; --accent: #2563eb; --accent2: #f59e0b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f172a; --text: #e2e8f0; --card: #1e293b; --border: #334155; --accent: #60a5fa; --accent2: #fbbf24; } }
+:root[data-theme="dark"] { --bg: #0f172a; --text: #e2e8f0; --card: #1e293b; --border: #334155; --accent: #60a5fa; --accent2: #fbbf24; }
+* { margin: 0; box-sizing: border-box; }
+body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 16px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+h2 { font-size: 1.1rem; margin: 24px 0 12px; }
+.subtitle { color: #64748b; font-size: 0.85rem; margin-bottom: 20px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.chart-container { position: relative; height: 300px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+th { font-weight: 600; }
+.mode-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+.mode-mock { background: #fef3c7; color: #92400e; }
+.mode-live { background: #d1fae5; color: #065f46; }
+.metric { font-size: 1.8rem; font-weight: 700; }
+.metric-label { font-size: 0.75rem; color: #64748b; }
+</style>
+</head>
+<body>
+<h1>DUCMANH PC — RAG Triad Evaluation</h1>
+<p class="subtitle">Phase 4 | 2026-10-27 | <span class="mode-badge mode-mock">MOCK</span> | 578 chunks, 145 docs</p>
+
+<div class="grid">
+  <div class="card" style="text-align:center">
+    <div class="metric">73.7%</div>
+    <div class="metric-label">Context Relevance (RAG)</div>
+  </div>
+  <div class="card" style="text-align:center">
+    <div class="metric">100.0%</div>
+    <div class="metric-label">Groundedness (RAG)</div>
+  </div>
+  <div class="card" style="text-align:center">
+    <div class="metric">80.0%</div>
+    <div class="metric-label">Answer Relevance (RAG)</div>
+  </div>
+  <div class="card" style="text-align:center">
+    <div class="metric">0.0%</div>
+    <div class="metric-label">Hallucination Rate (RAG)</div>
+  </div>
+</div>
+
+<h2>RAG Triad — Baseline vs Hybrid RAG</h2>
+<div class="card"><div class="chart-container"><canvas id="triadChart"></canvas></div></div>
+
+<h2>Phân tích theo nhóm câu hỏi</h2>
+<div class="card"><div class="chart-container"><canvas id="catChart"></canvas></div></div>
+
+<h2>Bảng chi tiết</h2>
+<div class="card">
+<table>
+<tr><th>Metric</th><th>Baseline</th><th>Hybrid RAG</th><th>Δ</th></tr>
+<tr><td>Context Relevance</td><td>N/A</td><td>73.7%</td><td>N/A</td></tr>
+<tr><td>Groundedness</td><td>100.0%</td><td>100.0%</td><td>0.0%</td></tr>
+<tr><td>Answer Relevance</td><td>80.0%</td><td>80.0%</td><td>0.0%</td></tr>
+<tr><td>Hallucination Rate</td><td>0.0%</td><td>0.0%</td><td>0.0%</td></tr>
+<tr><td>Citation Support</td><td>N/A</td><td>N/A</td><td>—</td></tr>
+<tr><td>Latency (median)</td><td>0.0 ms</td><td>2.4 ms</td><td>—</td></tr>
+<tr><td>Gemini Calls</td><td>172</td><td>206</td><td>—</td></tr>
+<tr><td>Routing Accuracy</td><td>100.0%</td><td>100.0%</td><td>—</td></tr>
+</table>
+</div>
+
+<script>
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+Chart.defaults.color = isDark ? '#94a3b8' : '#64748b';
+Chart.defaults.borderColor = isDark ? '#334155' : '#e2e8f0';
+
+new Chart(document.getElementById('triadChart'), {
+  type: 'bar',
+  data: {
+    labels: ["Context Relevance","Groundedness","Answer Relevance"],
+    datasets: [
+      { label: 'Baseline (FC only)', data: [0,100,80], backgroundColor: isDark ? '#60a5fa' : '#3b82f6', borderRadius: 6 },
+      { label: 'Hybrid RAG + FC', data: [73.7,100,80], backgroundColor: isDark ? '#fbbf24' : '#f59e0b', borderRadius: 6 },
+    ],
+  },
+  options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'Score (%)' } } }, plugins: { legend: { position: 'top' } } },
+});
+
+const catLabels = ["model","sku","vietnamese","policy","comparison","multi_turn","routing","negative","missing"];
+new Chart(document.getElementById('catChart'), {
+  type: 'bar',
+  data: {
+    labels: catLabels,
+    datasets: [
+      { label: 'RAG — Context Relevance', data: [75.8,85,63,63,77.8,65.8,82.3,0,0], backgroundColor: '#3b82f6', borderRadius: 4 },
+      { label: 'RAG — Groundedness', data: [100,100,100,100,100,100,100,100,100], backgroundColor: '#10b981', borderRadius: 4 },
+      { label: 'RAG — Answer Relevance', data: [80,80,80,80,80,80,80,80,80], backgroundColor: '#f59e0b', borderRadius: 4 },
+    ],
+  },
+  options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, title: { display: true, text: 'Score (%)' } } }, plugins: { legend: { position: 'top' } } },
+});
+</script>
+</body>
+</html>

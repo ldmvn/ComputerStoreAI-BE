@@ -1,0 +1,182 @@
+[
+  {
+    "message": "WD_BLACK SN850X 1TB có những công nghệ nổi bật nào?",
+    "sentConversationId": null,
+    "status": 200,
+    "latencyMs": 2204,
+    "payload": {
+      "success": true,
+      "data": {
+        "reply": "Chào bạn, dựa trên tài liệu tham khảo của DUCMANH PC, ổ cứng **SSD WD Black SN850X 1TB** có các công nghệ và tính năng nổi bật sau:\n\n- **Chuẩn PCIe Gen 4.0 x4 & Tốc độ cực cao:** Đạt tốc độ đọc tuần tự lên đến 7,300 MB/s và ghi tuần tự 6,300 MB/s, giúp tối ưu hóa cho game thủ và nhà sáng tạo nội dung xuất/nhập file dự án thường xuyên [Nguồn 2, Nguồn 3].\n- **Hỗ trợ DirectStorage API của Microsoft:** Cho phép GPU đọc dữ liệu trực tiếp từ SSD mà không cần qua CPU, giúp giảm tắc nghẽn và tải texture chất lượng cao nhanh hơn trong các tựa game hiện đại [Nguồn 4].\n- **Phần mềm WD_BLACK Dashboard & Game Mode 2.0:** Đi kèm phần mềm quản lý chuyên dụng cho phép kích hoạt Game Mode 2.0, theo dõi sức khỏe ổ đĩa, kiểm tra nhiệt độ theo thời gian thực, cập nhật firmware và tối ưu hóa hiệu năng [Nguồn 4].\n- **Độ bền cao (TBW):** Lên đến 600 TBW cho phiên bản 1TB và đi kèm chế độ bảo hành chính hãng 60 tháng [Nguồn 3].\n\n*Lưu ý: Để kiểm tra giá bán và tình trạng còn hàng mới nhất tại cửa hàng, bạn có thể cho mình xin phép tìm kiếm trực tiếp trên hệ thống nhé!*",
+        "conversationId": "1b53ae63-adda-4ea0-80e8-631f5a4e01e3",
+        "citations": [
+          {
+            "documentId": "product:245",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-004",
+            "title": "Ổ cứng SSD WD Black SN850X 2TB PCIe 4.0 NVMe M.2 (WDS200T2X0E)",
+            "score": 0.032018442622950824,
+            "productId": 245
+          },
+          {
+            "documentId": "product:244",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-003",
+            "title": "Ổ cứng SSD WD Black SN850X 1TB PCIe 4.0 NVMe M.2 (WDS100T2X0E)",
+            "score": 0.03200204813108039,
+            "productId": 244
+          },
+          {
+            "documentId": "product:244",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-003",
+            "title": "Ổ cứng SSD WD Black SN850X 1TB PCIe 4.0 NVMe M.2 (WDS100T2X0E)",
+            "score": 0.031544957774465976,
+            "productId": 244
+          },
+          {
+            "documentId": "product:244",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-003",
+            "title": "Ổ cứng SSD WD Black SN850X 1TB PCIe 4.0 NVMe M.2 (WDS100T2X0E)",
+            "score": 0.031054405392392875,
+            "productId": 244
+          },
+          {
+            "documentId": "product:245",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-004",
+            "title": "Ổ cứng SSD WD Black SN850X 2TB PCIe 4.0 NVMe M.2 (WDS200T2X0E)",
+            "score": 0.031009615384615385,
+            "productId": 245
+          }
+        ],
+        "toolCalls": [],
+        "_routing": {
+          "route": "rag_only",
+          "reason": "knowledge_question"
+        }
+      }
+    }
+  },
+  {
+    "message": "Nó có phù hợp chơi game không?",
+    "sentConversationId": "1b53ae63-adda-4ea0-80e8-631f5a4e01e3",
+    "status": 200,
+    "latencyMs": 1563,
+    "payload": {
+      "success": true,
+      "data": {
+        "reply": "Chào bạn, để DUCMANH PC có thể tư vấn chính xác nhất, bạn đang quan tâm đến sản phẩm cụ thể nào ạ? (Ví dụ: CPU Intel Core i5-13400F, Card RX 6700 XT hay một linh kiện/combo nào khác?) \n\nBạn hãy cho mình biết tên sản phẩm, hoặc chia sẻ thêm về nhu cầu game bạn muốn chơi và ngân sách hiện tại để mình kiểm tra giá, tồn kho cũng như độ phù hợp cho bạn nhé!",
+        "conversationId": "1b53ae63-adda-4ea0-80e8-631f5a4e01e3",
+        "citations": [
+          {
+            "documentId": "product:217",
+            "sourceType": "product",
+            "sourceRef": "seed-cpu-008",
+            "title": "CPU Intel Core i5-13400F (2.5GHz Up to 4.6GHz, 20MB Cache, 10 Cores, 16 Threads, Socket LGA 1700)",
+            "score": 0.0315136476426799,
+            "productId": 217
+          },
+          {
+            "documentId": "product:284",
+            "sourceType": "product",
+            "sourceRef": "seed-kbc-003",
+            "title": "Bộ Bàn phím + Chuột SteelSeries Apex 3 TKL + Rival 3 Gaming Combo",
+            "score": 0.01639344262295082,
+            "productId": 284
+          },
+          {
+            "documentId": "product:187::chunk-4",
+            "sourceType": "product",
+            "sourceRef": "ram-desktop-adata-xpg-d35g-rgb-black-ax4u320016g16a-sbkd35g-16gb-1x-16gb-ddr4-3200mhz",
+            "title": "RAM Desktop Adata XPG D35G RGB Black (AX4U320016G16A-SBKD35G) 16GB (1x 16GB) DDR4 3200Mhz",
+            "score": 0.01639344262295082,
+            "productId": 187
+          },
+          {
+            "documentId": "product:234::chunk-3",
+            "sourceType": "product",
+            "sourceRef": "seed-ram-003",
+            "title": "RAM Desktop Kingston Fury Beast (KF548C38BB-16) 16GB (1x16GB) DDR5 4800MHz",
+            "score": 0.016129032258064516,
+            "productId": 234
+          },
+          {
+            "documentId": "product:261",
+            "sourceType": "product",
+            "sourceRef": "seed-vgaln-002",
+            "title": "Card màn hình Like New XFX Speedster QICK 308 Radeon RX 6700 XT 12GB GDDR6",
+            "score": 0.015873015873015872,
+            "productId": 261
+          }
+        ],
+        "toolCalls": [],
+        "_routing": {
+          "route": "rag_only",
+          "reason": "general_question"
+        }
+      }
+    }
+  },
+  {
+    "message": "So sánh nó với Samsung 990 Pro.",
+    "sentConversationId": "1b53ae63-adda-4ea0-80e8-631f5a4e01e3",
+    "status": 200,
+    "latencyMs": 2802,
+    "payload": {
+      "success": true,
+      "data": {
+        "reply": "Chào bạn, để tôi giúp bạn so sánh chi tiết giữa **Samsung 980 Pro** và **Samsung 990 Pro** dựa trên tài liệu kỹ thuật của DUCMANH PC nhé:\n\n### 1. **Ổ cứng SSD Samsung 990 Pro (1TB)** *(Nguồn 1, 2)*\n* **Giao tiếp / Chuẩn:** PCIe 4.0 x4 (M.2 2280 NVMe)\n* **Tốc độ đọc / ghi tuần tự:** Lên tới **7,450 MB/s** (đọc) và **6,900 MB/s** (ghi)\n* **Độ bền (TBW):** 600 TBW (cho bản 1TB)\n* **Đặc điểm nổi bật:** Đây là dòng thế hệ cao cấp hơn, mang lại băng thông tối đa cho chuẩn PCIe 4.0, giúp rút ngắn thời gian khởi động, load game siêu nhanh và xử lý mượt mà các tác vụ nặng như đồ họa, render video 4K/8K. Trang bị công nghệ V-NAND mới và kiểm soát nhiệt thông minh.\n\n### 2. **Ổ cứng SSD Samsung 980 Pro (1TB / 500GB)** *(Nguồn 3, 4)*\n* **Giao tiếp / Chuẩn:** PCIe 4.0 x4 (M.2 2280 NVMe)\n* **Tốc độ đọc / ghi tuần tự:** \n  * Bản 1TB: Tốc độ đọc **7,000 MB/s** / ghi **5,000 MB/s** *(Nguồn 4)*.\n  * Bản 500GB: Tốc độ đọc **6,900 MB/s** / ghi **5,000 MB/s** *(Nguồn 3)*.\n* **Độ bền (TBW):** 300 TBW (cho bản 500GB) *(Nguồn 3)*.\n* **Đặc điểm nổi bật:** Là thế hệ tiền nhiệm đi đầu chuẩn PCIe 4.0 của Samsung. Sử dụng lớp phủ nickel, bộ điều khiển Elpsis phủ đồng và công nghệ Dynamic Thermal Guard giúp tản nhiệt tốt, hoạt động ổn định cho game thủ và người dùng chuyên nghiệp.\n\n### **Tóm tắt điểm khác biệt chính:**\n* **Hiệu năng:** Samsung 990 Pro vượt trội hơn hẳn về tốc độ (đặc biệt là tốc độ ghi tăng từ ~5,000 MB/s lên tới 6,900 MB/s).\n* **Độ bền (TBW):** 990 Pro có độ bền cao hơn đáng kể (ví dụ bản 1TB của 990 Pro đạt 600 TBW).\n\nBạn đang quan tâm đến phiên bản dung lượng nào (500GB hay 1TB) để tôi kiểm tra giá và tình trạng còn hàng mới nhất tại cửa hàng cho bạn nhé?",
+        "conversationId": "1b53ae63-adda-4ea0-80e8-631f5a4e01e3",
+        "citations": [
+          {
+            "documentId": "product:249",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-008",
+            "title": "Ổ cứng SSD Samsung 990 Pro 1TB PCIe 4.0 NVMe M.2 (MZ-V9P1T0BW)",
+            "score": 0.03278688524590164,
+            "productId": 249
+          },
+          {
+            "documentId": "product:249",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-008",
+            "title": "Ổ cứng SSD Samsung 990 Pro 1TB PCIe 4.0 NVMe M.2 (MZ-V9P1T0BW)",
+            "score": 0.03225806451612903,
+            "productId": 249
+          },
+          {
+            "documentId": "product:242",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-001",
+            "title": "Ổ cứng SSD Samsung 980 Pro 500GB PCIe 4.0 NVMe M.2 (MZ-V8P500BW)",
+            "score": 0.031024531024531024,
+            "productId": 242
+          },
+          {
+            "documentId": "product:243",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-002",
+            "title": "Ổ cứng SSD Samsung 980 Pro 1TB PCIe 4.0 NVMe M.2 (MZ-V8P1T0BW)",
+            "score": 0.03076923076923077,
+            "productId": 243
+          },
+          {
+            "documentId": "product:242",
+            "sourceType": "product",
+            "sourceRef": "seed-ssdm2-001",
+            "title": "Ổ cứng SSD Samsung 980 Pro 500GB PCIe 4.0 NVMe M.2 (MZ-V8P500BW)",
+            "score": 0.03055037313432836,
+            "productId": 242
+          }
+        ],
+        "toolCalls": [],
+        "_routing": {
+          "route": "rag_only",
+          "reason": "general_question"
+        }
+      }
+    }
+  }
+]

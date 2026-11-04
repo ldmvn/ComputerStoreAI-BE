@@ -1,0 +1,1 @@
+ALTER TABLE ProductHighlightSpec DROP COLUMN label, DROP COLUMN value, ADD COLUMN content VARCHAR(500) NOT NULL DEFAULT '';

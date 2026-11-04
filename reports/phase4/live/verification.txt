@@ -1,0 +1,37 @@
+[Phase 4 Verification — 2026-10-27T16:15:56.626Z]
+Mode: live
+
+Baseline:
+  Total cases:   43
+  Success:       43
+  Timeout:       0
+  Other errors:  0
+  N/A Context Relevance: 43 (no retrieval)
+  N/A Groundedness:      9
+  N/A Answer Relevance:  0
+
+RAG:
+  Total cases:   43
+  Success:       43
+  Timeout:       0
+  Other errors:  0
+  N/A Context Relevance: 9 (no retrieval)
+  N/A Groundedness:      16
+  N/A Answer Relevance:  0
+
+Triad Scores (mean):
+  Context Relevance — Baseline: N/A (n=0), RAG: 0.7921 (n=34)
+  Groundedness      — Baseline: 0.2247 (n=34), RAG: 0.7574 (n=27)
+  Answer Relevance  — Baseline: 0.9581 (n=43), RAG: 0.9349 (n=43)
+
+Checks:
+  [PASS] Both configurations produced scored results
+  [PASS] All three triad scores have at least one measurement
+  [PASS] No total evaluation failure
+  [PASS] Checkpoint/resume mechanism tested
+  [INFO] Live mode uses real Gemini API
+
+API & Token Usage:
+  Baseline: 154 Gemini calls, 0 prompt tokens, 0 completion tokens
+  RAG:      174 Gemini calls, 0 prompt tokens, 0 completion tokens
+  Total:    328 Gemini calls

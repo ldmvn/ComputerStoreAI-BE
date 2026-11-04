@@ -1,0 +1,2336 @@
+{
+  "_meta": {
+    "generated": "2026-10-14",
+    "legend": {
+      "da_tra": "Đã đối chiếu với trang hãng hoặc nguồn bán lẻ trong cuộc trò chuyện này",
+      "chac": "Thông số công khai của hãng, mình rất chắc nhưng chưa tra lại trong cuộc trò chuyện này",
+      "can_tra": "Chưa chắc. KHÔNG nhập cho tới khi tra xong (xem needVerify)"
+    },
+    "importRule": "Chỉ nhập sản phẩm có c là da_tra hoặc chac. Bỏ qua c là can_tra. specs chỉ là thông số hiển thị bổ sung; các dòng suy ra từ thuộc tính chuẩn (socket, TDP, kích thước...) do script tự dựng, không lặp ở đây."
+  },
+  "attributeFixes": [
+    {
+      "sku": "SEED-CPU-006",
+      "c": "da_tra",
+      "name": "CPU AMD Ryzen 7 7800X3D (4.2GHz Up to 5.0GHz, 104MB Cache, 8 Cores, 16 Threads, Socket AM5)"
+    },
+    {
+      "sku": "SEED-MB-003",
+      "c": "da_tra",
+      "set": {
+        "so-khe-m-2": 3,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "4.0"
+      }
+    },
+    {
+      "sku": "SEED-MB-004",
+      "c": "da_tra",
+      "set": {
+        "ram-toi-da": 256
+      }
+    },
+    {
+      "sku": "SEED-MB-005",
+      "c": "chac",
+      "set": {
+        "chipset": "X670E"
+      }
+    },
+    {
+      "sku": "SEED-MB-009",
+      "c": "da_tra",
+      "set": {
+        "so-khe-m-2": 4
+      }
+    },
+    {
+      "sku": "SEED-MB-010",
+      "c": "da_tra",
+      "set": {
+        "so-khe-ram": 2,
+        "so-khe-m-2": 6,
+        "ram-toi-da": 96
+      },
+      "note": "RAM tối đa 96GB theo nguồn bán lẻ, chưa thấy trang hãng"
+    },
+    {
+      "sku": "SEED-MB-012",
+      "c": "da_tra",
+      "name": "Bo mạch chủ Gigabyte B860M AORUS ELITE (Socket LGA 1851, DDR5, Micro-ATX)",
+      "brand": "gigabyte",
+      "set": {
+        "chipset": "B860",
+        "ram-toi-da": 256
+      }
+    },
+    {
+      "sku": "SEED-VGA-001",
+      "c": "da_tra",
+      "set": {
+        "vga-length": 227.2
+      }
+    },
+    {
+      "sku": "SEED-VGA-002",
+      "c": "chac",
+      "set": {
+        "tdp": 160
+      }
+    },
+    {
+      "sku": "SEED-CASE-007",
+      "c": "da_tra",
+      "name": "Vỏ Case Lian Li Lancool III RGB (LANCOOL 3R-X) Mid Tower E-ATX",
+      "set": {
+        "kich-thuoc-mainboard": [
+          "E-ATX",
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 420,
+        "case-max-cooler-height": 185,
+        "radiator-size": [
+          "120",
+          "240",
+          "280",
+          "360",
+          "420"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-AIR-002",
+      "c": "da_tra",
+      "set": {
+        "cooler-height": 160
+      }
+    },
+    {
+      "sku": "SEED-PSU-006",
+      "c": "da_tra",
+      "name": "Nguồn máy tính Cooler Master MWE Gold 550 V2 550W 80+ Gold Full Modular",
+      "set": {
+        "psu-wattage": 550
+      },
+      "note": "Dòng MWE Gold V2 chỉ có từ 550W đến 850W, không có bản 450W"
+    },
+    {
+      "sku": "SEED-MON-002",
+      "c": "da_tra",
+      "name": "Màn hình Samsung Odyssey G7 G70B 32 inch IPS 4K UHD 144Hz 1ms (LS32BG700)"
+    },
+    {
+      "sku": "SEED-CUSTOM-001",
+      "c": "chac",
+      "brand": "bykski"
+    },
+    {
+      "sku": "SEED-CUSTOM-002",
+      "c": "chac",
+      "brand": "ek"
+    },
+    {
+      "sku": "SEED-CHAIR-003",
+      "c": "chac",
+      "brand": "e-win"
+    }
+  ],
+  "products": {
+    "SEED-CPU-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "6 / 12"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "3.7 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "4.6 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "35 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Không"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR4 3200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 3"
+        ]
+      ]
+    },
+    "SEED-CPU-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "8 / 16"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "3.4 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "4.6 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "36 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Không"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR4 3200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 3"
+        ]
+      ]
+    },
+    "SEED-CPU-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "12 / 24"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "3.7 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "4.8 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "70 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Không"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR4 3200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 3"
+        ]
+      ]
+    },
+    "SEED-CPU-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "6 / 12"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "4.7 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.3 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "38 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "AMD Radeon Graphics"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 5200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 4"
+        ]
+      ]
+    },
+    "SEED-CPU-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "8 / 16"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "4.5 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.4 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "40 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "AMD Radeon Graphics"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 5200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 4"
+        ]
+      ]
+    },
+    "SEED-CPU-006": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "8 / 16"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "4.2 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.0 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "104 MB (96 MB L3 + 8 MB L2)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "AMD Radeon Graphics"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 5200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 4 + 3D V-Cache"
+        ]
+      ]
+    },
+    "SEED-CPU-007": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "16 / 32"
+        ],
+        [
+          "Xung nhịp cơ bản",
+          "4.5 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.7 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "80 MB (L2 + L3)"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "AMD Radeon Graphics"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 5200 MHz"
+        ],
+        [
+          "Kiến trúc",
+          "Zen 4"
+        ]
+      ]
+    },
+    "SEED-CPU-008": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "10 (6P + 4E) / 16"
+        ],
+        [
+          "Xung nhịp cơ bản (P-core)",
+          "2.5 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "4.6 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "20 MB Intel Smart Cache"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Không (hậu tố F)"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 4800 / DDR4 3200"
+        ],
+        [
+          "Công suất tối đa (Max Turbo)",
+          "148 W"
+        ]
+      ]
+    },
+    "SEED-CPU-009": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "16 (8P + 8E) / 24"
+        ],
+        [
+          "Xung nhịp cơ bản (P-core)",
+          "3.4 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.4 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "30 MB Intel Smart Cache"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Intel UHD Graphics 770"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 5600 / DDR4 3200"
+        ],
+        [
+          "Công suất tối đa (Max Turbo)",
+          "253 W"
+        ]
+      ]
+    },
+    "SEED-CPU-010": {
+      "c": "chac",
+      "specs": [
+        [
+          "Số nhân / luồng",
+          "20 (8P + 12E) / 20"
+        ],
+        [
+          "Xung nhịp cơ bản (P-core)",
+          "3.9 GHz"
+        ],
+        [
+          "Xung nhịp tối đa",
+          "5.5 GHz"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "30 MB Intel Smart Cache"
+        ],
+        [
+          "Đồ họa tích hợp",
+          "Intel Graphics"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 tới 6400 MT/s"
+        ],
+        [
+          "Công suất tối đa (Max Turbo)",
+          "250 W"
+        ]
+      ]
+    },
+    "SEED-MB-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Wi-Fi",
+          "Có"
+        ],
+        [
+          "Cổng xuất hình",
+          "VGA, DVI-D, HDMI"
+        ]
+      ]
+    },
+    "SEED-MB-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Wi-Fi",
+          "Không"
+        ]
+      ]
+    },
+    "SEED-MB-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Mạng LAN",
+          "2.5 Gbps (Realtek RTL8125BG)"
+        ],
+        [
+          "Wi-Fi",
+          "Có (Wi-Fi 6E)"
+        ],
+        [
+          "Khe PCIe",
+          "1x PCIe 4.0 x16, 1x PCIe 4.0 x2, 1x PCIe 3.0 x1"
+        ],
+        [
+          "Cổng SATA",
+          "6x SATA 6Gb/s"
+        ]
+      ]
+    },
+    "SEED-MB-004": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Mạng LAN",
+          "2.5 GbE"
+        ],
+        [
+          "Wi-Fi",
+          "Không"
+        ],
+        [
+          "Khe PCIe",
+          "1x PCIe 5.0 x16, 1x PCIe 3.0 x16 (chạy x4)"
+        ],
+        [
+          "Khe M.2",
+          "1x PCIe 5.0, 1x PCIe 4.0"
+        ],
+        [
+          "Cổng SATA",
+          "4x SATA"
+        ]
+      ]
+    },
+    "SEED-MB-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Wi-Fi",
+          "Có (Wi-Fi 6E)"
+        ],
+        [
+          "Hỗ trợ PCIe 5.0",
+          "VGA và SSD M.2"
+        ]
+      ]
+    },
+    "SEED-MB-006": {
+      "c": "da_tra",
+      "specs": []
+    },
+    "SEED-MB-007": {
+      "c": "da_tra",
+      "specs": []
+    },
+    "SEED-MB-008": {
+      "c": "chac",
+      "specs": [
+        [
+          "Wi-Fi",
+          "Có (Wi-Fi 6E)"
+        ],
+        [
+          "Mạng LAN",
+          "2.5 GbE"
+        ]
+      ]
+    },
+    "SEED-MB-009": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Mạng LAN",
+          "2.5 GbE (Intel)"
+        ],
+        [
+          "Wi-Fi",
+          "Có (Wi-Fi 6E)"
+        ],
+        [
+          "Khe PCIe",
+          "1x PCIe 5.0 x16, 1x PCIe 4.0 x16, 1x PCIe 3.0 x1"
+        ],
+        [
+          "Cổng SATA",
+          "7x SATA"
+        ]
+      ]
+    },
+    "SEED-MB-010": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Mạng LAN",
+          "5 Gbps"
+        ],
+        [
+          "Wi-Fi",
+          "Có (Wi-Fi 7)"
+        ],
+        [
+          "Thunderbolt",
+          "Thunderbolt 4"
+        ],
+        [
+          "Khe PCIe",
+          "2x PCIe 5.0 x16, 2x PCIe 4.0 x4"
+        ],
+        [
+          "Khe M.2",
+          "6 (4 trên bo mạch, 2 qua card ROG DIMM.2)"
+        ],
+        [
+          "Cổng SATA",
+          "4x SATA"
+        ]
+      ]
+    },
+    "SEED-MB-011": {
+      "c": "da_tra",
+      "specs": []
+    },
+    "SEED-MB-012": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Mạng LAN",
+          "2.5 GbE"
+        ],
+        [
+          "Hỗ trợ RAM",
+          "DDR5 tới 9200 MT/s (OC), hỗ trợ CUDIMM"
+        ]
+      ]
+    },
+    "SEED-RAM-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Độ trễ (CAS)",
+          "CL16"
+        ],
+        [
+          "Điện áp",
+          "1.35 V"
+        ],
+        [
+          "Tản nhiệt",
+          "Có (heat spreader)"
+        ]
+      ]
+    },
+    "SEED-RAM-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Bộ kit",
+          "2 thanh x 16GB"
+        ],
+        [
+          "Độ trễ (CAS)",
+          "CL18"
+        ],
+        [
+          "Điện áp",
+          "1.35 V"
+        ],
+        [
+          "Chiều cao",
+          "31 mm (low profile)"
+        ]
+      ]
+    },
+    "SEED-RAM-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Độ trễ (CAS)",
+          "CL38"
+        ],
+        [
+          "Điện áp",
+          "1.1 V"
+        ],
+        [
+          "Tản nhiệt",
+          "Có (heat spreader)"
+        ]
+      ]
+    },
+    "SEED-RAM-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Bộ kit",
+          "2 thanh x 16GB"
+        ],
+        [
+          "Độ trễ",
+          "CL32-38-38-96"
+        ],
+        [
+          "Điện áp",
+          "1.35 V"
+        ],
+        [
+          "Đèn LED",
+          "RGB"
+        ]
+      ]
+    },
+    "SEED-RAM-005": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-RAM-006": {
+      "c": "chac",
+      "specs": [
+        [
+          "Bộ kit",
+          "2 thanh x 32GB"
+        ],
+        [
+          "Độ trễ",
+          "CL32-39-39-102"
+        ],
+        [
+          "Điện áp",
+          "1.4 V"
+        ]
+      ]
+    },
+    "SEED-HDD-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Kích thước",
+          "3.5 inch"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ vòng quay",
+          "7200 RPM"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "64 MB"
+        ]
+      ]
+    },
+    "SEED-HDD-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "2 TB"
+        ],
+        [
+          "Kích thước",
+          "3.5 inch"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ vòng quay",
+          "7200 RPM"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "256 MB"
+        ]
+      ]
+    },
+    "SEED-HDD-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "4 TB"
+        ],
+        [
+          "Kích thước",
+          "3.5 inch"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ vòng quay",
+          "5400 RPM"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "256 MB"
+        ]
+      ]
+    },
+    "SEED-HDD-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "8 TB"
+        ],
+        [
+          "Kích thước",
+          "3.5 inch"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ vòng quay",
+          "7200 RPM"
+        ],
+        [
+          "Bộ nhớ đệm",
+          "256 MB"
+        ],
+        [
+          "Dòng sản phẩm",
+          "IronWolf dành cho NAS"
+        ]
+      ]
+    },
+    "SEED-SSDM2-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "500 GB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "6,900 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "5,000 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "300 TBW"
+        ]
+      ]
+    },
+    "SEED-SSDM2-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,000 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "5,000 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "600 TBW"
+        ]
+      ]
+    },
+    "SEED-SSDM2-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,300 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "6,300 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "600 TBW"
+        ]
+      ]
+    },
+    "SEED-SSDM2-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "2 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,300 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "6,600 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "1,200 TBW"
+        ]
+      ]
+    },
+    "SEED-SSDM2-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 5.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "11,700 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "9,500 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "600 TBW"
+        ]
+      ]
+    },
+    "SEED-SSDM2-006": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,300 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "6,000 MB/s"
+        ],
+        [
+          "Tản nhiệt",
+          "Có (kèm heatsink)"
+        ]
+      ]
+    },
+    "SEED-SSDM2-007": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "2 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,300 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "6,900 MB/s"
+        ]
+      ]
+    },
+    "SEED-SSDM2-008": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Chuẩn",
+          "M.2 2280 NVMe PCIe 4.0 x4"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "7,450 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "6,900 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "600 TBW"
+        ]
+      ]
+    },
+    "SEED-SSD25-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "500 GB"
+        ],
+        [
+          "Kích thước",
+          "2.5 inch"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "560 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "530 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "300 TBW"
+        ]
+      ]
+    },
+    "SEED-SSD25-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Dung lượng",
+          "1 TB"
+        ],
+        [
+          "Kích thước",
+          "2.5 inch (7 mm)"
+        ],
+        [
+          "Chuẩn kết nối",
+          "SATA III 6Gb/s"
+        ],
+        [
+          "Tốc độ đọc tuần tự",
+          "540 MB/s"
+        ],
+        [
+          "Tốc độ ghi tuần tự",
+          "500 MB/s"
+        ],
+        [
+          "Độ bền (TBW)",
+          "360 TBW"
+        ]
+      ]
+    },
+    "SEED-VGA-001": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 4060"
+        ],
+        [
+          "Bộ nhớ",
+          "8GB GDDR6, 128-bit"
+        ],
+        [
+          "Số nhân CUDA",
+          "3072"
+        ],
+        [
+          "Xung nhịp tăng tốc",
+          "2535 MHz (OC mode) / 2505 MHz (mặc định)"
+        ],
+        [
+          "Cổng xuất hình",
+          "1x HDMI 2.1a, 3x DisplayPort 1.4a"
+        ],
+        [
+          "Nguồn phụ",
+          "1x 8-pin"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "550 W"
+        ],
+        [
+          "Kích thước",
+          "227.2 x 123.24 x 49.6 mm (2.5 slot)"
+        ]
+      ]
+    },
+    "SEED-VGA-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 4060 Ti"
+        ],
+        [
+          "Bộ nhớ",
+          "8GB GDDR6, 128-bit"
+        ],
+        [
+          "Công suất card (TGP)",
+          "160 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "550 W"
+        ]
+      ]
+    },
+    "SEED-VGA-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "AMD Radeon RX 7600"
+        ],
+        [
+          "Bộ nhớ",
+          "8GB GDDR6, 128-bit"
+        ],
+        [
+          "Công suất card (TBP tham chiếu)",
+          "165 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "550 W"
+        ]
+      ]
+    },
+    "SEED-VGA-004": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-VGA-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "AMD Radeon RX 7900 XTX"
+        ],
+        [
+          "Bộ nhớ",
+          "24GB GDDR6, 384-bit"
+        ],
+        [
+          "Công suất card (TBP tham chiếu)",
+          "355 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "800 W"
+        ]
+      ]
+    },
+    "SEED-VGA-006": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 4090"
+        ],
+        [
+          "Bộ nhớ",
+          "24GB GDDR6X, 384-bit"
+        ],
+        [
+          "Công suất card (TGP)",
+          "450 W"
+        ],
+        [
+          "Nguồn phụ",
+          "1x 16-pin (12VHPWR)"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "850 W"
+        ]
+      ]
+    },
+    "SEED-VGA-007": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "AMD Radeon RX 7800 XT"
+        ],
+        [
+          "Bộ nhớ",
+          "16GB GDDR6, 256-bit"
+        ],
+        [
+          "Công suất card (TBP)",
+          "263 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "700 W"
+        ]
+      ]
+    },
+    "SEED-VGA-008": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 4070 SUPER"
+        ],
+        [
+          "Bộ nhớ",
+          "12GB GDDR6X, 192-bit"
+        ],
+        [
+          "Công suất card (TGP)",
+          "220 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "650 W"
+        ]
+      ]
+    },
+    "SEED-VGALN-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 3080"
+        ],
+        [
+          "Bộ nhớ",
+          "10GB GDDR6X, 320-bit"
+        ],
+        [
+          "Công suất card (TGP)",
+          "320 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "750 W"
+        ],
+        [
+          "Tình trạng",
+          "Like New (đã qua sử dụng)"
+        ]
+      ]
+    },
+    "SEED-VGALN-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "AMD Radeon RX 6700 XT"
+        ],
+        [
+          "Bộ nhớ",
+          "12GB GDDR6, 192-bit"
+        ],
+        [
+          "Công suất card (TBP)",
+          "230 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "650 W"
+        ],
+        [
+          "Tình trạng",
+          "Like New (đã qua sử dụng)"
+        ]
+      ]
+    },
+    "SEED-VGALN-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chip đồ họa",
+          "NVIDIA GeForce RTX 3070 Ti"
+        ],
+        [
+          "Bộ nhớ",
+          "8GB GDDR6X, 256-bit"
+        ],
+        [
+          "Công suất card (TGP)",
+          "290 W"
+        ],
+        [
+          "Nguồn khuyến nghị",
+          "750 W"
+        ],
+        [
+          "Tình trạng",
+          "Like New (đã qua sử dụng)"
+        ]
+      ]
+    },
+    "SEED-PSU-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Gold"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Quạt",
+          "120 mm FDB"
+        ]
+      ]
+    },
+    "SEED-PSU-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Gold"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Quạt",
+          "135 mm"
+        ]
+      ]
+    },
+    "SEED-PSU-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Platinum"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Chuẩn ATX",
+          "ATX 3.0, có đầu 12VHPWR"
+        ],
+        [
+          "Quạt",
+          "135 mm"
+        ]
+      ]
+    },
+    "SEED-PSU-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Titanium"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Quạt",
+          "135 mm"
+        ]
+      ]
+    },
+    "SEED-PSU-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Platinum"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Quạt",
+          "135 mm"
+        ],
+        [
+          "Điều khiển",
+          "Hỗ trợ Corsair iCUE"
+        ]
+      ]
+    },
+    "SEED-PSU-006": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Chuẩn hiệu suất",
+          "80 Plus Gold"
+        ],
+        [
+          "Kiểu dây",
+          "Full Modular"
+        ],
+        [
+          "Đầu cấp nguồn CPU",
+          "2x EPS"
+        ],
+        [
+          "Quạt",
+          "HDB"
+        ],
+        [
+          "Bảo hành chính hãng",
+          "5 năm"
+        ]
+      ]
+    },
+    "SEED-CASE-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "Full Tower"
+        ],
+        [
+          "Bảng bên",
+          "Thép (Solid)"
+        ]
+      ]
+    },
+    "SEED-CASE-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "Mid Tower"
+        ],
+        [
+          "Bảng bên",
+          "Kính cường lực"
+        ],
+        [
+          "Quạt đi kèm",
+          "2x 120 mm"
+        ]
+      ]
+    },
+    "SEED-CASE-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "Mid Tower"
+        ],
+        [
+          "Bảng bên",
+          "Kính cường lực"
+        ],
+        [
+          "Quạt đi kèm",
+          "3x 120 mm D-RGB (mặt trước)"
+        ]
+      ]
+    },
+    "SEED-CASE-004": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Mini Tower (Micro-ATX)"
+        ]
+      ]
+    },
+    "SEED-CASE-005": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-CASE-006": {
+      "c": "can_tra",
+      "specs": [
+        [
+          "Loại",
+          "Mini-ITX dạng khối"
+        ]
+      ]
+    },
+    "SEED-CASE-007": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Mid Tower"
+        ],
+        [
+          "Bảng bên",
+          "Kính cường lực"
+        ],
+        [
+          "Quạt đi kèm",
+          "3x 140 mm ARGB (trước) + 1x 140 mm PWM (sau)"
+        ],
+        [
+          "Hỗ trợ bo mạch",
+          "E-ATX (rộng dưới 280 mm), ATX, Micro-ATX, Mini-ITX"
+        ],
+        [
+          "Chiều dài nguồn tối đa",
+          "220 mm (ATX)"
+        ],
+        [
+          "Hỗ trợ tản nước",
+          "Phía trên tới 420 mm, phía trước và phía dưới tới 360 mm"
+        ]
+      ]
+    },
+    "SEED-CASE-008": {
+      "c": "da_tra",
+      "specs": []
+    },
+    "SEED-AIR-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "Tản khí tháp đơn"
+        ],
+        [
+          "Quạt",
+          "1x 120 mm PWM"
+        ]
+      ]
+    },
+    "SEED-AIR-002": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Tản khí tháp đôi"
+        ],
+        [
+          "Quạt",
+          "2x 120 mm FDB, 500 - 1,850 RPM"
+        ],
+        [
+          "Số ống đồng",
+          "6"
+        ],
+        [
+          "Công suất tản nhiệt tối đa",
+          "260 W"
+        ],
+        [
+          "Độ ồn",
+          "28 dBA"
+        ]
+      ]
+    },
+    "SEED-AIR-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Tản khí tháp đơn, quạt 135 mm"
+        ],
+        [
+          "Số ống đồng",
+          "6"
+        ]
+      ]
+    },
+    "SEED-AIR-004": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Tản khí tháp đơn, quạt 120 mm ARGB"
+        ]
+      ]
+    },
+    "SEED-AIR-005": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "Tản khí tháp đơn, quạt 120 mm ARGB"
+        ]
+      ]
+    },
+    "SEED-AIO-001": {
+      "c": "da_tra",
+      "specs": []
+    },
+    "SEED-AIO-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Quạt",
+          "3x 120 mm"
+        ],
+        [
+          "Màn hình LCD trên khối bơm",
+          "Có"
+        ]
+      ]
+    },
+    "SEED-AIO-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Quạt",
+          "2x 120 mm"
+        ]
+      ]
+    },
+    "SEED-AIO-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Quạt",
+          "2x 140 mm"
+        ]
+      ]
+    },
+    "SEED-CUSTOM-001": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-CUSTOM-002": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-MON-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "27 inch"
+        ],
+        [
+          "Tấm nền",
+          "Nano IPS"
+        ],
+        [
+          "Độ phân giải",
+          "2560 x 1440 (QHD)"
+        ],
+        [
+          "Tần số quét",
+          "165 Hz"
+        ],
+        [
+          "Thời gian phản hồi",
+          "1 ms (GtG)"
+        ],
+        [
+          "Đồng bộ hình ảnh",
+          "NVIDIA G-Sync Compatible, AMD FreeSync Premium"
+        ],
+        [
+          "Cổng kết nối",
+          "2x HDMI 2.0, 1x DisplayPort 1.4"
+        ]
+      ]
+    },
+    "SEED-MON-002": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Kích thước",
+          "32 inch"
+        ],
+        [
+          "Tấm nền",
+          "IPS"
+        ],
+        [
+          "Độ phân giải",
+          "3840 x 2160 (4K UHD)"
+        ],
+        [
+          "Tần số quét",
+          "144 Hz"
+        ],
+        [
+          "Thời gian phản hồi",
+          "1 ms (GtG)"
+        ],
+        [
+          "Độ sáng",
+          "350 cd/m2"
+        ],
+        [
+          "HDR",
+          "HDR400"
+        ],
+        [
+          "Cổng kết nối",
+          "HDMI 2.1, DisplayPort"
+        ],
+        [
+          "Loa tích hợp",
+          "Có"
+        ]
+      ]
+    },
+    "SEED-MON-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Kích thước",
+          "23.8 inch"
+        ],
+        [
+          "Tấm nền",
+          "IPS"
+        ],
+        [
+          "Độ phân giải",
+          "1920 x 1080 (FHD)"
+        ],
+        [
+          "Tần số quét",
+          "75 Hz"
+        ],
+        [
+          "Độ phủ màu",
+          "sRGB 99%"
+        ],
+        [
+          "Cổng kết nối",
+          "1× USB-C (DP 1.2, PD 65W), 1× HDMI 1.4, 1× DisplayPort 1.2, 2× USB-A"
+        ],
+        [
+          "Webcam tích hợp",
+          "Có (5MP, lấy nét cố định)"
+        ]
+      ]
+    },
+    "SEED-MON-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "32 inch"
+        ],
+        [
+          "Tấm nền",
+          "IPS"
+        ],
+        [
+          "Độ phân giải",
+          "3840 x 2160 (4K UHD)"
+        ],
+        [
+          "Tần số quét",
+          "144 Hz"
+        ]
+      ]
+    },
+    "SEED-MON-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "27 inch"
+        ],
+        [
+          "Tấm nền",
+          "Fast IPS"
+        ],
+        [
+          "Độ phân giải",
+          "2560 x 1440 (QHD)"
+        ],
+        [
+          "Tần số quét",
+          "360 Hz"
+        ],
+        [
+          "Đồng bộ hình ảnh",
+          "NVIDIA G-Sync"
+        ]
+      ]
+    },
+    "SEED-KBC-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "Không dây 2.4 GHz (USB receiver)"
+        ],
+        [
+          "Thời lượng pin bàn phím",
+          "24 tháng"
+        ],
+        [
+          "Thời lượng pin chuột",
+          "12 tháng"
+        ]
+      ]
+    },
+    "SEED-KBC-002": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Kết nối",
+          "Không dây 2.4 GHz (USB receiver)"
+        ]
+      ]
+    },
+    "SEED-KBC-003": {
+      "c": "can_tra",
+      "specs": []
+    },
+    "SEED-KB-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Layout",
+          "75% (84 phím)"
+        ],
+        [
+          "Kết nối",
+          "Bluetooth 5.1 / USB-C có dây"
+        ],
+        [
+          "Switch",
+          "Hot-swap"
+        ],
+        [
+          "Đèn nền",
+          "RGB"
+        ],
+        [
+          "Phần mềm",
+          "Hỗ trợ QMK / VIA"
+        ],
+        [
+          "Pin",
+          "4000 mAh"
+        ]
+      ]
+    },
+    "SEED-KB-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Layout",
+          "TKL (không bàn phím số)"
+        ],
+        [
+          "Kết nối",
+          "USB có dây"
+        ],
+        [
+          "Loại switch",
+          "Cơ học, tactile"
+        ],
+        [
+          "Đèn nền",
+          "LED trắng"
+        ]
+      ]
+    },
+    "SEED-KB-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Layout",
+          "TKL (không bàn phím số)"
+        ],
+        [
+          "Đèn nền",
+          "Razer Chroma RGB"
+        ]
+      ]
+    },
+    "SEED-KB-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Layout",
+          "60%"
+        ],
+        [
+          "Kết nối",
+          "2.4 GHz / Bluetooth 5.0 / USB-C"
+        ],
+        [
+          "Switch",
+          "OmniPoint 2.0 điều chỉnh được"
+        ],
+        [
+          "Đèn nền",
+          "RGB từng phím"
+        ]
+      ]
+    },
+    "SEED-KB-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Layout",
+          "96%"
+        ],
+        [
+          "Kết nối",
+          "Tri-mode (2.4 GHz / Bluetooth / có dây)"
+        ],
+        [
+          "Switch",
+          "ROG NX"
+        ]
+      ]
+    },
+    "SEED-MOUSE-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Cảm biến",
+          "HERO 25K"
+        ],
+        [
+          "DPI tối đa",
+          "25,600"
+        ],
+        [
+          "Số nút",
+          "11"
+        ],
+        [
+          "Kết nối",
+          "USB có dây"
+        ],
+        [
+          "Đèn",
+          "RGB LIGHTSYNC"
+        ]
+      ]
+    },
+    "SEED-MOUSE-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "Không dây Razer HyperSpeed 2.4 GHz"
+        ],
+        [
+          "Số nút",
+          "5"
+        ]
+      ]
+    },
+    "SEED-MOUSE-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Cảm biến",
+          "TrueMove3+ (2 cảm biến)"
+        ],
+        [
+          "DPI tối đa",
+          "12,000"
+        ],
+        [
+          "Số nút",
+          "7"
+        ],
+        [
+          "Kết nối",
+          "USB có dây"
+        ]
+      ]
+    },
+    "SEED-MOUSE-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Cảm biến",
+          "HERO 2"
+        ],
+        [
+          "DPI tối đa",
+          "32,000"
+        ],
+        [
+          "Trọng lượng",
+          "Dưới 60 g"
+        ],
+        [
+          "Kết nối",
+          "Không dây LIGHTSPEED"
+        ],
+        [
+          "Thời lượng pin",
+          "Tới 95 giờ"
+        ]
+      ]
+    },
+    "SEED-MOUSE-005": {
+      "c": "chac",
+      "specs": [
+        [
+          "Cảm biến",
+          "ROG AimPoint"
+        ],
+        [
+          "DPI tối đa",
+          "36,000"
+        ],
+        [
+          "Kết nối",
+          "Tri-mode (2.4 GHz / Bluetooth / có dây)"
+        ]
+      ]
+    },
+    "SEED-HEAD-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "Không dây 2.4 GHz"
+        ],
+        [
+          "Âm thanh",
+          "7.1 ảo"
+        ],
+        [
+          "Driver",
+          "53 mm"
+        ],
+        [
+          "Thời lượng pin",
+          "Tới 30 giờ"
+        ],
+        [
+          "Mic",
+          "Tháo rời, khử ồn"
+        ]
+      ]
+    },
+    "SEED-HEAD-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "2.4 GHz + Bluetooth"
+        ],
+        [
+          "Driver",
+          "40 mm"
+        ],
+        [
+          "Thời lượng pin",
+          "Tới 38 giờ"
+        ]
+      ]
+    },
+    "SEED-HEAD-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "Razer HyperSpeed 2.4 GHz + Bluetooth"
+        ],
+        [
+          "Driver",
+          "50 mm Razer TriForce Titanium"
+        ],
+        [
+          "Thời lượng pin",
+          "Tới 70 giờ"
+        ]
+      ]
+    },
+    "SEED-HEAD-004": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kết nối",
+          "Không dây LIGHTSPEED 2.4 GHz"
+        ],
+        [
+          "Driver",
+          "40 mm PRO-G"
+        ],
+        [
+          "Trọng lượng",
+          "278 g"
+        ],
+        [
+          "Thời lượng pin",
+          "Tới 29 giờ (tắt đèn)"
+        ]
+      ]
+    },
+    "SEED-SPK-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "2.0"
+        ],
+        [
+          "Công suất",
+          "42 W RMS"
+        ],
+        [
+          "Kết nối",
+          "2x RCA"
+        ],
+        [
+          "Vỏ loa",
+          "Gỗ"
+        ],
+        [
+          "Điều khiển",
+          "Núm vặn trên loa, có remote"
+        ]
+      ]
+    },
+    "SEED-SPK-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Loại",
+          "2.1 (loa trầm + 2 loa vệ tinh)"
+        ],
+        [
+          "Công suất",
+          "200 W RMS (đỉnh 400 W)"
+        ],
+        [
+          "Chứng nhận",
+          "THX"
+        ]
+      ]
+    },
+    "SEED-SPK-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Loại",
+          "2.0 (loa kệ sách, Hi-Res)"
+        ],
+        [
+          "Công suất RMS",
+          "256 W (8W×2 treble + 120W×2 mid/bass)"
+        ]
+      ]
+    },
+    "SEED-CHAIR-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chất liệu",
+          "SoftWeave Plus (vải)"
+        ],
+        [
+          "Kích cỡ",
+          "Regular"
+        ],
+        [
+          "Tay vịn",
+          "4D"
+        ],
+        [
+          "Đệm cổ",
+          "Memory foam từ tính"
+        ]
+      ]
+    },
+    "SEED-CHAIR-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Chất liệu",
+          "Da PU"
+        ]
+      ]
+    },
+    "SEED-CHAIR-003": {
+      "c": "da_tra",
+      "specs": [
+        [
+          "Chất liệu",
+          "E-WIN 2.0 PU Leather"
+        ]
+      ]
+    },
+    "SEED-FAN-001": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "120 x 120 x 25 mm"
+        ],
+        [
+          "Tốc độ",
+          "450 - 2000 RPM"
+        ],
+        [
+          "Độ ồn",
+          "22.6 dB(A)"
+        ],
+        [
+          "Lưu lượng gió",
+          "102.1 m3/h"
+        ],
+        [
+          "Giắc cắm",
+          "4-pin PWM"
+        ],
+        [
+          "Bảo hành chính hãng",
+          "6 năm"
+        ]
+      ]
+    },
+    "SEED-FAN-002": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "120 mm"
+        ],
+        [
+          "Tốc độ",
+          "600 - 1500 RPM"
+        ],
+        [
+          "Đèn",
+          "16 LED RGB mỗi quạt"
+        ],
+        [
+          "Bộ gồm",
+          "3 quạt + Lighting Node PRO"
+        ]
+      ]
+    },
+    "SEED-FAN-003": {
+      "c": "chac",
+      "specs": [
+        [
+          "Kích thước",
+          "120 mm"
+        ],
+        [
+          "Tốc độ",
+          "400 - 2000 RPM"
+        ],
+        [
+          "Đèn",
+          "ARGB"
+        ],
+        [
+          "Kết nối",
+          "Nối chuỗi (daisy-chain)"
+        ]
+      ]
+    },
+    "SEED-FAN-004": {
+      "c": "can_tra",
+      "specs": []
+    }
+  },
+  "needVerify": [
+    "SEED-MB-001, 002, 006, 007, 008, 011: chưa tra nguồn nào",
+    "SEED-MB-006: tên MSI PRO B760M-A DDR4 nghi không khớp mã sản phẩm có thật (MSI có bản WIFI DDR4)",
+    "SEED-MB-007: tên ASUS PRIME B760M-A DDR5 nghi không khớp mã sản phẩm có thật",
+    "SEED-MB-008: so-khe-m-2=4 có thể phải là 3; ram-toi-da=128 có thể thấp hơn BIOS mới",
+    "SEED-MB-009: ram-toi-da các nguồn ghi lệch nhau (128, 192 hoặc 256 GB), cần trang hãng",
+    "SEED-MB-010: ram-toi-da 96GB mới có nguồn bán lẻ, cần trang hãng",
+    "SEED-RAM-005: mã CMT32GX5M1B5600C36 nghi sai",
+    "SEED-HDD-004: mã ST8000VN002 là bản cũ, bản hiện hành là ST8000VN004",
+    "SEED-VGA-002: vga-length=300 nghi cao hơn thực tế",
+    "SEED-VGA-003, 004, 005, 007, 008 và SEED-VGALN-001 đến 003: chưa tra vga-length; SEED-VGA-004 tên GAMING TRIO chưa chắc có thật; SEED-VGA-008 có thể là GAMING X SLIM",
+    "SEED-CASE-001, 002, 004, 005: chưa tra case-max-vga-length, case-max-cooler-height, radiator-size",
+    "SEED-CASE-003: case-max-vga-length=330 nghi thấp hơn thực tế",
+    "SEED-CASE-006: case-max-cooler-height=140 nghi thấp hơn thực tế",
+    "SEED-CASE-008: chưa xác nhận Phanteks Enthoo 719 là sản phẩm có thật",
+    "SEED-AIR-001, 003, 004, 005: chưa tra cooler-height và danh sách socket hỗ trợ",
+    "SEED-AIR-002: nguồn bán lẻ chưa liệt kê LGA 1851 trong danh sách socket, cần trang hãng",
+    "SEED-AIR-003: mô tả 120mm+135mm Dual Fan nghi sai cho Dark Rock 4",
+    "SEED-AIO-001: tên NZXT Kraken 360 RGB và mã RL-KR360-B1 chưa xác nhận",
+    "SEED-AIO-001 đến 004: chưa tra danh sách socket hỗ trợ",
+    "SEED-CUSTOM-001, 002: chưa xác nhận Bykski Full DIY Kit và EK Quantum Power Kit 360 là sản phẩm có thật",
+    "SEED-MON-003: chưa tra, đặc biệt cổng USB-C",
+    "SEED-MON-005: tên ghi 0.5ms, theo hiểu biết của mình bản PG27AQN là 1ms",
+    "SEED-KBC-002, 003: chưa xác nhận sản phẩm và thông số",
+    "SEED-KB-003: tên chính thức là BlackWidow V3 Tenkeyless, switch phụ thuộc phiên bản",
+    "SEED-SPK-003: công suất ghi 150W RMS chưa chắc",
+    "SEED-CHAIR-002, 003: chưa tra thông số"
+  ]
+}

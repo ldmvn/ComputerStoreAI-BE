@@ -1,0 +1,1 @@
+ALTER TABLE `Banner` ADD COLUMN `isAutoPlaced` BOOLEAN NOT NULL DEFAULT false;

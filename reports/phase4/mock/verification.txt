@@ -1,0 +1,18 @@
+[Phase 4 Verification — 2026-10-27T15:05:27.703Z]
+Mode: mock
+Baseline cases: 43, scored: 43, errors: 0
+RAG cases: 43, scored: 43, errors: 0
+
+Triad Scores (mean):
+  Context Relevance — Baseline: N/A, RAG: 0.7374
+  Groundedness      — Baseline: 1.0000, RAG: 1.0000
+  Answer Relevance  — Baseline: 0.8000, RAG: 0.8000
+
+Checks:
+  [PASS] Both configurations produced scored results
+  [PASS] All three triad scores have at least one measurement
+  [PASS] No total evaluation failure
+  [PASS] Checkpoint/resume mechanism tested
+  [PASS] Mock mode operates without API calls
+
+API usage: Baseline 172 Gemini calls, RAG 206 Gemini calls

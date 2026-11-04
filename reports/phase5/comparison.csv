@@ -1,0 +1,44 @@
+id,category,query,bl_context_relevance,rag_context_relevance,bl_groundedness,rag_groundedness,bl_answer_relevance,rag_answer_relevance,bl_hallucination_rate,rag_hallucination_rate,bl_latency_ms,rag_latency_ms,bl_response_len,rag_response_len,delta_groundedness,delta_answer_relevance
+model-01,model,"Thông số RTX 4060",,1,0.5,1,1,1,0,0,6191.2,6904.4,538,578,0.5,0
+model-02,model,"Thông số RTX 4060 Ti",,1,0.5,1,1,1,0,0,7631,26863.2,595,469,0.5,0
+model-03,model,"RTX4070Ti SUPER có thông số gì?",,1,0.5,1,1,1,0,0,8145.9,32784.2,447,466,0.5,0
+model-04,model,"MSI RTX 4070 SUPER thông số",,0.9,0.5,,1,1,0,,8390.3,23958.4,823,475,,0
+model-05,model,"RX 7600 có hiệu năng thế nào?",,0.32,0.44,1,0.8,0.6,0.13,0,6549.1,6221.3,951,441,0.56,-0.2
+model-06,model,"Thông số CPU Ryzen 7 7800X3D",,1,,1,1,1,,0,6340.1,6326,682,442,,0
+model-07,model,"CPU Intel i7 13700K thông số",,1,,,1,1,,,5996.5,7891.2,675,647,,0
+model-08,model,"Thông số bo mạch Gigabyte B850M DS3H",,0.44,0.5,1,1,0.8,0,0,10641.4,18747.4,1081,392,0.5,-0.2
+sku-01,sku,"Thông số SEED-VGA-002",,1,0,1,1,1,1,0,6070.6,11115,278,347,1,0
+sku-02,sku,"Thông số seedvga002",,1,0,1,1,1,1,0,7809.9,19648.1,332,425,1,0
+sku-03,sku,"Thông số SEED-SSDM2-004",,1,0.25,0.88,1,1,0.5,0.11,9838.1,24006.3,375,351,0.63,0
+sku-04,sku,"Thông số CMK16GX4M1E3200C16",,1,0.5,1,1,1,0,0,6456.7,15065.8,550,346,0.5,0
+sku-05,sku,"Thông số MZ-V8P1T0BW",,1,0.5,1,1,1,0,0,5829.5,15341,488,545,0.5,0
+sku-06,sku,"Thông số RAM0024",,1,0,,1,1,1,,10680.2,18540.3,242,541,,0
+vi-01,vietnamese,"chinh sach bao hanh",,0.84,0,,1,1,1,,6951.1,9666.4,713,951,,0
+vi-02,vietnamese,"dieu kien doi tra hoan tien",,0.76,0,,1,1,1,,5926.2,5974.9,760,839,,0
+vi-03,vietnamese,"van chuyen giao hang",,0.84,0,1,1,1,1,0,6291.3,7174.1,572,834,1,0
+vi-04,vietnamese,"thong so card man hinh RTX4060Ti",,0.32,0.5,1,1,0.8,0,0,8964.9,7071.9,748,293,0.5,-0.2
+policy-01,policy,"Chính sách bảo hành của cửa hàng",,0.84,0,,1,1,1,,9182,18176,756,909,,0
+policy-02,policy,"Chính sách đổi trả hàng lỗi",,0.76,0,1,1,1,1,0,6304.2,13579.9,567,928,1,0
+policy-03,policy,"Phương thức thanh toán",,0.64,0,1,1,1,1,0,6030.4,13973.1,527,376,1,0
+policy-04,policy,"Quy định bảo mật thông tin",,0.64,0,,1,1,1,,10007.4,18158.2,690,1245,,0
+compare-01,comparison,"So sánh RTX 4060 và RTX 4060 Ti",,1,,,1,0.8,,,6271.7,24694.2,839,850,,-0.2
+compare-02,comparison,"So sánh RTX 4070 SUPER với RTX 4070 Ti SUPER",,0.8,,,1,0.8,,,7481.9,18348.8,785,850,,-0.2
+compare-03,comparison,"So sánh i7-13700K với Ryzen 7 7800X3D",,0.8,,,1,0.8,,,6790.1,7332.1,1147,1089,,-0.2
+compare-04,comparison,"So sánh thông số SEED-SSDM2-003 và SEED-SSDM2-004",,0.75,0,,1,1,1,,15182.4,24235.4,319,747,,0
+turn-01,multi_turn,"Nó có thông số thế nào?",,0.2,0.5,1,1,1,0,0,15643.1,9358.3,651,316,0.5,0
+turn-02,multi_turn,"Con này tiêu thụ bao nhiêu watt?",,0.2,0.5,1,1,1,0,0,5629.2,22910.3,209,285,0.5,0
+turn-03,multi_turn,"Còn giá và tồn kho?",,,0,0.38,1,1,1,0.25,14326.1,20698.4,287,308,0.38,0
+turn-04,multi_turn,"Cả hai khác nhau thế nào?",,1,0.5,,1,1,0,,17289.5,13117.1,1015,1263,,0
+turn-05,multi_turn,"Con đầu có thông số gì?",,0.32,,1,1,0.8,,0,28014.7,20675,662,175,,-0.2
+turn-06,multi_turn,"Nó có tốt không?",,,,0,0.4,0.4,,1,26031.9,6393.7,262,261,,0
+turn-07,multi_turn,"Thông số SEED-SSDM2-004",,1,0.25,0.86,1,1,0.5,0.13,26516.6,6457.7,350,373,0.61,0
+mixed-01,routing,"Xin chào, cho tôi thông số RTX 4060",,1,0.5,,1,1,0,,7966.2,7958.4,508,747,,0
+mixed-02,routing,"RTX 4060 giá bao nhiêu?",,,0,0,0.6,1,1,1,14963.8,25146.9,380,408,0,0.4
+mixed-03,routing,"So sánh RTX 4060 và RTX 4060 Ti kèm giá",,0.88,,,1,0.6,,,45618,7623.9,1292,888,,-0.4
+mixed-04,routing,"Chính sách bảo hành và giá RTX 4060",,0.68,0.4,1,0.8,0.8,0.2,0,42953.3,18515.1,854,508,0.6,0
+negative-01,negative,"Xin chào",,,0,0,1,1,1,1,54055.4,5593.1,104,110,0,0
+negative-02,negative,"Thời tiết hôm nay ở Hà Nội có mưa không?",,,0,0,1,1,1,1,12083.4,18365,266,294,0,0
+negative-03,negative,"Viết bài văn về mùa thu giúp tôi nhé",,,0,,0.6,1,1,,37085,11015.8,1366,366,,0.4
+negative-04,missing,"Thông số RTX 9999",,,0.3,0.33,1,1,0.4,0.33,25751.6,20107.4,475,390,0.03,0
+negative-05,missing,"Thông số SKU-NOT-EXIST-999",,,0,0,1,1,1,1,27815.7,32773.3,221,251,0,0
+order-01,routing,"Xem đơn hàng của tôi",,,,,1,1,,,5784.1,26789.4,127,127,,0

@@ -1,0 +1,307 @@
+{
+  "generatedAt": "2026-10-27T16:28:47.132Z",
+  "dataSources": {
+    "phase3Benchmark": {
+      "file": "reports/phase3/benchmark.json",
+      "corpusSha256": "f6aee9d6ede860eae37a507647c26e93ca20d79295e16a9e53e4924951cb972d",
+      "cases": 43
+    },
+    "phase4Live": {
+      "file": "reports/phase4/live/evaluation.json",
+      "mode": "live",
+      "model": "gemini-2.0-flash-lite",
+      "corpusSha256": "f6aee9d6ede860eae37a507647c26e93ca20d79295e16a9e53e4924951cb972d",
+      "baselineCases": 43,
+      "ragCases": 43
+    }
+  },
+  "retrieval": {
+    "method": "Hybrid (Semantic + BM25 + RRF), mock embeddings, frozen corpus",
+    "before": {
+      "recallAt5": 0.7794,
+      "mrrAt5": 0.5931,
+      "ndcgAt5": 0.6291,
+      "routingAccuracy": 0.6512,
+      "n": 34
+    },
+    "after": {
+      "recallAt5": 1,
+      "mrrAt5": 1,
+      "ndcgAt5": 1,
+      "routingAccuracy": 1,
+      "n": 34
+    }
+  },
+  "ragTriad": {
+    "method": "LLM-as-Judge (gemini-2.0-flash-lite), live API, 43 queries x 2 configs",
+    "baseline": {
+      "contextRelevance": {
+        "mean": null,
+        "median": null,
+        "n": 0,
+        "values": []
+      },
+      "groundedness": {
+        "mean": 0.2247,
+        "median": 0.125,
+        "n": 34,
+        "values": [
+          0.5,
+          0.5,
+          0.5,
+          0.5,
+          0.44,
+          0.5,
+          0,
+          0,
+          0.25,
+          0.5,
+          0.5,
+          0,
+          0,
+          0,
+          0,
+          0.5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.5,
+          0.5,
+          0,
+          0.5,
+          0.25,
+          0.5,
+          0,
+          0.4,
+          0,
+          0,
+          0,
+          0.3,
+          0
+        ]
+      },
+      "answerRelevance": {
+        "mean": 0.9581,
+        "median": 1,
+        "n": 43,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          0.8,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.4,
+          1,
+          1,
+          0.6,
+          1,
+          0.8,
+          1,
+          1,
+          0.6,
+          1,
+          1,
+          1
+        ]
+      },
+      "hallucinationRate": {
+        "mean": 0.5509,
+        "n": 34
+      }
+    },
+    "rag": {
+      "contextRelevance": {
+        "mean": 0.7921,
+        "median": 0.86,
+        "n": 34,
+        "values": [
+          1,
+          1,
+          1,
+          0.9,
+          0.32,
+          1,
+          1,
+          0.44,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.84,
+          0.76,
+          0.84,
+          0.32,
+          0.84,
+          0.76,
+          0.64,
+          0.64,
+          1,
+          0.8,
+          0.8,
+          0.75,
+          0.2,
+          0.2,
+          1,
+          0.32,
+          1,
+          1,
+          0.88,
+          0.68
+        ]
+      },
+      "groundedness": {
+        "mean": 0.7574,
+        "median": 1,
+        "n": 27,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.88,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.38,
+          1,
+          0,
+          0.86,
+          0,
+          1,
+          0,
+          0,
+          0.33,
+          0
+        ]
+      },
+      "answerRelevance": {
+        "mean": 0.9349,
+        "median": 1,
+        "n": 43,
+        "values": [
+          1,
+          1,
+          1,
+          1,
+          0.6,
+          1,
+          1,
+          0.8,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.8,
+          1,
+          1,
+          1,
+          1,
+          0.8,
+          0.8,
+          0.8,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0.8,
+          0.4,
+          1,
+          1,
+          1,
+          0.6,
+          0.8,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "hallucinationRate": {
+        "mean": 0.2156,
+        "n": 27
+      }
+    }
+  },
+  "performance": {
+    "baseline": {
+      "latencyMs": {
+        "median": 8390.2591,
+        "p95": 42953.3437,
+        "mean": 14173.9884
+      },
+      "geminiCalls": 154
+    },
+    "rag": {
+      "latencyMs": {
+        "median": 15341.0047,
+        "p95": 26863.2419,
+        "mean": 15704.5769
+      },
+      "geminiCalls": 174
+    },
+    "retrievalOnly": {
+      "latencyMs": {
+        "median": 1.4393,
+        "p95": 2.4904
+      },
+      "note": "Mock embeddings, no network. Measures index lookup + RRF fusion only."
+    }
+  },
+  "errors": {
+    "baseline": {
+      "total": 0,
+      "timeout": 0
+    },
+    "rag": {
+      "total": 0
+    },
+    "note": "All errors were recovered via retry (0 final errors)."
+  }
+}

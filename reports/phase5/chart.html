@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DUCMANH PC — Phase 5 Final Benchmark</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root { --bg: #fff; --fg: #1a1a2e; --card: #f8f9fa; --border: #dee2e6; --accent: #3b82f6; --accent2: #10b981; --red: #ef4444; --muted: #4b5563; }
+@media (prefers-color-scheme:dark) { :root:not([data-theme="light"]) { --bg:#1a1a2e; --fg:#e2e8f0; --card:#2d2d44; --border:#4a4a6a; --muted:#9ca3af; } }
+:root[data-theme="dark"] { --bg:#1a1a2e; --fg:#e2e8f0; --card:#2d2d44; --border:#4a4a6a; --muted:#9ca3af; }
+* { box-sizing: border-box; margin: 0; }
+body { font-family: system-ui, sans-serif; background: var(--bg); color: var(--fg); padding: 16px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.5rem; margin-bottom: 4px; }
+.subtitle { color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.card h2 { font-size: 1rem; margin-bottom: 12px; }
+.kpi-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+.kpi { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; min-width: 140px; flex: 1; }
+.kpi .label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+.kpi .value { font-size: 1.5rem; font-weight: 700; }
+.kpi .delta { font-size: 0.8rem; }
+.positive { color: var(--accent2); }
+.negative { color: var(--red); }
+canvas { max-height: 350px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+th { font-weight: 600; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.tag-pass { background: #d1fae5; color: #065f46; }
+.tag-info { background: #dbeafe; color: #1e40af; }
+</style>
+</head>
+<body>
+<h1>DUCMANH PC — Phase 5 Final Benchmark</h1>
+<p class="subtitle">Hybrid RAG (Semantic + BM25 + RRF) vs Baseline (Gemini + FC) &mdash; 43 queries, Live Gemini API</p>
+
+<div class="kpi-row" id="kpis"></div>
+
+<div class="grid">
+  <div class="card"><h2>RAG Triad — Baseline vs Hybrid RAG</h2><canvas id="triadChart"></canvas></div>
+  <div class="card"><h2>Retrieval Metrics (Phase 3)</h2><canvas id="retrievalChart"></canvas></div>
+</div>
+<div class="grid">
+  <div class="card"><h2>Groundedness theo nhóm câu hỏi</h2><canvas id="catChart"></canvas></div>
+  <div class="card"><h2>Latency & API Calls</h2><canvas id="perfChart"></canvas></div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h2>Verification Summary</h2>
+  <table id="verificationTable"></table>
+</div>
+
+<script>
+const M = {
+  ragTriad: {
+    baseline: { contextRelevance: null, groundedness: 0.2247, answerRelevance: 0.9581, hallucinationRate: 0.5509 },
+    rag: { contextRelevance: 0.7921, groundedness: 0.7574, answerRelevance: 0.9349, hallucinationRate: 0.2156 }
+  },
+  retrieval: {
+    before: { recallAt5: 0.7794, mrrAt5: 0.5931, ndcgAt5: 0.6291, routingAccuracy: 0.6512 },
+    after: { recallAt5: 1, mrrAt5: 1, ndcgAt5: 1, routingAccuracy: 1 }
+  },
+  performance: {
+    baseline: { latencyMedian: 8390, latencyP95: 42953, geminiCalls: 154 },
+    rag: { latencyMedian: 15341, latencyP95: 26863, geminiCalls: 174 }
+  },
+  categories: {
+    model:      { blGr: 0.49,  ragGr: 1.00 },
+    sku:        { blGr: 0.208, ragGr: 0.976 },
+    vietnamese: { blGr: 0.125, ragGr: 1.00 },
+    policy:     { blGr: 0.00,  ragGr: 1.00 },
+    comparison: { blGr: 0.00,  ragGr: null },
+    multi_turn: { blGr: 0.35,  ragGr: 0.707 },
+    routing:    { blGr: 0.30,  ragGr: 0.50 },
+    negative:   { blGr: 0.00,  ragGr: 0.00 },
+    missing:    { blGr: 0.15,  ragGr: 0.165 }
+  },
+  tests: { total: 151, pass: 151, fail: 0, phase5: 25, regression: 126 }
+};
+
+// KPIs
+const kpis = [
+  { label: 'Groundedness Δ', value: '+53.3%', cls: 'positive' },
+  { label: 'Hallucination Δ', value: '-33.5%', cls: 'positive' },
+  { label: 'Recall@5', value: '1.000', cls: 'positive' },
+  { label: 'Tests', value: `${M.tests.pass}/${M.tests.total}`, cls: 'positive' },
+  { label: 'Live Records', value: '86/86', cls: '' },
+  { label: 'Errors (final)', value: '0', cls: 'positive' }
+];
+document.getElementById('kpis').innerHTML = kpis.map(k =>
+  `<div class="kpi"><div class="label">${k.label}</div><div class="value ${k.cls}">${k.value}</div></div>`
+).join('');
+
+const isDark = matchMedia('(prefers-color-scheme:dark)').matches;
+const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+const fontColor = isDark ? '#e2e8f0' : '#1a1a2e';
+Chart.defaults.color = fontColor;
+
+// Triad Chart
+new Chart(document.getElementById('triadChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Context Relevance', 'Groundedness', 'Answer Relevance', 'Hallucination Rate'],
+    datasets: [
+      { label: 'Baseline', data: [0, 0.2247, 0.9581, 0.5509], backgroundColor: 'rgba(239,68,68,0.7)' },
+      { label: 'Hybrid RAG', data: [0.7921, 0.7574, 0.9349, 0.2156], backgroundColor: 'rgba(59,130,246,0.7)' }
+    ]
+  },
+  options: { responsive: true, scales: { y: { beginAtZero: true, max: 1, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Retrieval Chart
+new Chart(document.getElementById('retrievalChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Recall@5', 'MRR@5', 'nDCG@5', 'Routing Acc.'],
+    datasets: [
+      { label: 'Before (Phase 3)', data: [0.7794, 0.5931, 0.6291, 0.6512], backgroundColor: 'rgba(239,68,68,0.7)' },
+      { label: 'After (Phase 3)', data: [1, 1, 1, 1], backgroundColor: 'rgba(16,185,129,0.7)' }
+    ]
+  },
+  options: { responsive: true, scales: { y: { beginAtZero: true, max: 1, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Category Groundedness Chart
+const cats = Object.keys(M.categories);
+new Chart(document.getElementById('catChart'), {
+  type: 'bar',
+  data: {
+    labels: cats,
+    datasets: [
+      { label: 'Baseline GR', data: cats.map(c => M.categories[c].blGr), backgroundColor: 'rgba(239,68,68,0.7)' },
+      { label: 'RAG GR', data: cats.map(c => M.categories[c].ragGr ?? 0), backgroundColor: 'rgba(59,130,246,0.7)' }
+    ]
+  },
+  options: { responsive: true, scales: { y: { beginAtZero: true, max: 1, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Performance Chart
+new Chart(document.getElementById('perfChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Latency p50 (s)', 'Latency p95 (s)', 'Gemini Calls'],
+    datasets: [
+      { label: 'Baseline', data: [8.39, 42.95, 154], backgroundColor: 'rgba(239,68,68,0.7)' },
+      { label: 'Hybrid RAG', data: [15.34, 26.86, 174], backgroundColor: 'rgba(59,130,246,0.7)' }
+    ]
+  },
+  options: { responsive: true, scales: { y: { beginAtZero: true, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
+});
+
+// Verification table
+const rows = [
+  ['Phase 5 Production Tests', '25/25', 'pass'],
+  ['Phase 1-4 Regression Tests', '126/126', 'pass'],
+  ['Phase 4 Live Evaluation', '86/86 records, 0 errors', 'pass'],
+  ['Data Integrity', 'SHA256 match, no contamination', 'pass'],
+  ['Corpus', '578 chunks, 145 docs', 'info'],
+  ['Model', 'gemini-2.0-flash-lite', 'info'],
+  ['Gemini API (live eval)', '328 total calls', 'info']
+];
+document.getElementById('verificationTable').innerHTML =
+  '<tr><th>Check</th><th>Result</th><th>Status</th></tr>' +
+  rows.map(([c,r,s]) => `<tr><td>${c}</td><td>${r}</td><td><span class="tag tag-${s}">${s.toUpperCase()}</span></td></tr>`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+{
+  "generatedAt": "2026-10-27T03:31:42.650Z",
+  "corpus": {
+    "chunks": 578,
+    "documents": 145,
+    "sha256": "f6aee9d6ede860eae37a507647c26e93ca20d79295e16a9e53e4924951cb972d"
+  },
+  "methodology": "Frozen real corpus; document labels; top 5 chunks; deterministic hashed bag-of-words mock semantic embeddings; no AI network calls. Tokens are conservative UTF-8 byte/3 estimates, not Gemini billing. Latency excludes network and disk loading. Responses/triad scores remain null for Phase 4.",
+  "before": {
+    "cases": 43,
+    "labelledRetrievalCases": 34,
+    "recallAt5": 0.7794117647058824,
+    "mrrAt5": 0.5931372549019608,
+    "ndcgAt5": 0.6291262629120318,
+    "routingAccuracy": 0.6511627906976745,
+    "latencyMs": {
+      "median": 0.9551000000000158,
+      "p95": 1.2660000000000196
+    },
+    "embeddingCalls": 38,
+    "geminiCalls": 0,
+    "meanContextTokensEstimate": 1093.5116279069769,
+    "unnecessaryToolOffers": 1,
+    "emptyResultAccuracy": 0
+  },
+  "after": {
+    "cases": 43,
+    "labelledRetrievalCases": 34,
+    "recallAt5": 1,
+    "mrrAt5": 1,
+    "ndcgAt5": 1,
+    "routingAccuracy": 1,
+    "latencyMs": {
+      "median": 1.439300000000003,
+      "p95": 2.4903999999999087
+    },
+    "embeddingCalls": 30,
+    "geminiCalls": 0,
+    "meanContextTokensEstimate": 767.953488372093,
+    "unnecessaryToolOffers": 0,
+    "emptyResultAccuracy": 1
+  },
+  "noRerank": {
+    "cases": 43,
+    "labelledRetrievalCases": 34,
+    "recallAt5": 1,
+    "mrrAt5": 1,
+    "ndcgAt5": 0.9955983795745516,
+    "routingAccuracy": 1,
+    "latencyMs": {
+      "median": 1.3473999999999933,
+      "p95": 2.334699999999998
+    },
+    "embeddingCalls": 30,
+    "geminiCalls": 0,
+    "meanContextTokensEstimate": 767.9069767441861,
+    "unnecessaryToolOffers": 0,
+    "emptyResultAccuracy": 1
+  },
+  "byCategory": {
+    "before": {
+      "model": {
+        "cases": 8,
+        "labelledRetrievalCases": 8,
+        "recallAt5": 1,
+        "mrrAt5": 0.6666666666666667,
+        "ndcgAt5": 0.7529648767857288,
+        "routingAccuracy": 0.625,
+        "latencyMs": {
+          "median": 1.0892999999999802,
+          "p95": 1.444500000000005
+        },
+        "embeddingCalls": 8,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1198.125,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "sku": {
+        "cases": 6,
+        "labelledRetrievalCases": 6,
+        "recallAt5": 0.8333333333333334,
+        "mrrAt5": 0.47222222222222227,
+        "ndcgAt5": 0.5654648767857288,
+        "routingAccuracy": 0.3333333333333333,
+        "latencyMs": {
+          "median": 0.8860000000000241,
+          "p95": 1.0097000000000094
+        },
+        "embeddingCalls": 6,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1222.6666666666667,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "vietnamese": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 0.75,
+        "mrrAt5": 0.625,
+        "ndcgAt5": 0.6577324383928644,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 0.827699999999993,
+          "p95": 1.376100000000008
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1264,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "policy": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.0948999999999955,
+          "p95": 1.2660000000000196
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1302.5,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "comparison": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 1,
+        "mrrAt5": 0.875,
+        "ndcgAt5": 0.8619642585733425,
+        "routingAccuracy": 0.75,
+        "latencyMs": {
+          "median": 1.0810999999999922,
+          "p95": 1.109199999999987
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1220.75,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "multi_turn": {
+        "cases": 7,
+        "labelledRetrievalCases": 5,
+        "recallAt5": 0.2,
+        "mrrAt5": 0.1,
+        "ndcgAt5": 0.1261859507142915,
+        "routingAccuracy": 0.7142857142857143,
+        "latencyMs": {
+          "median": 0.948099999999954,
+          "p95": 1.1091000000000122
+        },
+        "embeddingCalls": 6,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1076.4285714285713,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "routing": {
+        "cases": 5,
+        "labelledRetrievalCases": 3,
+        "recallAt5": 0.5,
+        "mrrAt5": 0.5,
+        "ndcgAt5": 0.4213560408575303,
+        "routingAccuracy": 0.4,
+        "latencyMs": {
+          "median": 0.011199999999973898,
+          "p95": 1.075400000000002
+        },
+        "embeddingCalls": 2,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 502,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "negative": {
+        "cases": 3,
+        "labelledRetrievalCases": 0,
+        "recallAt5": null,
+        "mrrAt5": null,
+        "ndcgAt5": null,
+        "routingAccuracy": 0.3333333333333333,
+        "latencyMs": {
+          "median": 0.9750000000000227,
+          "p95": 1.0138000000000034
+        },
+        "embeddingCalls": 2,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 850.3333333333334,
+        "unnecessaryToolOffers": 1,
+        "emptyResultAccuracy": null
+      },
+      "missing": {
+        "cases": 2,
+        "labelledRetrievalCases": 0,
+        "recallAt5": null,
+        "mrrAt5": null,
+        "ndcgAt5": null,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.0387000000000057,
+          "p95": 1.0387000000000057
+        },
+        "embeddingCalls": 2,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1177.5,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": 0
+      }
+    },
+    "after": {
+      "model": {
+        "cases": 8,
+        "labelledRetrievalCases": 8,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.8225999999999658,
+          "p95": 2.4903999999999087
+        },
+        "embeddingCalls": 8,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1005.375,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "sku": {
+        "cases": 6,
+        "labelledRetrievalCases": 6,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 0.4274000000000342,
+          "p95": 1.6807000000000016
+        },
+        "embeddingCalls": 2,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 560.5,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "vietnamese": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.67450000000008,
+          "p95": 2.6055999999999813
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 982.75,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "policy": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.439300000000003,
+          "p95": 2.342300000000023
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 889.25,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "comparison": {
+        "cases": 4,
+        "labelledRetrievalCases": 4,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.9484999999999673,
+          "p95": 2.654100000000085
+        },
+        "embeddingCalls": 3,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 1321.25,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "multi_turn": {
+        "cases": 7,
+        "labelledRetrievalCases": 5,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 2.012299999999982,
+          "p95": 2.374500000000012
+        },
+        "embeddingCalls": 4,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 802.4285714285714,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "routing": {
+        "cases": 5,
+        "labelledRetrievalCases": 3,
+        "recallAt5": 1,
+        "mrrAt5": 1,
+        "ndcgAt5": 1,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 1.800299999999993,
+          "p95": 1.9085000000000036
+        },
+        "embeddingCalls": 3,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 645.2,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "negative": {
+        "cases": 3,
+        "labelledRetrievalCases": 0,
+        "recallAt5": null,
+        "mrrAt5": null,
+        "ndcgAt5": null,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 0.012200000000007094,
+          "p95": 0.01639999999997599
+        },
+        "embeddingCalls": 0,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 0,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": null
+      },
+      "missing": {
+        "cases": 2,
+        "labelledRetrievalCases": 0,
+        "recallAt5": null,
+        "mrrAt5": null,
+        "ndcgAt5": null,
+        "routingAccuracy": 1,
+        "latencyMs": {
+          "median": 0.725400000000036,
+          "p95": 0.725400000000036
+        },
+        "embeddingCalls": 2,
+        "geminiCalls": 0,
+        "meanContextTokensEstimate": 0,
+        "unnecessaryToolOffers": 0,
+        "emptyResultAccuracy": 1
+      }
+    }
+  }
+}

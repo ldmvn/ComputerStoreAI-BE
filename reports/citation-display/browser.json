@@ -1,0 +1,53 @@
+{
+  "mode": "real Edge/Next frontend; mocked chat API; 0 Gemini calls",
+  "measurements": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "box": {
+        "x": 1076,
+        "y": 384,
+        "width": 340,
+        "height": 520
+      },
+      "sources": 2,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024,
+      "box": {
+        "x": 404,
+        "y": 408,
+        "width": 340,
+        "height": 520
+      },
+      "sources": 2,
+      "noHorizontalOverflow": true
+    },
+    {
+      "name": "mobile",
+      "width": 320,
+      "height": 740,
+      "box": {
+        "x": 16,
+        "y": 132,
+        "width": 288,
+        "height": 520
+      },
+      "sources": 2,
+      "noHorizontalOverflow": true
+    }
+  ],
+  "defaultClosed": true,
+  "inlineRenumbering": "WD_BLACK SN850X 1TB có tốc độ đọc 7.300 MB/s [Nguồn 1], hỗ trợ DirectStorage [Nguồn 1]. Samsung 990 Pro 1TB đọc đến 7.450 MB/s [Nguồn 2].",
+  "productHrefs": [
+    "/products/seed-ssdm2-003",
+    "/products/seed-ssdm2-008"
+  ],
+  "realProductPageVerified": true,
+  "originalChunkMetadataPreservedInHistory": true,
+  "pageErrors": []
+}

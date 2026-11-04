@@ -1,0 +1,604 @@
+{
+  "meta": {
+    "scope": "Chỉ SKU SEED- trong Prompt 5",
+    "updatedGroups": ["mainboard", "ram", "vga", "case", "air-cooler", "aio", "custom-cooling", "storage-monitor-peripheral"]
+  },
+  "fixes": [
+    {
+      "sku": "SEED-MB-007",
+      "field": "name",
+      "old": "Bo mạch chủ ASUS PRIME B760M-A DDR5 (Socket LGA 1700, DDR5, Micro-ATX)",
+      "new": "Bo mạch chủ ASUS PRIME B760M-A (Socket LGA 1700, DDR5, Micro-ATX)",
+      "source": "https://www.asus.com/in/motherboards-components/motherboards/prime/prime-b760m-a/techspec/",
+      "confidence": "hang",
+      "note": "Tên model chính thức là PRIME B760M-A; DDR5 là thông số, không nằm trong tên model."
+    },
+    {
+      "sku": "SEED-MB-007",
+      "field": "ram-toi-da",
+      "old": 128,
+      "new": 256,
+      "unit": "GB",
+      "source": "https://www.asus.com/in/motherboards-components/motherboards/prime/prime-b760m-a/techspec/",
+      "confidence": "hang",
+      "note": "Trang thông số ASUS hiện ghi 4 DIMM, tối đa 256GB."
+    },
+    {
+      "sku": "SEED-MB-008",
+      "field": "ram-toi-da",
+      "old": 128,
+      "new": 256,
+      "unit": "GB",
+      "source": "https://www.gigabyte.com/Motherboard/Z790-AORUS-ELITE-AX-rev-10/sp",
+      "confidence": "hang",
+      "note": "Trang hãng cho rev. 1.0 ghi 4 DIMM, tối đa 256GB; 4 khe M.2 hiện tại là đúng."
+    },
+    {
+      "sku": "SEED-MB-009",
+      "field": "ram-toi-da",
+      "old": 128,
+      "new": 256,
+      "unit": "GB",
+      "source": "https://www.msi.com/Motherboard/MAG-Z790-TOMAHAWK-WIFI/Specification",
+      "confidence": "hang",
+      "note": "Trang thông số MSI hiện ghi 4 DDR5, tối đa 256GB."
+    },
+    {
+      "sku": "SEED-MB-010",
+      "field": "ram-toi-da",
+      "old": 96,
+      "new": 128,
+      "unit": "GB",
+      "source": "https://rog.asus.com/motherboards/rog-maximus/rog-maximus-z890-apex/spec/",
+      "confidence": "hang",
+      "note": "Trang ROG ghi 2 DIMM, tối đa 128GB."
+    },
+    {
+      "sku": "SEED-MB-011",
+      "field": "so-khe-m-2",
+      "old": 4,
+      "new": 5,
+      "unit": "khe",
+      "source": "https://www.msi.com/Motherboard/MEG-Z890-ACE/Specification",
+      "confidence": "hang",
+      "note": "Trang thông số MSI liệt kê M.2_1 đến M.2_5."
+    },
+    {
+      "sku": "SEED-VGA-001",
+      "field": "vga-length",
+      "old": 262,
+      "new": 227.2,
+      "unit": "mm",
+      "source": "https://www.asus.com/ie/motherboards-components/graphics-cards/dual/dual-rtx4060-o8g/techspec/",
+      "confidence": "hang",
+      "note": "ASUS ghi kích thước DUAL-RTX4060-O8G là 227,2 x 123,24 x 49,6 mm."
+    },
+    {
+      "sku": "SEED-VGA-002",
+      "field": "vga-length",
+      "old": 300,
+      "new": 247,
+      "unit": "mm",
+      "source": "https://kr.msi.com/Graphics-Card/GeForce-RTX-4060-Ti-GAMING-X-8G/Specification",
+      "confidence": "hang",
+      "note": "MSI ghi kích thước card 247 x 130 x 42 mm."
+    },
+    {
+      "sku": "SEED-VGA-002",
+      "field": "tdp",
+      "old": 165,
+      "new": 160,
+      "unit": "W",
+      "source": "https://kr.msi.com/Graphics-Card/GeForce-RTX-4060-Ti-GAMING-X-8G/Specification",
+      "confidence": "hang",
+      "note": "Trang MSI ghi Power consumption 160 W."
+    },
+    {
+      "sku": "SEED-VGA-003",
+      "field": "vga-length",
+      "old": 284,
+      "new": 245,
+      "unit": "mm",
+      "source": "https://www.asus.com/jp/motherboards-components/graphics-cards/dual/dual-rx7600-o8g/techspec/",
+      "confidence": "hang",
+      "note": "ASUS ghi kích thước DUAL-RX7600-O8G là 245 x 134 x 49 mm."
+    },
+    {
+      "sku": "SEED-VGA-005",
+      "field": "vga-length",
+      "old": 355,
+      "new": 338,
+      "unit": "mm",
+      "source": "https://www.powercolor.com/product-detail71.htm",
+      "confidence": "hang",
+      "note": "PowerColor ghi board 338 mm; 348 mm là chiều dài khi tính cả bracket. Thuộc tính độ dài card dùng kích thước board."
+    },
+    {
+      "sku": "SEED-VGA-007",
+      "field": "vga-length",
+      "old": 318,
+      "new": 335,
+      "unit": "mm",
+      "source": "https://www.xfxforce.com/shop/xfx-speedster-qick-319-radeon-tm-rx-7800-xt-core-edition",
+      "confidence": "hang",
+      "note": "XFX ghi Card Dimension 33,5 cm cho model RX-78TQICKF9."
+    },
+    {
+      "sku": "SEED-VGA-008",
+      "field": "name",
+      "old": "Card màn hình MSI Gaming X GeForce RTX 4070 SUPER 12GB GDDR6X (RTX 4070 SUPER 12G GAMING X)",
+      "new": "Card màn hình MSI Gaming X Slim GeForce RTX 4070 SUPER 12GB GDDR6X (RTX 4070 SUPER 12G GAMING X SLIM)",
+      "source": "https://www.msi.com/Graphics-Card/GeForce-RTX-4070-SUPER-12G-GAMING-X-SLIM/Specification",
+      "confidence": "hang",
+      "note": "Model chính thức tương ứng có hậu tố GAMING X SLIM; chiều dài 307 mm hiện tại đã đúng."
+    },
+    {
+      "sku": "SEED-VGALN-002",
+      "field": "vga-length",
+      "old": 267,
+      "new": 323,
+      "unit": "mm",
+      "source": "https://www.xfxforce.com/shop/xfx-speedster-qick319-amd-radeon-tm-rx-6700xt-core-gaming-graphics-card-with-12gb-gddr6-hdmi-3xdp-amd-rdna-tm-2",
+      "confidence": "hang",
+      "note": "XFX ghi Card Dimension 32,3 cm cho QICK 319 RX 6700 XT CORE."
+    },
+    {
+      "sku": "SEED-VGALN-003",
+      "field": "vga-length",
+      "old": 328,
+      "new": 323,
+      "unit": "mm",
+      "source": "https://www.msi.com/Graphics-Card/GeForce-RTX-3070-Ti-GAMING-X-TRIO-8G/Specification",
+      "confidence": "hang",
+      "note": "MSI ghi kích thước card 323 x 140 x 56 mm."
+    },
+    {
+      "sku": "SEED-CASE-001",
+      "field": "radiator-size",
+      "old": ["120", "240", "280", "360", "420"],
+      "new": ["120", "140", "240", "280", "360", "420"],
+      "unit": "mm",
+      "source": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-black-tg-light-tint/",
+      "confidence": "hang",
+      "note": "Fractal Design liệt kê radiator 120/140/240/280/360/420 ở mặt trước và đáy."
+    },
+    {
+      "sku": "SEED-CASE-002",
+      "field": "radiator-size",
+      "old": ["120", "240", "360"],
+      "new": ["120", "240", "280"],
+      "unit": "mm",
+      "source": "https://support.nzxt.com/hc/en-us/articles/37734705208347-H5-2022-Series-Specs",
+      "confidence": "hang",
+      "note": "H5 Flow 2022 CC-H51FB-01 hỗ trợ 120 mm phía sau, tối đa 240 mm phía trên và 280 mm phía trước; không hỗ trợ 360 mm."
+    },
+    {
+      "sku": "SEED-CASE-003",
+      "field": "name",
+      "old": "Vỏ Case Phanteks Eclipse G360A (PH-EC360ATG_DBK01) Mid Tower ATX",
+      "new": "Vỏ Case Phanteks Eclipse G360A (PH-EC360ATG_DBK02) Mid Tower ATX",
+      "source": "https://www.phanteks.com.tw/assets/manuals/PH-EC360ATG2.pdf",
+      "confidence": "hang",
+      "note": "Tài liệu chính thức G360A dùng biến thể model DBK02; DBK01 hiện tại không được xác nhận."
+    },
+    {
+      "sku": "SEED-CASE-003",
+      "field": "case-max-vga-length",
+      "old": 330,
+      "new": 400,
+      "unit": "mm",
+      "source": "https://www.phanteks.com.tw/assets/manuals/PH-EC360ATG2.pdf",
+      "confidence": "hang",
+      "note": "Installation Guide G360A ghi GPU length 400 mm."
+    },
+    {
+      "sku": "SEED-CASE-003",
+      "field": "case-max-cooler-height",
+      "old": 160,
+      "new": 162,
+      "unit": "mm",
+      "source": "https://www.phanteks.com.tw/assets/manuals/PH-EC360ATG2.pdf",
+      "confidence": "hang",
+      "note": "Installation Guide G360A ghi CPU cooler height 162 mm."
+    },
+    {
+      "sku": "SEED-CASE-003",
+      "field": "radiator-size",
+      "old": ["120", "240", "280"],
+      "new": ["120", "240", "280", "360"],
+      "unit": "mm",
+      "source": "https://www.phanteks.com.tw/assets/manuals/PH-EC360ATG2.pdf",
+      "confidence": "hang",
+      "note": "G360A hỗ trợ radiator 360 mm ở mặt trước hoặc phía trên."
+    },
+    {
+      "sku": "SEED-CASE-004",
+      "field": "case-max-cooler-height",
+      "old": 157,
+      "new": 159,
+      "unit": "mm",
+      "source": "https://legacy.coolermaster.com/en-global/products/q300l-v2/",
+      "confidence": "hang",
+      "note": "Trang Q300L V2 ghi CPU cooler tối đa 159 mm; 157 mm thuộc Q300L đời trước."
+    },
+    {
+      "sku": "SEED-CASE-006",
+      "field": "case-max-cooler-height",
+      "old": 140,
+      "new": 165,
+      "unit": "mm",
+      "source": "https://www.fractal-design.com/products/cases/node-series/node-304/node-304-black/",
+      "confidence": "hang",
+      "note": "Fractal Design ghi CPU cooler max height 165 mm."
+    },
+    {
+      "sku": "SEED-CASE-008",
+      "field": "name",
+      "old": "Vỏ Case Phanteks Enthoo 719 (PH-ES719BK_DBK01) Full Tower E-ATX",
+      "new": "Vỏ Case Phanteks Enthoo 719 (PH-ES719LTG_DBK01) Full Tower E-ATX",
+      "source": "https://phanteks.com/product/enthoo-719/",
+      "confidence": "hang",
+      "note": "Trang Phanteks xác nhận Enthoo 719 và model PH-ES719LTG_DBK01."
+    },
+    {
+      "sku": "SEED-CASE-008",
+      "field": "case-max-cooler-height",
+      "old": 200,
+      "new": 195,
+      "unit": "mm",
+      "source": "https://phanteks.com/product/enthoo-719/",
+      "confidence": "hang",
+      "note": "Trang Phanteks ghi CPU cooler height 195 mm; GPU length 503 mm hiện tại đúng."
+    },
+    {
+      "sku": "SEED-AIR-002",
+      "field": "name",
+      "old": "Tản nhiệt CPU Deepcool AK620 Zero Dark 6 heatpipe 120mm Dual Tower (AM4/AM5/LGA1700/LGA1851)",
+      "new": "Tản nhiệt CPU DeepCool AK620 ZERO DARK 6 heatpipe 120mm Dual Tower (AM4/AM5/LGA1700)",
+      "source": "https://global.deepcool.com/products/Cooling/cpuaircoolers/AK620-ZERO-DARK-High-Performance-CPU-Cooler-1700-AM5/2022/16124.shtml",
+      "confidence": "hang",
+      "note": "Trang sản phẩm ghi AM4/AM5/LGA1700, không ghi LGA1851."
+    },
+    {
+      "sku": "SEED-AIR-002",
+      "field": "socket-cpu",
+      "old": ["AM4", "AM5", "LGA 1700", "LGA 1851"],
+      "new": ["AM4", "AM5", "LGA 1700"],
+      "source": "https://global.deepcool.com/products/Cooling/cpuaircoolers/AK620-ZERO-DARK-High-Performance-CPU-Cooler-1700-AM5/2022/16124.shtml",
+      "confidence": "hang",
+      "note": "Danh sách Application For của model/P-N hiện tại không có LGA1851."
+    },
+    {
+      "sku": "SEED-AIR-002",
+      "field": "cooler-height",
+      "old": 163,
+      "new": 160,
+      "unit": "mm",
+      "source": "https://global.deepcool.com/products/Cooling/cpuaircoolers/AK620-ZERO-DARK-High-Performance-CPU-Cooler-1700-AM5/2022/16124.shtml",
+      "confidence": "hang",
+      "note": "DeepCool ghi kích thước tổng thể 129 x 138 x 160 mm."
+    },
+    {
+      "sku": "SEED-AIR-003",
+      "field": "name",
+      "old": "Tản nhiệt CPU be quiet! Dark Rock 4 6 heatpipe 120mm+135mm Dual Fan (AM4/AM5/LGA1700/LGA1851)",
+      "new": "Tản nhiệt CPU be quiet! Dark Rock 4 6 heatpipe 135mm Single Fan (AM4/AM5/LGA1700)",
+      "source": "https://www.bequiet.com/en/cpucooler/1376",
+      "confidence": "hang",
+      "note": "Hãng ghi single-tower, 1 quạt Silent Wings 135 mm; có thể gắn thêm quạt 120 mm nhưng không kèm sẵn. Không liệt kê LGA1851."
+    },
+    {
+      "sku": "SEED-AIR-003",
+      "field": "socket-cpu",
+      "old": ["AM4", "AM5", "LGA 1700", "LGA 1851"],
+      "new": ["AM4", "AM5", "LGA 1700"],
+      "source": "https://www.bequiet.com/en/cpucooler/1376",
+      "confidence": "hang",
+      "note": "Trang hãng liệt kê AM4/AM5 và Intel 1700, không liệt kê 1851."
+    },
+    {
+      "sku": "SEED-AIR-003",
+      "field": "cooler-height",
+      "old": 159,
+      "new": 160,
+      "unit": "mm",
+      "source": "https://www.bequiet.com/en/cpucooler/1376",
+      "confidence": "hang",
+      "note": "Kích thước tổng thể có quạt cao 160 mm; 159 mm là chiều cao heatsink riêng."
+    },
+    {
+      "sku": "SEED-AIR-004",
+      "field": "cooler-height",
+      "old": 158,
+      "new": 154,
+      "unit": "mm",
+      "source": "https://www.coolermaster.com/en-us/products/hyper-212-halo-white.html",
+      "confidence": "hang",
+      "note": "Cooler Master ghi kích thước 124 x 73 x 154 mm."
+    },
+    {
+      "sku": "SEED-AIR-005",
+      "field": "name",
+      "old": "Tản nhiệt CPU Thermaltake UX210 ARGB 4 heatpipe 120mm (AM4/LGA1700)",
+      "new": "Tản nhiệt CPU Thermaltake UX210 ARGB 5 heatpipe 120mm (AM4/AM5/LGA1700/LGA1851)",
+      "source": "https://latam.thermaltake.com/ux-210-argb-lighting-cpu-cooler.html",
+      "confidence": "hang",
+      "note": "Trang hãng ghi 5 heatpipe và hỗ trợ AM4/AM5/LGA1700/LGA1851."
+    },
+    {
+      "sku": "SEED-AIR-005",
+      "field": "socket-cpu",
+      "old": ["AM4", "LGA 1700"],
+      "new": ["AM4", "AM5", "LGA 1700", "LGA 1851"],
+      "source": "https://latam.thermaltake.com/ux-210-argb-lighting-cpu-cooler.html",
+      "confidence": "hang",
+      "note": "Socket compatibility chính thức có AM5 và LGA1851 ngoài hai giá trị hiện có."
+    },
+    {
+      "sku": "SEED-AIR-005",
+      "field": "cooler-height",
+      "old": 142,
+      "new": 153,
+      "unit": "mm",
+      "source": "https://latam.thermaltake.com/ux-210-argb-lighting-cpu-cooler.html",
+      "confidence": "hang",
+      "note": "Thermaltake ghi kích thước 136 x 74 x 153 mm."
+    },
+    {
+      "sku": "SEED-AIO-004",
+      "field": "name",
+      "old": "Tản nhiệt nước AIO be quiet! Pure Loop 2 FX 280mm (BW013) AM4/AM5/LGA1700/LGA1851",
+      "new": "Tản nhiệt nước AIO be quiet! Pure Loop 2 FX 280mm (BW014) AM4/AM5/LGA1700/LGA1851",
+      "source": "https://www.bequiet.com/en/watercooler/3744",
+      "confidence": "hang",
+      "note": "Pure Loop 2 FX 280 mm là article BW014; BW013 là bản 240 mm. Socket và radiator-size hiện tại đúng."
+    },
+    {
+      "sku": "SEED-MON-003",
+      "field": "spec:Cổng kết nối",
+      "old": "1× USB-C, 1× HDMI 1.4, 1× DisplayPort 1.2, 4× USB-A Hub",
+      "new": "1× USB-C (DP 1.2, PD 65W), 1× HDMI 1.4, 1× DisplayPort 1.2, 2× USB-A",
+      "source": "https://www.dell.com/support/kbdoc/en-ph/000191285/dell-s2422hz-monitor-usage-and-troubleshooting-guide",
+      "confidence": "hang",
+      "note": "Dell liệt kê hai cổng USB 3.2 downstream, không phải bốn cổng USB-A."
+    },
+    {
+      "sku": "SEED-MON-003",
+      "field": "spec:Webcam tích hợp",
+      "old": "Có (5MP, tự động lấy nét)",
+      "new": "Có (5MP, lấy nét cố định)",
+      "source": "https://www.dell.com/support/kbdoc/en-ph/000191285/dell-s2422hz-monitor-usage-and-troubleshooting-guide",
+      "confidence": "hang",
+      "note": "Dell ghi camera 5MP dùng Fixed Focus."
+    },
+    {
+      "sku": "SEED-MON-005",
+      "field": "name",
+      "old": "Màn hình ASUS ROG Swift PG27AQN 27\" IPS QHD 360Hz 0.5ms G-Sync",
+      "new": "Màn hình ASUS ROG Swift PG27AQN 27\" Fast IPS QHD 360Hz 1ms G-Sync",
+      "source": "https://rog.asus.com/us/monitors/27-to-31-5-inches/rog-swift-360hz-pg27aqn-model/spec/",
+      "confidence": "hang",
+      "note": "ASUS ghi Fast IPS và response time 1ms GTG; 0,5W là mức điện ở chế độ tiết kiệm, không phải response time."
+    },
+    {
+      "sku": "SEED-MON-005",
+      "field": "spec:Độ phủ màu",
+      "old": "sRGB 99%, DCI-P3 92%",
+      "new": "DCI-P3 98%",
+      "createIfMissing": true,
+      "sortOrder": 6,
+      "source": "https://rog.asus.com/us/monitors/27-to-31-5-inches/rog-swift-360hz-pg27aqn-model/spec/",
+      "confidence": "hang",
+      "note": "Thông số hãng công bố DCI-P3 98%; bỏ tỷ lệ sRGB không được trang hãng này xác nhận."
+    },
+    {
+      "sku": "SEED-SPK-003",
+      "field": "name",
+      "old": "Loa máy tính Edifier S3000 Pro 2.0 Hi-Res Bookshelf Speaker (150W RMS)",
+      "new": "Loa máy tính Edifier S3000 Pro 2.0 Hi-Res Bookshelf Speaker (256W RMS)",
+      "source": "https://www.edifier.com/us/p/bookshelf-speakers/s3000-pro",
+      "confidence": "hang",
+      "note": "Tổng RMS hãng ghi: treble 8W+8W và mid/bass 120W+120W, cộng 256W."
+    },
+    {
+      "sku": "SEED-CHAIR-003",
+      "field": "name",
+      "old": "Ghế gaming E-WIN Champion Series CPA Fabric Gaming Chair",
+      "new": "Ghế gaming E-WIN Champion Series CPA Gaming Chair",
+      "source": "https://www.ewinracing.com/products/e-win-champion-series-ergonomic-computer-gaming-office-chair-with-pillows-cpa",
+      "confidence": "hang",
+      "note": "Trang CPA chính thức ghi vật liệu E-WIN 2.0 PU Leather; bản Champion vải thuộc biến thể khác, không phải CPA."
+    },
+    {
+      "sku": "SEED-CHAIR-003",
+      "field": "spec:Chất liệu",
+      "old": "Vải",
+      "new": "E-WIN 2.0 PU Leather",
+      "createIfMissing": true,
+      "sortOrder": 1,
+      "source": "https://www.ewinracing.com/products/e-win-champion-series-ergonomic-computer-gaming-office-chair-with-pillows-cpa",
+      "confidence": "hang",
+      "note": "Thông số/giới thiệu chính thức của CPA ghi PU leather."
+    }
+  ],
+  "verifiedCorrect": [
+    {
+      "sku": "SEED-MB-001",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://storage-asset.msi.com/datasheet/mb/in/B550M-PRO-VDH-WIFI.pdf"
+    },
+    {
+      "sku": "SEED-MB-002",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "ram-toi-da", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://www.asus.com/uk/motherboards-components/motherboards/prime/prime-b550-plus/techspec/"
+    },
+    {
+      "sku": "SEED-MB-006",
+      "fields": ["name", "socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "ram-toi-da", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://www.msi.com/Motherboard/PRO-B760M-A-DDR4/Specification"
+    },
+    {
+      "sku": "SEED-MB-008",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://www.gigabyte.com/Motherboard/Z790-AORUS-ELITE-AX-rev-10/sp"
+    },
+    {
+      "sku": "SEED-MB-009",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://www.msi.com/Motherboard/MAG-Z790-TOMAHAWK-WIFI/Specification"
+    },
+    {
+      "sku": "SEED-MB-010",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "pcie-cho-vga", "so-khe-m-2"],
+      "source": "https://rog.asus.com/motherboards/rog-maximus/rog-maximus-z890-apex/spec/"
+    },
+    {
+      "sku": "SEED-MB-011",
+      "fields": ["socket-cpu", "loai-ram", "kich-thuoc-mainboard", "chipset", "so-khe-ram", "ram-toi-da", "pcie-cho-vga"],
+      "source": "https://www.msi.com/Motherboard/MEG-Z890-ACE/Specification"
+    },
+    {
+      "sku": "SEED-VGA-008",
+      "fields": ["vga-length"],
+      "source": "https://www.msi.com/Graphics-Card/GeForce-RTX-4070-SUPER-12G-GAMING-X-SLIM/Specification"
+    },
+    {
+      "sku": "SEED-CASE-001",
+      "fields": ["name", "kich-thuoc-mainboard", "case-max-vga-length", "case-max-cooler-height"],
+      "source": "https://www.fractal-design.com/products/cases/torrent-series/torrent/torrent-black-tg-light-tint/"
+    },
+    {
+      "sku": "SEED-CASE-002",
+      "fields": ["name", "kich-thuoc-mainboard", "case-max-vga-length", "case-max-cooler-height"],
+      "source": "https://support.nzxt.com/hc/en-us/articles/37734705208347-H5-2022-Series-Specs"
+    },
+    {
+      "sku": "SEED-CASE-004",
+      "fields": ["name", "kich-thuoc-mainboard", "case-max-vga-length", "radiator-size"],
+      "source": "https://legacy.coolermaster.com/en-global/products/q300l-v2/"
+    },
+    {
+      "sku": "SEED-CASE-008",
+      "fields": ["case-max-vga-length", "radiator-size"],
+      "source": "https://phanteks.com/product/enthoo-719/"
+    },
+    {
+      "sku": "SEED-AIR-001",
+      "fields": ["name", "socket-cpu", "cooler-height"],
+      "source": "https://www.noctua.at/en/products/nh-u12s-redux/specifications"
+    },
+    {
+      "sku": "SEED-AIR-004",
+      "fields": ["name", "socket-cpu"],
+      "source": "https://www.coolermaster.com/en-us/products/hyper-212-halo-white.html"
+    },
+    {
+      "sku": "SEED-AIO-001",
+      "fields": ["name", "socket-cpu", "radiator-size"],
+      "source": "https://nzxt.com/fr-FR/product/kraken-360-rgb?variant=1"
+    },
+    {
+      "sku": "SEED-HDD-004",
+      "fields": ["name"],
+      "source": "https://www.seagate.com/files/www-content/datasheets/pdfs/ironwolf-18tb-DS1904-20-2111US-en_US.pdf"
+    },
+    {
+      "sku": "SEED-MON-003",
+      "fields": ["name", "spec:Độ phủ màu"],
+      "source": "https://www.dell.com/support/kbdoc/en-ph/000191285/dell-s2422hz-monitor-usage-and-troubleshooting-guide"
+    },
+    {
+      "sku": "SEED-KBC-002",
+      "fields": ["name", "spec:Kết nối"],
+      "source": "https://www.logitech.com/content/dam/logitech/en/business/pdf/mk275-wireless-combo-data-sheet.pdf"
+    },
+    {
+      "sku": "SEED-KB-003",
+      "fields": ["name", "spec:Layout", "spec:Đèn nền"],
+      "source": "https://www.razer.com/gaming-keyboards/razer-blackwidow-v3-tenkeyless"
+    },
+    {
+      "sku": "SEED-SPK-003",
+      "fields": ["spec:Loại"],
+      "source": "https://www.edifier.com/us/p/bookshelf-speakers/s3000-pro"
+    },
+    {
+      "sku": "SEED-CHAIR-002",
+      "fields": ["name"],
+      "source": "https://www.dxracer.com/specifications/gaming-chairs/formula"
+    }
+  ],
+  "unverified": [
+    {
+      "sku": "SEED-MB-001",
+      "field": "ram-toi-da",
+      "reason": "Datasheet MSI đã mở không ghi dung lượng RAM tối đa; giữ nguyên 128GB."
+    },
+    {
+      "sku": "SEED-VGALN-001",
+      "field": "name,vga-length",
+      "reason": "Không tìm thấy trang sản phẩm ASUS cho model DUAL GeForce RTX 3080 OC 10GB; không dùng số 313 mm của một model khác."
+    },
+    {
+      "sku": "SEED-CASE-006",
+      "field": "radiator-size",
+      "reason": "Trang và product sheet Node 304 chỉ liệt kê vị trí quạt, không công bố hỗ trợ radiator 120/240 mm; giữ nguyên để người dùng quyết định vì không được suy diễn từ việc không liệt kê."
+    }
+  ],
+  "notReal": [
+    {
+      "sku": "SEED-RAM-005",
+      "currentName": "RAM Desktop Corsair Dominator Platinum RGB (CMT32GX5M1B5600C36) 32GB (1x32GB) DDR5 5600MHz",
+      "closestRealProduct": "Corsair DOMINATOR PLATINUM RGB 32GB (2x16GB) DDR5-5600 CL36, CMT32GX5M2B5600C36",
+      "reason": "Không tìm thấy mã M1B trên trang Corsair hoặc kết quả tìm kiếm; mã M2B chính thức là kit 2x16GB nên không thể tự đổi dữ liệu 1x32GB. Nguồn: https://www.corsair.com/ca/en/p/memory/cmt32gx5m2b5600c36/dominatora-platinum-rgb-32gb-2x16gb-ddr5-dram-5600mhz-c36-memory-kit-a-black-cmt32gx5m2b5600c36"
+    },
+    {
+      "sku": "SEED-VGA-004",
+      "currentName": "Card màn hình MSI Gaming Trio GeForce RTX 4070 Ti SUPER 16GB GDDR6X (RTX 4070 Ti SUPER 16G GAMING TRIO)",
+      "closestRealProduct": "MSI GeForce RTX 4070 Ti SUPER 16G GAMING TRIO WHITE",
+      "reason": "Trang MSI đã mở chỉ xác nhận model GAMING TRIO WHITE (337 mm, 285 W), không xác nhận model không có hậu tố WHITE; giữ nguyên và không tự ánh xạ. Nguồn: https://www.msi.com/Graphics-Card/GeForce-RTX-4070-Ti-SUPER-16G-GAMING-TRIO-WHITE/Specification"
+    },
+    {
+      "sku": "SEED-CASE-005",
+      "currentName": "Vỏ Case Deepcool MATREXX 30 (R-MATREXX30-BKN0H-G) Micro-ATX",
+      "closestRealProduct": "DeepCool MATREXX 30, P/N DP-MATX-MATREXX30",
+      "reason": "Không tìm thấy mã R-MATREXX30-BKN0H-G; trang DeepCool xác nhận MATREXX 30 với P/N DP-MATX-MATREXX30 (250 mm GPU, 151 mm cooler, radiator 120 mm). Không tự ánh xạ vì mã sản phẩm khác. Nguồn: https://uk.deepcool.com/products/Cases/2021/11923.shtml"
+    },
+    {
+      "sku": "SEED-AIO-002",
+      "currentName": "Tản nhiệt nước AIO Corsair iCUE H150i Elite LCD XT 360mm (CW-9060074-WW) AM4/AM5/LGA1700/LGA1851",
+      "closestRealProduct": "Corsair iCUE H100i ELITE LCD XT 240mm, CW-9060074-WW",
+      "reason": "Mã CW-9060074-WW chính thức là H100i 240 mm, không phải H150i 360 mm; không tự đổi sang mã H150i khác. Nguồn: https://www.corsair.com/ww/es/p/cpu-coolers/cw-9060074-ww/icue-h100i-elite-lcd-xt-display-liquid-cpu-cooler"
+    },
+    {
+      "sku": "SEED-AIO-003",
+      "currentName": "Tản nhiệt nước AIO Deepcool LT240 240mm (R-LT240-BKAMNF-G) AM4/AM5/LGA1700/LGA1851",
+      "closestRealProduct": "DeepCool LT240 ARGB 240mm, R-LT240-BKAMNC-G-1",
+      "reason": "Không tìm thấy mã BKAMNF-G; model LT240 ARGB chính thức dùng BKAMNC-G-1. Không tự ánh xạ vì mã và biến thể khác. Nguồn: https://global.deepcool.com/products/Cooling/cpuliquidcoolers/LT240-ARGB-240mm-Liquid-CPU-Cooler-1851-1700-AM5/2024/18682.shtml"
+    },
+    {
+      "sku": "SEED-CUSTOM-001",
+      "currentName": "Tản nhiệt nước Custom Bykski Full DIY Kit 360mm (AM4/AM5/LGA1700/LGA1851) Soft Tubing",
+      "closestRealProduct": "Bykski B-FRB360 360mm AIO, AM4/AM5/LGA1700/1800",
+      "reason": "Không có model/mã cho tên Full DIY Kit; sản phẩm gần nhất là AIO sealed-loop B-FRB360, không phải custom DIY kit. Nguồn: https://www.bykski.us/products/bykski-aio-integrated-liquid-cpu-cooler-for-intel-lga1700-1800-115x-and-amd-ryzen-9-7-5-3-am5-am4-featuring-a-rgb-lighting-360mm-b-frb360"
+    },
+    {
+      "sku": "SEED-CUSTOM-002",
+      "currentName": "Tản nhiệt nước Custom EK Quantum Power Kit 360 (AM5/LGA1851) Hard Tubing",
+      "closestRealProduct": "EK-Quantum Power Kit Velocity² 360 Series hoặc EK-Quantum Power Kit D-RGB P360",
+      "reason": "Tên hiện tại trộn nhiều biến thể: P360 cũ dùng soft tubing và socket AM4/LGA1200; dòng Velocity² mới phải chọn block theo socket, không phải một SKU chung AM5/LGA1851 Hard Tubing. Nguồn: https://www.ekwb.com/shop/ek-quantum-power-kit-d-rgb-p360?___from_store=default&___store=de và https://www.ekwb.com/news/ek-quantum-power-kits-get-updated-with-new-products/"
+    },
+    {
+      "sku": "SEED-KBC-003",
+      "currentName": "Bộ Bàn phím + Chuột SteelSeries Apex 3 TKL + Rival 3 Gaming Combo",
+      "closestRealProduct": "SteelSeries Starter Loadout (Apex 3 TKL + Rival 3 Gen 2 + Arctis Nova 1) hoặc Apex 3 + Rival 3 Gen 2",
+      "reason": "Catalog bundle chính thức không có bộ đúng hai sản phẩm Apex 3 TKL + Rival 3 đời đầu như tên hiện tại; không tự đổi sang bundle mới. Nguồn: https://steelseries.com/en-ca/gaming-bundles?page=1&sort=featured"
+    },
+    {
+      "sku": "SEED-FAN-004",
+      "currentName": "Quạt case Deepcool RF120M 120mm RGB Triple Pack (DP-FRGB-RF120M-3P)",
+      "closestRealProduct": "DeepCool RF120 3 IN 1, DP-FRGB-RF120-3C",
+      "reason": "DeepCool xác nhận RF120 3-pack mã DP-FRGB-RF120-3C; RF120M là 5-pack mã DP-FRGB-RF120-5C-M. Không có mã RF120M-3P nên không tự ánh xạ. Nguồn: https://www.deepcool.com/products/Cooling/fans/RF120-RGB-PWM-Fan-3-Pack/2021/126.shtml"
+    }
+  ]
+}

@@ -1,0 +1,1150 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id                Int                     @id @default(autoincrement())
+  name              String                  @db.VarChar(191)
+  slug              String                  @unique @db.VarChar(191)
+  sku               String                  @unique @db.VarChar(100)
+  category          String?                 @db.VarChar(100)
+  categoryId        Int?
+  brand             String?                 @db.VarChar(191)
+  brandId           Int?
+  shortDescription  String?                 @db.VarChar(500)
+  description       String?                 @db.Text
+  price             Int
+  originalPrice     Int?
+  costPrice         Int?
+  stockQuantity     Int                     @default(0)
+  lowStockThreshold Int                     @default(5)
+  isActive          Boolean                 @default(true)
+  isDeleted         Boolean                 @default(false)
+  deletedAt         DateTime?
+  createdAt         DateTime                @default(now())
+  updatedAt         DateTime                @updatedAt
+  sectionItems      ProductSectionItem[]
+  images            ProductImage[]
+  specifications    ProductSpecification[]
+  highlightSpecs    ProductHighlightSpec[]
+  attributeValues   ProductAttributeValue[]
+  reviews           ProductReview[]
+  comments          ProductComment[]
+  views             ProductView[]
+  wishlistItems     WishlistItem[]
+  orderItems        OrderItem[]
+  inventoryLogs     InventoryLog[]
+  pcBuildItems      PcBuildItem[]
+  buildPcPresetItems BuildPcPresetItem[]
+  categoryRecord    Category?               @relation("ProductCategory", fields: [categoryId], references: [id], onDelete: Restrict)
+  brandRecord       Brand?                  @relation("ProductBrand", fields: [brandId], references: [id], onDelete: Restrict)
+  promotionGifts    Promotion[]             @relation("PromotionGiftProduct")
+  promotionLinks    PromotionProduct[]      @relation("PromotionAppliedProduct")
+
+  @@index([isActive, isDeleted, stockQuantity])
+  @@index([category])
+  @@index([categoryId])
+  @@index([brandId])
+  @@index([updatedAt])
+}
+
+model Brand {
+  id          Int             @id @default(autoincrement())
+  name        String          @db.VarChar(191)
+  slug        String          @unique @db.VarChar(191)
+  logoUrl     String?         @db.VarChar(1000)
+  websiteUrl  String?         @db.VarChar(1000)
+  description String?         @db.Text
+  sortOrder   Int             @default(0)
+  isActive    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  products    Product[]       @relation("ProductBrand")
+  menuItems   MegaMenuItem[]
+  featuredIn  MegaMenuBrand[]
+
+  @@index([isActive, sortOrder])
+}
+
+model Category {
+  id          Int                 @id @default(autoincrement())
+  name        String              @db.VarChar(191)
+  slug        String              @unique @db.VarChar(191)
+  description String?             @db.Text
+  icon        String?             @db.VarChar(64)
+  parentId    Int?
+  sortOrder   Int                 @default(0)
+  isActive    Boolean             @default(true)
+  skuPrefix   String?             @unique @db.VarChar(8)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  parent      Category?           @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children    Category[]          @relation("CategoryTree")
+  products    Product[]           @relation("ProductCategory")
+  megaMenu    MegaMenu?
+  menuItems   MegaMenuItem[]      @relation("MenuItemCategory")
+  attributes  CategoryAttribute[]
+  buildPcGroups BuildPcGroupCategory[]
+  promotionLinks PromotionCategory[]
+
+  @@index([parentId, sortOrder])
+  @@index([isActive, sortOrder])
+}
+
+enum MegaMenuItemType {
+  CATEGORY
+  BRAND
+  PRICE_FILTER
+  ATTRIBUTE_FILTER
+  CUSTOM_URL
+}
+
+model MegaMenu {
+  id         Int             @id @default(autoincrement())
+  categoryId Int             @unique
+  isActive   Boolean         @default(true)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  category   Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  groups     MegaMenuGroup[]
+  brands     MegaMenuBrand[]
+}
+
+model MegaMenuGroup {
+  id         Int            @id @default(autoincrement())
+  megaMenuId Int
+  title      String         @db.VarChar(191)
+  sortOrder  Int            @default(0)
+  columnSpan Int            @default(1)
+  isActive   Boolean        @default(true)
+  megaMenu   MegaMenu       @relation(fields: [megaMenuId], references: [id], onDelete: Cascade)
+  items      MegaMenuItem[]
+
+  @@index([megaMenuId, isActive, sortOrder])
+}
+
+model MegaMenuItem {
+  id               Int              @id @default(autoincrement())
+  groupId          Int
+  label            String           @db.VarChar(191)
+  type             MegaMenuItemType
+  categoryId       Int?
+  brandId          Int?
+  attributeName    String?          @db.VarChar(100)
+  attributeValue   String?          @db.VarChar(500)
+  attributeId      Int?
+  attributeValueId Int?
+  minPrice         Int?
+  maxPrice         Int?
+  customUrl        String?          @db.VarChar(1000)
+  sortOrder        Int              @default(0)
+  isActive         Boolean          @default(true)
+  group            MegaMenuGroup    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  category         Category?        @relation("MenuItemCategory", fields: [categoryId], references: [id], onDelete: SetNull)
+  brand            Brand?           @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  attribute        Attribute?       @relation(fields: [attributeId], references: [id], onDelete: SetNull)
+  attributeOption  AttributeValue?  @relation(fields: [attributeValueId], references: [id], onDelete: SetNull)
+
+  @@index([groupId, isActive, sortOrder])
+  @@index([attributeId])
+  @@index([attributeValueId])
+}
+
+enum AttributeType {
+  SELECT
+  MULTI_SELECT
+  TEXT
+  NUMBER
+  BOOLEAN
+}
+
+// ── Attribute Groups ──────────────────────────────────────────────────────────
+// Groups organise attributes by component type (CPU, RAM, VGA, …).
+// A group is NOT a Category — it is a UI/admin grouping only.
+// One attribute may appear in multiple groups.
+
+model AttributeGroup {
+  id          Int                    @id @default(autoincrement())
+  name        String                 @db.VarChar(191)
+  slug        String                 @unique @db.VarChar(191)
+  description String?                @db.VarChar(500)
+  icon        String?                @db.VarChar(64)
+  sortOrder   Int                    @default(0)
+  isActive    Boolean                @default(true)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
+  members     AttributeGroupMember[]
+
+  @@index([isActive, sortOrder])
+}
+
+model AttributeGroupMember {
+  groupId     Int
+  attributeId Int
+  sortOrder   Int            @default(0)
+  group       AttributeGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  attribute   Attribute      @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, attributeId])
+  @@index([attributeId])
+}
+
+// ── Attribute ─────────────────────────────────────────────────────────────────
+// Flag priority rules (for Phase 5+ implementation):
+//   usedInFilter:   BOTH Attribute.usedInFilter AND CategoryAttribute.usedInFilter must be true
+//   showInDetail:   CategoryAttribute.showInDetail overrides Attribute.showInDetail per-category
+//   usedInBuildPC:  Attribute.usedInBuildPC must be true BEFORE requiredForBuildPC is enforced
+//   isRequired/showInForm: CategoryAttribute only (no global equivalent)
+
+model Attribute {
+  id            Int                     @id @default(autoincrement())
+  name          String                  @db.VarChar(191)
+  slug          String                  @unique @db.VarChar(191)
+  type          AttributeType
+  unit          String?                 @db.VarChar(32)
+  description   String?                 @db.VarChar(500)
+  sortOrder     Int                     @default(0)
+  isActive      Boolean                 @default(true)
+  showInDetail  Boolean                 @default(true)
+  usedInFilter  Boolean                 @default(false)
+  usedInBuildPC Boolean                 @default(false)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  values        AttributeValue[]
+  categories    CategoryAttribute[]
+  productValues ProductAttributeValue[]
+  menuItems     MegaMenuItem[]
+  groups        AttributeGroupMember[]
+
+  @@index([isActive, sortOrder])
+}
+
+model AttributeValue {
+  id            Int                     @id @default(autoincrement())
+  attributeId   Int
+  value         String                  @db.VarChar(500)
+  sortOrder     Int                     @default(0)
+  isActive      Boolean                 @default(true)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  attribute     Attribute               @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  productValues ProductAttributeValue[]
+  menuItems     MegaMenuItem[]
+
+  @@unique([attributeId, value])
+  @@index([attributeId, isActive, sortOrder])
+}
+
+// ── CategoryAttribute ─────────────────────────────────────────────────────────
+// Per-category attribute configuration.
+// isRequired / showInForm / showInDetail / usedInFilter operate at this level only.
+// requiredForBuildPC is only meaningful when Attribute.usedInBuildPC is also true.
+
+model CategoryAttribute {
+  categoryId         Int
+  attributeId        Int
+  sortOrder          Int       @default(0)
+  isRequired         Boolean   @default(false)
+  showInForm         Boolean   @default(true)
+  showInDetail       Boolean   @default(true)
+  usedInFilter       Boolean   @default(true)
+  requiredForBuildPC Boolean   @default(false)
+  category           Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attribute          Attribute @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+
+  @@id([categoryId, attributeId])
+  @@index([attributeId])
+}
+
+model ProductAttributeValue {
+  id               Int             @id @default(autoincrement())
+  productId        Int
+  attributeId      Int
+  attributeValueId Int?
+  valueText        String?         @db.VarChar(1000)
+  valueNumber      Decimal?        @db.Decimal(12, 4)
+  createdAt        DateTime        @default(now())
+  product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute        Attribute       @relation(fields: [attributeId], references: [id], onDelete: Restrict)
+  attributeValue   AttributeValue? @relation(fields: [attributeValueId], references: [id], onDelete: Restrict)
+
+  @@unique([productId, attributeId, attributeValueId])
+  @@index([attributeId, attributeValueId])
+  @@index([productId, attributeId])
+}
+
+model MegaMenuBrand {
+  megaMenuId Int
+  brandId    Int
+  sortOrder  Int      @default(0)
+  megaMenu   MegaMenu @relation(fields: [megaMenuId], references: [id], onDelete: Cascade)
+  brand      Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@id([megaMenuId, brandId])
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  imageUrl  String   @db.VarChar(1000)
+  altText   String   @default("") @db.VarChar(300)
+  sortOrder Int      @default(0)
+  isPrimary Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, sortOrder])
+}
+
+model ProductHighlightSpec {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  content   String   @db.VarChar(500)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, sortOrder])
+}
+
+model ProductSpecification {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  name      String   @db.VarChar(100)
+  value     String   @db.VarChar(500)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, sortOrder])
+}
+
+model ProductReview {
+  id               Int      @id @default(autoincrement())
+  productId        Int
+  rating           Int      @db.UnsignedTinyInt
+  content          String   @db.Text
+  images           String?  @db.Text
+  isPublished      Boolean  @default(false)
+  verifiedPurchase Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  product          Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  author           User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId           Int?
+
+  @@unique([userId, productId])
+  @@index([productId, isPublished])
+}
+
+model ProductComment {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  content     String   @db.Text
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, isPublished])
+}
+
+model ProductView {
+  productId Int
+  viewId    String   @db.Char(36)
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([productId, viewId])
+}
+
+enum SectionType {
+  PRODUCT_SECTION
+  PROMOTIONAL_SECTION
+}
+
+model ProductSection {
+  id                  Int                  @id @default(autoincrement())
+  type                SectionType          @default(PRODUCT_SECTION)
+  name                String
+  slug                String               @unique
+  subtitle            String?
+  viewAllUrl          String?              @db.VarChar(1000)
+  sortOrder           Int                  @default(0)
+  isActive            Boolean              @default(true)
+  showHighlightSpecs  Boolean              @default(true)
+  quickFilterConfig   Json?
+  // Promotional Section fields (null for PRODUCT_SECTION)
+  badge               String?              @db.VarChar(100)
+  promoTitle          String?              @db.VarChar(200)
+  description         String?              @db.Text
+  ctaEnabled          Boolean              @default(true)
+  ctaLabel            String?              @db.VarChar(100)
+  ctaUrl              String?              @db.VarChar(1000)
+  ctaStyle            String               @default("primary") @db.VarChar(20)
+  ctaRounded          String               @default("pill") @db.VarChar(20)
+  imageUrl            String?              @db.VarChar(1000)
+  imageAlt            String?              @db.VarChar(300)
+  imagePos            String               @default("right") @db.VarChar(20)
+  colorPreset         String               @default("dark-premium") @db.VarChar(30)
+  layout              String               @default("text-left-cta-right") @db.VarChar(30)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  items               ProductSectionItem[]
+}
+
+model ProductSectionItem {
+  id        Int      @id @default(autoincrement())
+  sectionId Int
+  productId Int
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  section ProductSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  product Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([sectionId, productId])
+  @@index([sectionId, sortOrder])
+}
+
+model User {
+  id           Int             @id @default(autoincrement())
+  fullName     String
+  email        String          @unique
+  phone        String?         @unique
+  passwordHash String
+  googleId     String?         @unique @db.VarChar(191)
+  avatarUrl    String?         @db.VarChar(1000)
+  gender       String?         @db.VarChar(20)
+  role         String          @default("USER")
+  adminRoleId  Int?
+  isActive     Boolean         @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  adminRole    Role?           @relation(fields: [adminRoleId], references: [id], onDelete: SetNull)
+  reviews         ProductReview[]
+  wishlist        Wishlist?
+  addresses       Address[]
+  orders          Order[]
+  returnRequests  ReturnRequest[]
+  activityLogs    ActivityLog[]
+  supportTickets  SupportTicket[]
+  pcBuilds        PcBuild[]
+
+  @@index([role, isActive])
+  @@index([adminRoleId])
+}
+
+model Address {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  fullName      String   @db.VarChar(191)
+  phone         String   @db.VarChar(20)
+  provinceCode  String   @db.VarChar(10)
+  provinceName  String   @db.VarChar(191)
+  communeCode   String   @db.VarChar(10)
+  communeName   String   @db.VarChar(191)
+  streetAddress String   @db.VarChar(500)
+  addressType   String   @default("HOME") @db.VarChar(20)
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isDefault])
+}
+
+model GoogleLoginExchange {
+  codeHash  String   @id @db.Char(64)
+  userId    Int
+  challenge String   @db.VarChar(43)
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
+
+model PasswordReset {
+  email          String    @id @db.VarChar(191)
+  challengeId    String    @unique @db.Char(64)
+  otpHash        String?   @db.Char(64)
+  tokenHash      String?   @unique @db.Char(64)
+  expiresAt      DateTime
+  tokenExpiresAt DateTime?
+  verifiedAt     DateTime?
+  usedAt         DateTime?
+  attempts       Int       @default(0)
+  sentAt         DateTime
+  windowStart    DateTime
+  requestCount   Int       @default(1)
+
+  @@index([expiresAt])
+}
+
+// ── Store Settings ────────────────────────────────────────────────────────────
+// Key-value store shared by Footer, Settings pages, and any module needing
+// store-wide config. Keys are dotted namespaces, e.g. "store.name".
+
+model StoreSetting {
+  key       String   @id @db.VarChar(100)
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+
+// ── Policy Pages ───────────────────────────────────────────────────────────────
+// Fixed-key pages whose body is edited via Dashboard. Phase 1: warranty only.
+// Separate from the old ContentPage table (removed CMS) which is left untouched.
+
+model PolicyPage {
+  id               Int      @id @default(autoincrement())
+  pageKey          String   @unique @db.VarChar(100)
+  title            String   @db.VarChar(200)
+  description      String?  @db.VarChar(500)
+  contentHtml      String   @db.MediumText
+  updatedAt        DateTime @updatedAt
+  updatedByAdminId Int?
+}
+
+enum BannerGroup {
+  MAIN
+  SIDE
+}
+
+enum BannerPosition {
+  SIDE_LEFT
+  MAIN_HERO
+  BOTTOM_LEFT
+  BOTTOM_RIGHT
+  SIDE_RIGHT_TOP
+  SIDE_RIGHT_MIDDLE
+  SIDE_RIGHT_BOTTOM
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+model Banner {
+  id               Int            @id @default(autoincrement())
+  name             String         @db.VarChar(150)
+  group            BannerGroup
+  position         BannerPosition
+  mediaType        MediaType
+  mediaUrl         String         @db.VarChar(1000)
+  mediaKey         String         @db.VarChar(100)
+  targetUrl        String?        @db.VarChar(1000)
+  altText          String         @default("") @db.VarChar(300)
+  sortOrder        Int            @default(0)
+  autoplayInterval Int            @default(4500)
+  isActive         Boolean        @default(true)
+  isAutoPlaced     Boolean        @default(false)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([position, isActive, sortOrder])
+}
+
+model Wishlist {
+  userId    Int            @id
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     WishlistItem[]
+
+  @@index([updatedAt])
+}
+
+model WishlistItem {
+  id           Int      @id @default(autoincrement())
+  wishlistId   Int
+  productId    Int
+  createdAt    DateTime @default(now())
+  wishlist     Wishlist @relation(fields: [wishlistId], references: [userId], onDelete: Cascade)
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([wishlistId, productId])
+  @@index([productId])
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPING
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id               Int                  @id @default(autoincrement())
+  userId           Int
+  status           OrderStatus          @default(PENDING)
+  paymentMethod    String               @db.VarChar(50)
+  note             String?              @db.VarChar(500)
+  shippingName     String               @db.VarChar(191)
+  shippingPhone    String               @db.VarChar(20)
+  shippingAddress  String               @db.VarChar(1000)
+  subtotal         Int
+  discountAmount   Int                  @default(0)
+  trackingNumber   String?              @db.VarChar(100)
+  shippingProvider String?              @db.VarChar(100)
+  confirmedAt      DateTime?
+  shippedAt        DateTime?
+  deliveredAt      DateTime?
+  cancelledAt      DateTime?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  user             User                 @relation(fields: [userId], references: [id])
+  items            OrderItem[]
+  statusHistory    OrderStatusHistory[]
+  returnRequests   ReturnRequest[]
+  voucherUsage     VoucherUsage?
+  payment          Payment?
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ── Payment Module (MoMo/VNPAY/VietQR/COD) ──────────────────────────────────
+// Order.paymentMethod (String, above) is left untouched for backward
+// compatibility — these are new, additive tables. See docs/payment-architecture.md.
+
+enum PaymentMethod {
+  COD
+  BANK_TRANSFER // VietQR — chuyển khoản MB Bank, đối soát thủ công
+  MOMO
+  VNPAY
+}
+
+enum PaymentStatus {
+  PENDING
+  AWAITING_VERIFICATION // khách tự báo "Tôi đã chuyển khoản" (VietQR) — CHƯA xác minh, KHÔNG phải PAID
+  PROCESSING // đã redirect sang MoMo/VNPAY, đang chờ IPN
+  PAID // đã xác minh chắc chắn — KHÔNG phải dead-end: có thể chuyển tiếp sang REFUNDED
+  FAILED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+}
+
+model Payment {
+  id         Int              @id @default(autoincrement())
+  orderId    Int              @unique
+  method     PaymentMethod
+  status     PaymentStatus    @default(PENDING)
+  amount     Int // VNĐ — Backend tự tính lại từ Order, không nhận từ Frontend
+  currency   String           @default("VND") @db.VarChar(10)
+  paidAt     DateTime?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  order      Order            @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  attempts   PaymentAttempt[]
+
+  @@index([status])
+  @@index([method])
+}
+
+model PaymentAttempt {
+  id                     Int           @id @default(autoincrement())
+  paymentId              Int
+  method                 PaymentMethod
+  merchantReference      String        @unique @db.VarChar(100) // mã tham chiếu DUY NHẤT — chống trùng/replay
+  providerTransactionId  String?       @db.VarChar(100) // mã giao dịch MoMo/VNPAY trả về
+  amount                 Int
+  currency               String        @default("VND") @db.VarChar(10)
+  status                 PaymentStatus @default(PENDING)
+
+  // VietQR — snapshot TOÀN BỘ thông tin thụ hưởng tại thời điểm tạo giao dịch
+  // (đọc từ StoreSetting payment.bank.* một lần, lưu cứng). Admin đổi cấu hình
+  // ngân hàng sau này không ảnh hưởng các attempt cũ.
+  bankBin                String?  @db.VarChar(20) // MB Bank hiện tại = "970422"
+  bankName               String?  @db.VarChar(100)
+  bankAccountNumber      String?  @db.VarChar(50)
+  bankAccountName        String?  @db.VarChar(191)
+  transferContent        String?  @db.VarChar(255)
+
+  requestPayload         Json? // tham số gửi đi — KHÔNG chứa secret
+  responsePayload        Json? // IPN/return đã verify, lưu để audit
+  errorMessage           String?  @db.VarChar(500)
+  reportedAt             DateTime? // khách tự báo đã CK (VietQR)
+  paidAt                 DateTime? // xác nhận chính thức
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  payment                Payment  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@unique([method, providerTransactionId], name: "PaymentAttempt_method_providerTxId_key")
+  @@index([paymentId])
+  @@index([status])
+  @@index([providerTransactionId])
+}
+
+model OrderItem {
+  id           Int     @id @default(autoincrement())
+  orderId      Int
+  productId    Int
+  name         String  @db.VarChar(500)
+  slug         String  @db.VarChar(191)
+  price        Int
+  quantity     Int
+  primaryImage String? @db.VarChar(1000)
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product      Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  orderId   Int
+  status    OrderStatus
+  note      String?     @db.VarChar(500)
+  adminId   Int?
+  createdAt DateTime    @default(now())
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+enum InventoryLogType {
+  IMPORT
+  ADJUSTMENT
+  ORDER_DEDUCT
+  RETURN_RESTORE
+}
+
+model InventoryLog {
+  id             Int              @id @default(autoincrement())
+  productId      Int
+  type           InventoryLogType
+  quantityBefore Int
+  quantityChange Int
+  quantityAfter  Int
+  reference      String?          @db.VarChar(200)
+  note           String?          @db.VarChar(500)
+  adminId        Int?
+  createdAt      DateTime         @default(now())
+  product        Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, createdAt])
+  @@index([type, createdAt])
+  @@index([createdAt])
+}
+
+enum VoucherType {
+  PERCENT
+  FIXED
+}
+
+model Voucher {
+  id             Int            @id @default(autoincrement())
+  code           String         @unique @db.VarChar(50)
+  name           String         @db.VarChar(191)
+  type           VoucherType
+  value          Int
+  maxDiscount    Int?
+  minOrderAmount Int            @default(0)
+  startAt        DateTime?
+  endAt          DateTime?
+  usageLimit     Int?
+  usageCount     Int            @default(0)
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  usages         VoucherUsage[]
+
+  @@index([code])
+  @@index([isActive, startAt, endAt])
+}
+
+model VoucherUsage {
+  id             Int      @id @default(autoincrement())
+  voucherId      Int
+  orderId        Int      @unique
+  userId         Int
+  discountAmount Int
+  createdAt      DateTime @default(now())
+  voucher        Voucher  @relation(fields: [voucherId], references: [id], onDelete: Restrict)
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([voucherId])
+  @@index([userId])
+}
+
+enum PromotionType {
+  GIFT
+  INFO
+}
+
+enum PromotionScope {
+  ALL
+  CATEGORY
+  PRODUCT
+}
+
+model Promotion {
+  id              Int             @id @default(autoincrement())
+  name            String          @db.VarChar(191)
+  displayTitle    String          @db.VarChar(200)
+  description     String?         @db.Text
+  conditionText   String?         @db.Text
+  detailUrl       String?         @db.VarChar(1000)
+  type            PromotionType
+  scope           PromotionScope  @default(ALL)
+  sortOrder       Int             @default(0)
+  isActive        Boolean         @default(true)
+  startAt         DateTime?
+  endAt           DateTime?
+  giftProductId   Int?
+  giftProductName String?         @db.VarChar(191)
+  giftQuantity    Int?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  giftProduct     Product?            @relation("PromotionGiftProduct", fields: [giftProductId], references: [id], onDelete: SetNull)
+  categories      PromotionCategory[]
+  products        PromotionProduct[]
+
+  @@index([isActive, startAt, endAt])
+  @@index([scope])
+  @@index([sortOrder])
+}
+
+model PromotionCategory {
+  id          Int       @id @default(autoincrement())
+  promotionId Int
+  categoryId  Int
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([promotionId, categoryId])
+  @@index([categoryId])
+}
+
+model PromotionProduct {
+  id          Int       @id @default(autoincrement())
+  promotionId Int
+  productId   Int
+  promotion   Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+  product     Product   @relation("PromotionAppliedProduct", fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([promotionId, productId])
+  @@index([productId])
+}
+
+enum ReturnStatus {
+  PENDING
+  REVIEWING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
+
+model SearchLog {
+  id        Int      @id @default(autoincrement())
+  query     String   @db.VarChar(200)
+  count     Int      @default(1)
+  updatedAt DateTime @updatedAt
+
+  @@unique([query])
+  @@index([count])
+}
+
+model ReturnRequest {
+  id          Int          @id @default(autoincrement())
+  orderId     Int
+  userId      Int
+  reason      String       @db.VarChar(200)
+  description String?      @db.VarChar(1000)
+  status      ReturnStatus @default(PENDING)
+  adminNote   String?      @db.VarChar(500)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  order       Order        @relation(fields: [orderId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+
+  @@index([orderId])
+  @@index([userId])
+  @@index([status])
+}
+
+// ── RBAC ──────────────────────────────────────────────────────────────────────
+
+model Role {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique @db.VarChar(100)
+  slug        String           @unique @db.VarChar(100)
+  description String?          @db.VarChar(500)
+  isSystem    Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  sortOrder   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  permissions RolePermission[]
+  adminUsers  User[]
+
+  @@index([isActive, sortOrder])
+}
+
+model Permission {
+  id          Int              @id @default(autoincrement())
+  module      String           @db.VarChar(50)
+  action      String           @db.VarChar(50)
+  label       String           @db.VarChar(100)
+  description String?          @db.VarChar(200)
+  roles       RolePermission[]
+
+  @@unique([module, action])
+  @@index([module])
+}
+
+model RolePermission {
+  roleId       Int
+  permissionId Int
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+// ── Activity Log ─────────────────────────────────────────────────────────────
+
+model ActivityLog {
+  id          Int      @id @default(autoincrement())
+  userId      Int?
+  userEmail   String?  @db.VarChar(191)
+  userName    String?  @db.VarChar(191)
+  action      String   @db.VarChar(100)
+  module      String   @db.VarChar(50)
+  targetId    String?  @db.VarChar(100)
+  targetLabel String?  @db.VarChar(200)
+  description String?  @db.VarChar(500)
+  success     Boolean  @default(true)
+  ipAddress   String?  @db.VarChar(45)
+  userAgent   String?  @db.VarChar(500)
+  before      Json?
+  after       Json?
+  createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([module, action])
+  @@index([createdAt])
+  @@index([success])
+}
+
+// ── Build PC ──────────────────────────────────────────────────────────────────
+
+model BuildPcGroup {
+  id             Int                    @id @default(autoincrement())
+  name           String                 @db.VarChar(100)
+  slug           String                 @unique @db.VarChar(100)
+  description    String?                @db.VarChar(300)
+  icon           String?                @db.VarChar(100)
+  isRequired     Boolean                @default(true)
+  minCount       Int                    @default(1)
+  maxCount       Int                    @default(1)
+  exclusiveGroup String?                @db.VarChar(50)
+  badgeText      String?                @db.VarChar(50)
+  sortOrder      Int                    @default(0)
+  isActive       Boolean                @default(true)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  categories     BuildPcGroupCategory[]
+  buildItems     PcBuildItem[]
+  presetItems    BuildPcPresetItem[]
+
+  @@index([sortOrder, isActive])
+}
+
+model PcBuild {
+  id        Int           @id @default(autoincrement())
+  shareCode String        @unique @db.VarChar(20)
+  userId    Int?
+  createdAt DateTime      @default(now())
+  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items     PcBuildItem[]
+
+  @@index([userId])
+}
+
+model PcBuildItem {
+  id        Int          @id @default(autoincrement())
+  buildId   Int
+  groupId   Int
+  productId Int
+  quantity  Int          @default(1)
+  build     PcBuild      @relation(fields: [buildId], references: [id], onDelete: Cascade)
+  group     BuildPcGroup @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  product   Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@unique([buildId, groupId])
+  @@index([groupId])
+  @@index([productId])
+}
+
+model BuildPcGroupCategory {
+  groupId    Int
+  categoryId Int
+  group      BuildPcGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  category   Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([groupId, categoryId])
+  @@index([categoryId])
+}
+
+model CompatibilityRule {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(200)
+  description     String?  @db.VarChar(500)
+  ruleType        String   @db.VarChar(50)
+  groupAId        Int?
+  attributeASlug  String?  @db.VarChar(100)
+  groupBId        Int?
+  attributeBSlug  String?  @db.VarChar(100)
+  config          Json?
+  errorMessage    String?  @db.VarChar(300)
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([ruleType, isActive])
+}
+
+model BuildPcSettings {
+  id                 Int      @id @default(1)
+  manualBuildEnabled Boolean  @default(true)
+  aiBuildEnabled     Boolean  @default(false)
+  inStockOnly        Boolean  @default(true)
+  maxBudget          Int?
+  allowSubstitution  Boolean  @default(true)
+  updatedAt          DateTime @updatedAt
+}
+
+// ── Build PC Presets (admin-curated suggestions, not wired into customer flow) ─
+
+model BuildPcPreset {
+  id          Int                 @id @default(autoincrement())
+  name        String              @db.VarChar(150)
+  slug        String              @unique @db.VarChar(150)
+  description String?             @db.VarChar(500)
+  useCase     String?             @db.VarChar(100)
+  budgetMin   Int?
+  budgetMax   Int?
+  isActive    Boolean             @default(true)
+  sortOrder   Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  items       BuildPcPresetItem[]
+
+  @@index([isActive, sortOrder])
+}
+
+model BuildPcPresetItem {
+  id        Int           @id @default(autoincrement())
+  presetId  Int
+  groupId   Int
+  productId Int?
+  preset    BuildPcPreset @relation(fields: [presetId], references: [id], onDelete: Cascade)
+  group     BuildPcGroup  @relation(fields: [groupId], references: [id], onDelete: Restrict)
+  product   Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@unique([presetId, groupId])
+  @@index([groupId])
+  @@index([productId])
+}
+
+// ── Support Tickets ───────────────────────────────────────────────────────────
+
+enum SupportTicketStatus {
+  NEW
+  IN_PROGRESS
+  WAITING_ADMIN
+  WAITING_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum SupportMessageSender {
+  CUSTOMER
+  ADMIN
+  SYSTEM
+}
+
+model SupportTicket {
+  id              Int                   @id @default(autoincrement())
+  code            String                @unique @db.VarChar(30)
+  // Contact info (may differ from user profile)
+  guestName       String                @db.VarChar(191)
+  guestPhone      String                @db.VarChar(30)
+  guestEmail      String?               @db.VarChar(191)
+  category        String                @db.VarChar(100)
+  // Linked user (if submitted while logged in)
+  userId          Int?
+  // Admin assigned to handle this ticket
+  assignedAdminId Int?
+  status          SupportTicketStatus   @default(WAITING_ADMIN)
+  // Secret token for guest access (UUID v4, stored as-is for simple lookup)
+  accessToken     String                @unique @db.Char(36)
+  // Honeypot / spam guard passed
+  ipAddress       String?               @db.VarChar(45)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  closedAt        DateTime?
+
+  user            User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  messages        SupportMessage[]
+  notifications   SupportNotification[]
+
+  @@index([status, createdAt])
+  @@index([userId])
+  @@index([assignedAdminId])
+  @@index([guestEmail])
+  @@index([createdAt])
+}
+
+model SupportMessage {
+  id         Int                  @id @default(autoincrement())
+  ticketId   Int
+  sender     SupportMessageSender
+  // Null sender details = system message
+  senderName String?              @db.VarChar(191)
+  // Admin userId if sender=ADMIN
+  adminId    Int?
+  body       String               @db.Text
+  createdAt  DateTime             @default(now())
+
+  ticket     SupportTicket        @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId, createdAt])
+}
+
+// Outbox for email notifications — idempotency key = ticketId + messageId
+model SupportNotification {
+  id           Int       @id @default(autoincrement())
+  ticketId     Int
+  messageId    Int?
+  // idempotency: prevent duplicate sends
+  idempotencyKey String  @unique @db.VarChar(100)
+  status       String    @default("pending") @db.VarChar(20)
+  attempts     Int       @default(0)
+  lastError    String?   @db.VarChar(500)
+  sentAt       DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  ticket       SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+  @@index([status, createdAt])
+}

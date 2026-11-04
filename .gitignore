@@ -1,0 +1,30 @@
+﻿node_modules/
+uploads/
+
+# Build/cache
+dist/
+build/
+coverage/
+.cache/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs
+*.log
+.DS_Store
+Thumbs.db
+
+# RAG vector data
+data/rag/
+
+# Database backups
+db-backups/
+db_backups/
+
+# Temp files
+.tmp/

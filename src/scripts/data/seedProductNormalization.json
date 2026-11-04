@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-10-14",
+  "scope": [
+    "SEED-CASE-001",
+    "SEED-MB-001",
+    "SEED-VGALN-001",
+    "SEED-CASE-006",
+    "SEED-RAM-005",
+    "SEED-VGA-004",
+    "SEED-CASE-005",
+    "SEED-AIO-002",
+    "SEED-AIO-003",
+    "SEED-CUSTOM-001",
+    "SEED-CUSTOM-002",
+    "SEED-KBC-003",
+    "SEED-FAN-004",
+    "SEED-CHAIR-003"
+  ],
+  "products": [
+    {
+      "sku": "SEED-CASE-001",
+      "classification": "NEEDS_REVIEW",
+      "model": "Fractal Design Torrent Black TG Light Tint",
+      "modelCode": "FD-C-TOR1A-01",
+      "source": "https://www.fractal-design.com/app/uploads/2022/12/Torrent_Product-Sheet_EN.pdf",
+      "evidence": "Bảng SKU hãng ánh xạ FD-C-TOR1A-01 tới Black TG Light Tint và Black Solid tới FD-C-TOR1A-05; chưa biết tên hay mã trong DB phản ánh hàng hóa thực tế nên không tự đổi biến thể."
+    },
+    {
+      "sku": "SEED-MB-001",
+      "classification": "VERIFIED",
+      "model": "MSI B550M PRO-VDH WIFI",
+      "source": "https://www.msi.com/Motherboard/B550M-PRO-VDH-WIFI/Specification",
+      "evidence": "Trang hãng xác nhận AM4, B550, Micro-ATX, 4 khe DDR4, tối đa 128 GB và 2 khe M.2; dữ liệu hiện tại khớp."
+    },
+    {
+      "sku": "SEED-VGALN-001",
+      "classification": "NEEDS_REVIEW",
+      "model": "ASUS DUAL GeForce RTX 3080 OC 10GB",
+      "source": "https://www.asus.com/motherboards-components/graphics-cards/dual/filter?Series=Dual",
+      "evidence": "Không tìm thấy trang hãng cho đúng model DUAL RTX 3080 OC 10GB; không dùng thông số của dòng TUF thay thế."
+    },
+    {
+      "sku": "SEED-CASE-006",
+      "classification": "SAFE_TO_FIX",
+      "model": "Fractal Design Node 304 Black",
+      "modelCode": "FD-CA-NODE-304-BL",
+      "source": "https://www.fractal-design.com/app/uploads/2019/06/Node-304-Manual-V2.pdf",
+      "evidence": "Manual hãng, mục Water Cooling Radiator Options, chỉ rõ 120 và 140; dữ liệu hiện tại 120/240 sai ở giá trị 240."
+    },
+    {
+      "sku": "SEED-RAM-005",
+      "classification": "NEEDS_REVIEW",
+      "model": "Corsair Dominator Platinum RGB DDR5 32GB",
+      "modelCode": "CMT32GX5M1B5600C36",
+      "source": "https://www.corsair.com/ca/en/p/memory/cmt32gx5m2b5600c36/dominatora-platinum-rgb-32gb-2x16gb-ddr5-dram-5600mhz-c36-memory-kit-a-black-cmt32gx5m2b5600c36",
+      "evidence": "Hãng có mã M2B cho bộ 2x16GB; chưa xác nhận được mã M1B và cấu hình 1x32GB đang lưu."
+    },
+    {
+      "sku": "SEED-VGA-004",
+      "classification": "NEEDS_REVIEW",
+      "model": "MSI GeForce RTX 4070 Ti SUPER 16G GAMING TRIO",
+      "source": "https://www.msi.com/Graphics-Card/GeForce-RTX-4070-Ti-SUPER-16G-GAMING-TRIO-WHITE/Specification",
+      "evidence": "Chỉ xác minh được bản GAMING TRIO WHITE; không đổi bản không-WHITE đang lưu sang một biến thể khác."
+    },
+    {
+      "sku": "SEED-CASE-005",
+      "classification": "NEEDS_REVIEW",
+      "model": "DeepCool MATREXX 30",
+      "modelCode": "R-MATREXX30-BKN0H-G",
+      "source": "https://uk.deepcool.com/products/Cases/2021/11923.shtml",
+      "evidence": "Mã part và biến thể trên trang hãng không khớp chắc chắn với mã đang lưu; không áp thông số của biến thể gần giống."
+    },
+    {
+      "sku": "SEED-AIO-002",
+      "classification": "NEEDS_REVIEW",
+      "model": "Corsair iCUE H150i Elite LCD XT 360mm",
+      "modelCode": "CW-9060074-WW",
+      "source": "https://www.corsair.com/ww/es/p/cpu-coolers/cw-9060074-ww/icue-h100i-elite-lcd-xt-display-liquid-cpu-cooler",
+      "evidence": "Mã CW-9060074-WW là H100i 240mm theo hãng, mâu thuẫn với tên H150i 360mm; cần xác định hàng hóa thực tế trước khi đổi."
+    },
+    {
+      "sku": "SEED-AIO-003",
+      "classification": "NEEDS_REVIEW",
+      "model": "DeepCool LT240 240mm",
+      "modelCode": "R-LT240-BKAMNF-G",
+      "source": "https://global.deepcool.com/products/Cooling/cpuliquidcoolers/LT240-ARGB-240mm-Liquid-CPU-Cooler-1851-1700-AM5/2024/18682.shtml",
+      "evidence": "Trang hãng xác nhận biến thể ARGB mã R-LT240-BKAMNC-G-1, không phải mã BKAMNF-G đang lưu."
+    },
+    {
+      "sku": "SEED-CUSTOM-001",
+      "classification": "NEEDS_REVIEW",
+      "model": "Bykski Full DIY Kit 360mm",
+      "source": "https://www.bykski.us/products/bykski-aio-integrated-liquid-cpu-cooler-for-intel-lga1700-1800-115x-and-amd-ryzen-9-7-5-3-am5-am4-featuring-a-rgb-lighting-360mm-b-frb360",
+      "evidence": "Nguồn hãng gần nhất là bộ AIO B-FRB360 tích hợp, không chứng minh sản phẩm DIY kit chung đang lưu."
+    },
+    {
+      "sku": "SEED-CUSTOM-002",
+      "classification": "NEEDS_REVIEW",
+      "model": "EK Quantum Power Kit 360",
+      "source": "https://www.ekwb.com/shop/ek-quantum-power-kit-d-rgb-p360?___from_store=default&___store=de",
+      "evidence": "Tên hiện tại trộn Power Kit P360 với socket/ống cứng chưa được trang hãng xác nhận cho đúng một mã model."
+    },
+    {
+      "sku": "SEED-KBC-003",
+      "classification": "NEEDS_REVIEW",
+      "model": "SteelSeries Apex 3 TKL + Rival 3 Gaming Combo",
+      "source": "https://steelseries.com/en-ca/gaming-bundles?page=1&sort=featured",
+      "evidence": "Danh mục hãng không xác nhận đúng bundle này và nguồn bị chặn khi mở lại; giữ nguyên để kiểm tra thủ công."
+    },
+    {
+      "sku": "SEED-FAN-004",
+      "classification": "NEEDS_REVIEW",
+      "model": "DeepCool RF120M RGB Triple Pack",
+      "modelCode": "DP-FRGB-RF120M-3P",
+      "source": "https://www.deepcool.com/products/Cooling/fans/RF120-RGB-PWM-Fan-3-Pack/2021/126.shtml",
+      "evidence": "Hãng có RF120 3 IN 1 nhưng mã part khác mã RF120M-3P đang lưu; không tự thay model."
+    },
+    {
+      "sku": "SEED-CHAIR-003",
+      "classification": "VERIFIED",
+      "model": "E-WIN Champion Series CPA Gaming Chair",
+      "source": "https://www.ewinracing.com/products/e-win-champion-series-ergonomic-computer-gaming-office-chair-with-pillows-cpa",
+      "evidence": "Trang hãng xác nhận Champion Series CPA và E-WIN 2.0 PU Leather; DB hiện đúng E-Win, nhưng brandSlug trong file seed cần đồng bộ."
+    }
+  ],
+  "safeFixes": [
+    {
+      "sku": "SEED-CASE-006",
+      "field": "radiator-size",
+      "old": ["120", "240"],
+      "new": ["120", "140"],
+      "source": "https://www.fractal-design.com/app/uploads/2019/06/Node-304-Manual-V2.pdf"
+    }
+  ]
+}

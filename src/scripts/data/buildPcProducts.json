@@ -1,0 +1,2145 @@
+{
+  "_comment": "110 seed products for Build PC. SKU prefix SEED-. warrantyMonths stored as ProductSpecification.",
+  "newAttributeValues": {
+    "cpu-series": [
+      "Ryzen 5",
+      "Ryzen 7",
+      "Ryzen 9",
+      "Core Ultra 7"
+    ],
+    "toc-do-bus-ram": [
+      "3600 MHz"
+    ],
+    "chipset": [
+      "X670E",
+      "B860"
+    ]
+  },
+  "brands": [
+    {
+      "slug": "amd",
+      "name": "AMD"
+    },
+    {
+      "slug": "intel",
+      "name": "Intel"
+    },
+    {
+      "slug": "asus",
+      "name": "ASUS"
+    },
+    {
+      "slug": "msi",
+      "name": "MSI"
+    },
+    {
+      "slug": "gigabyte",
+      "name": "Gigabyte"
+    },
+    {
+      "slug": "corsair",
+      "name": "Corsair"
+    },
+    {
+      "slug": "kingston",
+      "name": "Kingston"
+    },
+    {
+      "slug": "gskill",
+      "name": "G.Skill"
+    },
+    {
+      "slug": "wd",
+      "name": "WD"
+    },
+    {
+      "slug": "seagate",
+      "name": "Seagate"
+    },
+    {
+      "slug": "samsung",
+      "name": "Samsung"
+    },
+    {
+      "slug": "crucial",
+      "name": "Crucial"
+    },
+    {
+      "slug": "nzxt",
+      "name": "NZXT"
+    },
+    {
+      "slug": "lian-li",
+      "name": "Lian Li"
+    },
+    {
+      "slug": "fractal-design",
+      "name": "Fractal Design"
+    },
+    {
+      "slug": "phanteks",
+      "name": "Phanteks"
+    },
+    {
+      "slug": "deepcool",
+      "name": "Deepcool"
+    },
+    {
+      "slug": "cooler-master",
+      "name": "Cooler Master"
+    },
+    {
+      "slug": "seasonic",
+      "name": "Seasonic"
+    },
+    {
+      "slug": "be-quiet",
+      "name": "be quiet!"
+    },
+    {
+      "slug": "noctua",
+      "name": "Noctua"
+    },
+    {
+      "slug": "thermaltake",
+      "name": "Thermaltake"
+    },
+    {
+      "slug": "lg",
+      "name": "LG"
+    },
+    {
+      "slug": "dell",
+      "name": "Dell"
+    },
+    {
+      "slug": "benq",
+      "name": "BenQ"
+    },
+    {
+      "slug": "logitech",
+      "name": "Logitech"
+    },
+    {
+      "slug": "razer",
+      "name": "Razer"
+    },
+    {
+      "slug": "steelseries",
+      "name": "SteelSeries"
+    },
+    {
+      "slug": "hyperx",
+      "name": "HyperX"
+    },
+    {
+      "slug": "edifier",
+      "name": "Edifier"
+    },
+    {
+      "slug": "secretlab",
+      "name": "Secretlab"
+    },
+    {
+      "slug": "dxracer",
+      "name": "DXRacer"
+    },
+    {
+      "slug": "e-win",
+      "name": "E-Win"
+    },
+    {
+      "slug": "keychron",
+      "name": "Keychron"
+    },
+    {
+      "slug": "powercolor",
+      "name": "PowerColor"
+    },
+    {
+      "slug": "xfx",
+      "name": "XFX"
+    }
+  ],
+  "products": [
+    {
+      "sku": "SEED-CPU-001",
+      "name": "CPU AMD Ryzen 5 5600X (3.7GHz Up to 4.6GHz, 35MB Cache, 6 Cores, 12 Threads, Socket AM4)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 3290000,
+      "stockQuantity": 15,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM4",
+        "cpu-series": "Ryzen 5",
+        "tdp": 65
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 3"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 4.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR4"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-002",
+      "name": "CPU AMD Ryzen 7 5700X (3.4GHz Up to 4.6GHz, 36MB Cache, 8 Cores, 16 Threads, Socket AM4)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 4190000,
+      "stockQuantity": 10,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM4",
+        "cpu-series": "Ryzen 7",
+        "tdp": 65
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 3"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 4.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR4"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-003",
+      "name": "CPU AMD Ryzen 9 5900X (3.7GHz Up to 4.8GHz, 70MB Cache, 12 Cores, 24 Threads, Socket AM4)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 6290000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM4",
+        "cpu-series": "Ryzen 9",
+        "tdp": 105
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 3"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 4.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR4"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-004",
+      "name": "CPU AMD Ryzen 5 7600X (4.7GHz Up to 5.3GHz, 38MB Cache, 6 Cores, 12 Threads, Socket AM5)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 4490000,
+      "stockQuantity": 12,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "cpu-series": "Ryzen 5",
+        "tdp": 105
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 4"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-005",
+      "name": "CPU AMD Ryzen 7 7700X (4.5GHz Up to 5.4GHz, 40MB Cache, 8 Cores, 16 Threads, Socket AM5)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 5990000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "cpu-series": "Ryzen 7",
+        "tdp": 105
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 4"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-006",
+      "name": "CPU AMD Ryzen 7 7800X3D (4.2GHz Up to 5.0GHz, 104MB Cache, 8 Cores, 16 Threads, Socket AM5)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 9290000,
+      "stockQuantity": 6,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "cpu-series": "Ryzen 7",
+        "tdp": 120
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 4 + 3D V-Cache"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-007",
+      "name": "CPU AMD Ryzen 9 7950X (4.5GHz Up to 5.7GHz, 80MB Cache, 16 Cores, 32 Threads, Socket AM5)",
+      "categorySlug": "cpu",
+      "brandSlug": "amd",
+      "price": 14990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "cpu-series": "Ryzen 9",
+        "tdp": 170
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Zen 4"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-008",
+      "name": "CPU Intel Core i5-13400F (2.5GHz Up to 4.6GHz, 20MB Cache, 10 Cores, 16 Threads, Socket LGA 1700)",
+      "categorySlug": "cpu",
+      "brandSlug": "intel",
+      "price": 4290000,
+      "stockQuantity": 20,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "cpu-series": "I5",
+        "tdp": 65
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Raptor Lake (Intel 13th Gen)"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0 / PCIe 4.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR4 / DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-009",
+      "name": "CPU Intel Core i7-13700K (3.4GHz Up to 5.4GHz, 30MB Cache, 16 Cores, 24 Threads, Socket LGA 1700)",
+      "categorySlug": "cpu",
+      "brandSlug": "intel",
+      "price": 8290000,
+      "stockQuantity": 7,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "cpu-series": "I7",
+        "tdp": 125
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Raptor Lake (Intel 13th Gen)"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0 / PCIe 4.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR4 / DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-CPU-010",
+      "name": "CPU Intel Core Ultra 7 265K (3.9GHz Up to 5.5GHz, 30MB Cache, 20 Cores, 20 Threads, Socket LGA 1851)",
+      "categorySlug": "cpu",
+      "brandSlug": "intel",
+      "price": 9690000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1851",
+        "cpu-series": "Core Ultra 7",
+        "tdp": 125
+      },
+      "specs": [
+        {
+          "name": "Kiến trúc vi xử lý",
+          "value": "Arrow Lake (Intel Core Ultra 200)"
+        },
+        {
+          "name": "Chuẩn PCIe hỗ trợ",
+          "value": "PCIe 5.0"
+        },
+        {
+          "name": "RAM hỗ trợ",
+          "value": "DDR5"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-MB-001",
+      "name": "Bo mạch chủ MSI B550M PRO-VDH WIFI (Socket AM4, DDR4, Micro-ATX)",
+      "categorySlug": "main",
+      "brandSlug": "msi",
+      "price": 2490000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM4",
+        "loai-ram": "DDR4",
+        "kich-thuoc-mainboard": "Micro-ATX",
+        "chipset": "B550",
+        "so-khe-ram": 4,
+        "ram-toi-da": 128,
+        "pcie-cho-vga": "4.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-002",
+      "name": "Bo mạch chủ ASUS PRIME B550-PLUS (Socket AM4, DDR4, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "asus",
+      "price": 3090000,
+      "stockQuantity": 6,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM4",
+        "loai-ram": "DDR4",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "B550",
+        "so-khe-ram": 4,
+        "ram-toi-da": 128,
+        "pcie-cho-vga": "4.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-003",
+      "name": "Bo mạch chủ MSI MAG B650 TOMAHAWK WIFI (Socket AM5, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "msi",
+      "price": 4990000,
+      "stockQuantity": 7,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "B650",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "4.0",
+        "so-khe-m-2": 3,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+4-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-004",
+      "name": "Bo mạch chủ Gigabyte B850M DS3H (Socket AM5, DDR5, Micro-ATX)",
+      "categorySlug": "main",
+      "brandSlug": "gigabyte",
+      "price": 3890000,
+      "stockQuantity": 9,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "Micro-ATX",
+        "chipset": "B850",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-005",
+      "name": "Bo mạch chủ ASUS ROG CROSSHAIR X670E HERO (Socket AM5, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "asus",
+      "price": 12990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "AM5",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "X670E",
+        "so-khe-ram": 4,
+        "ram-toi-da": 192,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 4,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-006",
+      "name": "Bo mạch chủ MSI PRO B760M-A DDR4 (Socket LGA 1700, DDR4, Micro-ATX)",
+      "categorySlug": "main",
+      "brandSlug": "msi",
+      "price": 2890000,
+      "stockQuantity": 10,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "loai-ram": "DDR4",
+        "kich-thuoc-mainboard": "Micro-ATX",
+        "chipset": "B760",
+        "so-khe-ram": 4,
+        "ram-toi-da": 128,
+        "pcie-cho-vga": "4.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-007",
+      "name": "Bo mạch chủ ASUS PRIME B760M-A (Socket LGA 1700, DDR5, Micro-ATX)",
+      "categorySlug": "main",
+      "brandSlug": "asus",
+      "price": 2990000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "Micro-ATX",
+        "chipset": "B760",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "4.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-008",
+      "name": "Bo mạch chủ Gigabyte Z790 AORUS ELITE AX DDR5 (Socket LGA 1700, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "gigabyte",
+      "price": 8490000,
+      "stockQuantity": 4,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "Z790",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 4,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-009",
+      "name": "Bo mạch chủ MSI MAG Z790 TOMAHAWK WIFI DDR5 (Socket LGA 1700, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "msi",
+      "price": 6290000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1700",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "Z790",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 4,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-010",
+      "name": "Bo mạch chủ ASUS ROG MAXIMUS Z890 APEX (Socket LGA 1851, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "asus",
+      "price": 24990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1851",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "Z890",
+        "so-khe-ram": 2,
+        "ram-toi-da": 128,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 6,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-011",
+      "name": "Bo mạch chủ MSI MEG Z890 ACE (Socket LGA 1851, DDR5, ATX)",
+      "categorySlug": "main",
+      "brandSlug": "msi",
+      "price": 18990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1851",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "ATX",
+        "chipset": "Z890",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 5,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8+8-pin"
+      }
+    },
+    {
+      "sku": "SEED-MB-012",
+      "name": "Bo mạch chủ Gigabyte B860M AORUS ELITE (Socket LGA 1851, DDR5, Micro-ATX)",
+      "categorySlug": "main",
+      "brandSlug": "gigabyte",
+      "price": 4990000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": "LGA 1851",
+        "loai-ram": "DDR5",
+        "kich-thuoc-mainboard": "Micro-ATX",
+        "chipset": "B860",
+        "so-khe-ram": 4,
+        "ram-toi-da": 256,
+        "pcie-cho-vga": "5.0",
+        "so-khe-m-2": 2,
+        "nguon-mainboard": "ATX 24-pin",
+        "nguon-cpu": "EPS 8-pin"
+      }
+    },
+    {
+      "sku": "SEED-RAM-001",
+      "name": "RAM Desktop Kingston Fury Beast (KF432C16BB1/16) 16GB (1x16GB) DDR4 3200MHz",
+      "categorySlug": "ram",
+      "brandSlug": "kingston",
+      "price": 890000,
+      "stockQuantity": 30,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR4",
+        "ram": "16GB",
+        "toc-do-bus-ram": "3200 MHz",
+        "ram-modules": 1
+      }
+    },
+    {
+      "sku": "SEED-RAM-002",
+      "name": "RAM Desktop Corsair Vengeance LPX (CMK32GX4M2E3600C18) 32GB (2x16GB) DDR4 3600MHz",
+      "categorySlug": "ram",
+      "brandSlug": "corsair",
+      "price": 1590000,
+      "stockQuantity": 20,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR4",
+        "ram": "32GB",
+        "toc-do-bus-ram": "3600 MHz",
+        "ram-modules": 2
+      }
+    },
+    {
+      "sku": "SEED-RAM-003",
+      "name": "RAM Desktop Kingston Fury Beast (KF548C38BB-16) 16GB (1x16GB) DDR5 4800MHz",
+      "categorySlug": "ram",
+      "brandSlug": "kingston",
+      "price": 1290000,
+      "stockQuantity": 25,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR5",
+        "ram": "16GB",
+        "toc-do-bus-ram": "4800 MHz",
+        "ram-modules": 1
+      }
+    },
+    {
+      "sku": "SEED-RAM-004",
+      "name": "RAM Desktop G.Skill Trident Z5 RGB (F5-6000J3238F16GX2-TZ5RK) 32GB (2x16GB) DDR5 6000MHz",
+      "categorySlug": "ram",
+      "brandSlug": "gskill",
+      "price": 3490000,
+      "stockQuantity": 15,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR5",
+        "ram": "32GB",
+        "toc-do-bus-ram": "6000 MHz",
+        "ram-modules": 2
+      }
+    },
+    {
+      "sku": "SEED-RAM-005",
+      "name": "RAM Desktop Corsair Dominator Platinum RGB (CMT32GX5M1B5600C36) 32GB (1x32GB) DDR5 5600MHz",
+      "categorySlug": "ram",
+      "brandSlug": "corsair",
+      "price": 2390000,
+      "stockQuantity": 10,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR5",
+        "ram": "32GB",
+        "toc-do-bus-ram": "5600 MHz",
+        "ram-modules": 1
+      }
+    },
+    {
+      "sku": "SEED-RAM-006",
+      "name": "RAM Desktop G.Skill Ripjaws S5 (F5-6400J3239G32GX2-RS5K) 64GB (2x32GB) DDR5 6400MHz",
+      "categorySlug": "ram",
+      "brandSlug": "gskill",
+      "price": 5990000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "loai-ram": "DDR5",
+        "ram": "64GB",
+        "toc-do-bus-ram": "6400 MHz",
+        "ram-modules": 2
+      }
+    },
+    {
+      "sku": "SEED-HDD-001",
+      "name": "Ổ cứng HDD WD Blue 1TB 3.5\" SATA (WD10EZEX) 7200RPM, 64MB Cache",
+      "categorySlug": "hdd",
+      "brandSlug": "wd",
+      "price": 1090000,
+      "stockQuantity": 20,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HDD-002",
+      "name": "Ổ cứng HDD Seagate Barracuda 2TB 3.5\" SATA (ST2000DM008) 7200RPM, 256MB Cache",
+      "categorySlug": "hdd",
+      "brandSlug": "seagate",
+      "price": 1690000,
+      "stockQuantity": 15,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HDD-003",
+      "name": "Ổ cứng HDD WD Blue 4TB 3.5\" SATA (WD40EZAX) 5400RPM, 256MB Cache",
+      "categorySlug": "hdd",
+      "brandSlug": "wd",
+      "price": 2890000,
+      "stockQuantity": 8,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HDD-004",
+      "name": "Ổ cứng HDD Seagate IronWolf 8TB NAS 3.5\" SATA (ST8000VN002) 7200RPM, 256MB Cache",
+      "categorySlug": "hdd",
+      "brandSlug": "seagate",
+      "price": 5290000,
+      "stockQuantity": 0,
+      "warrantyMonths": 36,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-SSDM2-001",
+      "name": "Ổ cứng SSD Samsung 980 Pro 500GB PCIe 4.0 NVMe M.2 (MZ-V8P500BW)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "samsung",
+      "price": 1590000,
+      "stockQuantity": 25,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 6.900 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 5.000 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-002",
+      "name": "Ổ cứng SSD Samsung 980 Pro 1TB PCIe 4.0 NVMe M.2 (MZ-V8P1T0BW)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "samsung",
+      "price": 2590000,
+      "stockQuantity": 20,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.000 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 5.100 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-003",
+      "name": "Ổ cứng SSD WD Black SN850X 1TB PCIe 4.0 NVMe M.2 (WDS100T2X0E)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "wd",
+      "price": 2190000,
+      "stockQuantity": 15,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.300 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 6.600 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-004",
+      "name": "Ổ cứng SSD WD Black SN850X 2TB PCIe 4.0 NVMe M.2 (WDS200T2X0E)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "wd",
+      "price": 3890000,
+      "stockQuantity": 8,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.300 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 6.600 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-005",
+      "name": "Ổ cứng SSD Crucial T700 1TB PCIe 5.0 NVMe M.2 (CT1000T700SSD3)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "crucial",
+      "price": 2890000,
+      "stockQuantity": 12,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 11.700 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 9.500 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-006",
+      "name": "Ổ cứng SSD Kingston Fury Renegade 1TB PCIe 4.0 NVMe M.2 (SFYRD/1000G)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "kingston",
+      "price": 1990000,
+      "stockQuantity": 18,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.300 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 6.000 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-007",
+      "name": "Ổ cứng SSD Seagate FireCuda 530 2TB PCIe 4.0 NVMe M.2 (ZP2000GM3A013)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "seagate",
+      "price": 4290000,
+      "stockQuantity": 6,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.300 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 6.900 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSDM2-008",
+      "name": "Ổ cứng SSD Samsung 990 Pro 1TB PCIe 4.0 NVMe M.2 (MZ-V9P1T0BW)",
+      "categorySlug": "ssd-m2",
+      "brandSlug": "samsung",
+      "price": 2390000,
+      "stockQuantity": 0,
+      "warrantyMonths": 60,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Tốc độ đọc tuần tự",
+          "value": "tới 7.450 MB/s"
+        },
+        {
+          "name": "Tốc độ ghi tuần tự",
+          "value": "tới 6.900 MB/s"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-SSD25-001",
+      "name": "Ổ cứng SSD Samsung 870 EVO 500GB SATA 2.5\" (MZ-77E500BW)",
+      "categorySlug": "ssd-25",
+      "brandSlug": "samsung",
+      "price": 1290000,
+      "stockQuantity": 20,
+      "warrantyMonths": 60,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-SSD25-002",
+      "name": "Ổ cứng SSD Crucial BX500 1TB SATA 2.5\" (CT1000BX500SSD1)",
+      "categorySlug": "ssd-25",
+      "brandSlug": "crucial",
+      "price": 1690000,
+      "stockQuantity": 15,
+      "warrantyMonths": 36,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-VGA-001",
+      "name": "Card màn hình ASUS DUAL GeForce RTX 4060 OC 8GB GDDR6 (DUAL-RTX4060-O8G)",
+      "categorySlug": "vga",
+      "brandSlug": "asus",
+      "price": 8990000,
+      "stockQuantity": 10,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 227.2,
+        "tdp": 115
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 4060"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "8 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4a, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-002",
+      "name": "Card màn hình MSI Gaming X GeForce RTX 4060 Ti 8GB GDDR6 (RTX 4060 Ti GAMING X 8G)",
+      "categorySlug": "vga",
+      "brandSlug": "msi",
+      "price": 11490000,
+      "stockQuantity": 9,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 247,
+        "tdp": 160
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 4060 Ti"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "8 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4a, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-003",
+      "name": "Card màn hình ASUS DUAL Radeon RX 7600 OC 8GB GDDR6 (DUAL-RX7600-O8G)",
+      "categorySlug": "vga",
+      "brandSlug": "asus",
+      "price": 7290000,
+      "stockQuantity": 12,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 245,
+        "tdp": 165
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "AMD Radeon RX 7600"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "8 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "1× DisplayPort 2.1, 3× DisplayPort 1.4, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-004",
+      "name": "Card màn hình MSI Gaming Trio GeForce RTX 4070 Ti SUPER 16GB GDDR6X (RTX 4070 Ti SUPER 16G GAMING TRIO)",
+      "categorySlug": "vga",
+      "brandSlug": "msi",
+      "price": 22990000,
+      "stockQuantity": 4,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 337,
+        "tdp": 285
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 4070 Ti SUPER"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "16 GB GDDR6X"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4a, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-005",
+      "name": "Card màn hình PowerColor Red Devil Radeon RX 7900 XTX 24GB GDDR6 (RX 7900 XTX 24G-E/OC)",
+      "categorySlug": "vga",
+      "brandSlug": "powercolor",
+      "price": 28990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 338,
+        "tdp": 355
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "AMD Radeon RX 7900 XTX"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "24 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "2× DisplayPort 2.1, 2× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-006",
+      "name": "Card màn hình ASUS ROG Strix GeForce RTX 4090 OC 24GB GDDR6X (ROG-STRIX-RTX4090-O24G-GAMING)",
+      "categorySlug": "vga",
+      "brandSlug": "asus",
+      "price": 42990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 357,
+        "tdp": 450
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 4090"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "24 GB GDDR6X"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4a, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-007",
+      "name": "Card màn hình XFX QICK 319 Radeon RX 7800 XT 16GB GDDR6 (RX-78TQICKF9)",
+      "categorySlug": "vga",
+      "brandSlug": "xfx",
+      "price": 12490000,
+      "stockQuantity": 7,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 335,
+        "tdp": 263
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "AMD Radeon RX 7800 XT"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "16 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "1× DisplayPort 2.1, 3× DisplayPort 1.4, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGA-008",
+      "name": "Card màn hình MSI Gaming X Slim GeForce RTX 4070 SUPER 12GB GDDR6X (RTX 4070 SUPER 12G GAMING X SLIM)",
+      "categorySlug": "vga",
+      "brandSlug": "msi",
+      "price": 17490000,
+      "stockQuantity": 6,
+      "warrantyMonths": 36,
+      "attributes": {
+        "vga-length": 307,
+        "tdp": 220
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 4070 SUPER"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "12 GB GDDR6X"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4a, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGALN-001",
+      "name": "Card màn hình Like New ASUS DUAL GeForce RTX 3080 OC 10GB GDDR6X",
+      "categorySlug": "vga-like-new",
+      "brandSlug": "asus",
+      "price": 12990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 12,
+      "attributes": {
+        "vga-length": 313,
+        "tdp": 320
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 3080"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "10 GB GDDR6X"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGALN-002",
+      "name": "Card màn hình Like New XFX Speedster QICK 308 Radeon RX 6700 XT 12GB GDDR6",
+      "categorySlug": "vga-like-new",
+      "brandSlug": "xfx",
+      "price": 6990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 12,
+      "attributes": {
+        "vga-length": 323,
+        "tdp": 230
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "AMD Radeon RX 6700 XT"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "12 GB GDDR6"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "1× DisplayPort 1.4, 2× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-VGALN-003",
+      "name": "Card màn hình Like New MSI Gaming X Trio GeForce RTX 3070 Ti 8GB GDDR6X",
+      "categorySlug": "vga-like-new",
+      "brandSlug": "msi",
+      "price": 10490000,
+      "stockQuantity": 1,
+      "warrantyMonths": 12,
+      "attributes": {
+        "vga-length": 323,
+        "tdp": 290
+      },
+      "specs": [
+        {
+          "name": "Chip đồ họa",
+          "value": "NVIDIA GeForce RTX 3070 Ti"
+        },
+        {
+          "name": "Bộ nhớ VRAM",
+          "value": "8 GB GDDR6X"
+        },
+        {
+          "name": "Cổng xuất hình",
+          "value": "3× DisplayPort 1.4, 1× HDMI 2.1"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-PSU-001",
+      "name": "Nguồn máy tính Seasonic FOCUS GX-650 (SSR-650FX) 650W 80+ Gold Full Modular",
+      "categorySlug": "nguon",
+      "brandSlug": "seasonic",
+      "price": 1990000,
+      "stockQuantity": 15,
+      "warrantyMonths": 120,
+      "attributes": {
+        "psu-wattage": 650
+      }
+    },
+    {
+      "sku": "SEED-PSU-002",
+      "name": "Nguồn máy tính Corsair RM750x (CP-9020199-EU) 750W 80+ Gold Full Modular",
+      "categorySlug": "nguon",
+      "brandSlug": "corsair",
+      "price": 2590000,
+      "stockQuantity": 12,
+      "warrantyMonths": 120,
+      "attributes": {
+        "psu-wattage": 750
+      }
+    },
+    {
+      "sku": "SEED-PSU-003",
+      "name": "Nguồn máy tính be quiet! Straight Power 12 850W (BN340) 80+ Platinum Full Modular",
+      "categorySlug": "nguon",
+      "brandSlug": "be-quiet",
+      "price": 3490000,
+      "stockQuantity": 8,
+      "warrantyMonths": 120,
+      "attributes": {
+        "psu-wattage": 850
+      }
+    },
+    {
+      "sku": "SEED-PSU-004",
+      "name": "Nguồn máy tính Seasonic PRIME TX-1000 (SSR-1000TR) 1000W 80+ Titanium Full Modular",
+      "categorySlug": "nguon",
+      "brandSlug": "seasonic",
+      "price": 5990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 120,
+      "attributes": {
+        "psu-wattage": 1000
+      }
+    },
+    {
+      "sku": "SEED-PSU-005",
+      "name": "Nguồn máy tính Corsair HX1000i Platinum (CP-9020214-EU) 1000W 80+ Platinum Full Modular",
+      "categorySlug": "nguon",
+      "brandSlug": "corsair",
+      "price": 3990000,
+      "stockQuantity": 5,
+      "warrantyMonths": 84,
+      "attributes": {
+        "psu-wattage": 1000
+      }
+    },
+    {
+      "sku": "SEED-PSU-006",
+      "name": "Nguồn máy tính Cooler Master MWE Gold 450W V2 (MPY-4501-ACAAG-EU) 80+ Gold",
+      "categorySlug": "nguon",
+      "brandSlug": "cooler-master",
+      "price": 890000,
+      "stockQuantity": 20,
+      "warrantyMonths": 60,
+      "attributes": {
+        "psu-wattage": 450
+      }
+    },
+    {
+      "sku": "SEED-CASE-001",
+      "name": "Vỏ Case Fractal Design Torrent Black Solid (FD-C-TOR1A-01) Full Tower E-ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "fractal-design",
+      "price": 3490000,
+      "stockQuantity": 5,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "E-ATX",
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 461,
+        "case-max-cooler-height": 188,
+        "radiator-size": [
+          "120",
+          "140",
+          "240",
+          "280",
+          "360",
+          "420"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-002",
+      "name": "Vỏ Case NZXT H5 Flow (CC-H51FB-01) Mid Tower ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "nzxt",
+      "price": 2490000,
+      "stockQuantity": 8,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 365,
+        "case-max-cooler-height": 165,
+        "radiator-size": [
+          "120",
+          "240",
+          "280"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-003",
+      "name": "Vỏ Case Phanteks Eclipse G360A (PH-EC360ATG_DBK02) Mid Tower ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "phanteks",
+      "price": 1890000,
+      "stockQuantity": 7,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 400,
+        "case-max-cooler-height": 162,
+        "radiator-size": [
+          "120",
+          "240",
+          "280",
+          "360"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-004",
+      "name": "Vỏ Case Cooler Master MasterBox Q300L V2 (MCB-Q300LV2-KANN-S01) Micro-ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "cooler-master",
+      "price": 990000,
+      "stockQuantity": 10,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 360,
+        "case-max-cooler-height": 159,
+        "radiator-size": [
+          "120",
+          "240"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-005",
+      "name": "Vỏ Case Deepcool MATREXX 30 (R-MATREXX30-BKN0H-G) Micro-ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "deepcool",
+      "price": 590000,
+      "stockQuantity": 15,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 270,
+        "case-max-cooler-height": 155,
+        "radiator-size": [
+          "120",
+          "240"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-006",
+      "name": "Vỏ Case Fractal Design Node 304 (FD-CA-NODE-304-BL) Mini-ITX",
+      "categorySlug": "vo-case",
+      "brandSlug": "fractal-design",
+      "price": 1690000,
+      "stockQuantity": 4,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 310,
+        "case-max-cooler-height": 165,
+        "radiator-size": [
+          "120",
+          "140"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-007",
+      "name": "Vỏ Case Lian Li Lancool III RGB (G99.L3RX.00) Mid-Full Tower ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "lian-li",
+      "price": 3290000,
+      "stockQuantity": 6,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 400,
+        "case-max-cooler-height": 176,
+        "radiator-size": [
+          "120",
+          "240",
+          "280",
+          "360"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CASE-008",
+      "name": "Vỏ Case Phanteks Enthoo 719 (PH-ES719LTG_DBK01) Full Tower E-ATX",
+      "categorySlug": "vo-case",
+      "brandSlug": "phanteks",
+      "price": 4190000,
+      "stockQuantity": 3,
+      "warrantyMonths": 24,
+      "attributes": {
+        "kich-thuoc-mainboard": [
+          "E-ATX",
+          "ATX",
+          "Micro-ATX",
+          "Mini-ITX"
+        ],
+        "case-max-vga-length": 503,
+        "case-max-cooler-height": 195,
+        "radiator-size": [
+          "120",
+          "240",
+          "280",
+          "360",
+          "420"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-MON-001",
+      "name": "Màn hình LG UltraGear 27GP850-B 27\" IPS QHD 165Hz 1ms G-Sync Compatible",
+      "categorySlug": "man-hinh",
+      "brandSlug": "lg",
+      "price": 7290000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Độ phủ màu",
+          "value": "sRGB 99%"
+        },
+        {
+          "name": "HDR",
+          "value": "HDR400"
+        },
+        {
+          "name": "Hỗ trợ Adaptive-Sync",
+          "value": "G-Sync Compatible, FreeSync Premium"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-MON-002",
+      "name": "Màn hình Samsung Odyssey G7 32\" VA QHD 240Hz 1ms (LS32BG700EEXXV)",
+      "categorySlug": "man-hinh",
+      "brandSlug": "samsung",
+      "price": 12990000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Độ phủ màu",
+          "value": "sRGB 95%"
+        },
+        {
+          "name": "HDR",
+          "value": "HDR600"
+        },
+        {
+          "name": "Hỗ trợ Adaptive-Sync",
+          "value": "FreeSync Premium Pro, G-Sync Compatible"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-MON-003",
+      "name": "Màn hình Dell S2422HZ 23.8\" IPS FHD 75Hz USB-C (210-BCBO)",
+      "categorySlug": "man-hinh",
+      "brandSlug": "dell",
+      "price": 3490000,
+      "stockQuantity": 12,
+      "warrantyMonths": 36,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Độ phủ màu",
+          "value": "sRGB 99%"
+        },
+        {
+          "name": "Cổng kết nối",
+          "value": "1× USB-C (DP 1.2, PD 65W), 1× HDMI 1.4, 1× DisplayPort 1.2, 2× USB-A"
+        },
+        {
+          "name": "Webcam tích hợp",
+          "value": "Có (5MP, lấy nét cố định)"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-MON-004",
+      "name": "Màn hình BenQ MOBIUZ EX3210U 32\" IPS 4K UHD 144Hz 2ms (EX3210U)",
+      "categorySlug": "man-hinh",
+      "brandSlug": "benq",
+      "price": 18490000,
+      "stockQuantity": 3,
+      "warrantyMonths": 36,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Độ phủ màu",
+          "value": "DCI-P3 97%"
+        },
+        {
+          "name": "HDR",
+          "value": "HDR600, DisplayHDR 600"
+        },
+        {
+          "name": "Hỗ trợ Adaptive-Sync",
+          "value": "FreeSync Premium Pro, G-Sync Compatible"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-MON-005",
+      "name": "Màn hình ASUS ROG Swift PG27AQN 27\" Fast IPS QHD 360Hz 1ms G-Sync",
+      "categorySlug": "man-hinh",
+      "brandSlug": "asus",
+      "price": 21990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 36,
+      "attributes": {},
+      "specs": [
+        {
+          "name": "Độ phủ màu",
+          "value": "DCI-P3 98%"
+        },
+        {
+          "name": "HDR",
+          "value": "HDR400"
+        },
+        {
+          "name": "Hỗ trợ Adaptive-Sync",
+          "value": "NVIDIA G-Sync (Processor)"
+        }
+      ]
+    },
+    {
+      "sku": "SEED-KBC-001",
+      "name": "Bộ Bàn phím + Chuột không dây Logitech MK270 (920-004508)",
+      "categorySlug": "ban-phim-chuot",
+      "brandSlug": "logitech",
+      "price": 690000,
+      "stockQuantity": 20,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KBC-002",
+      "name": "Bộ Bàn phím + Chuột không dây Logitech MK275 (920-008535)",
+      "categorySlug": "ban-phim-chuot",
+      "brandSlug": "logitech",
+      "price": 890000,
+      "stockQuantity": 15,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KBC-003",
+      "name": "Bộ Bàn phím + Chuột SteelSeries Apex 3 TKL + Rival 3 Gaming Combo",
+      "categorySlug": "ban-phim-chuot",
+      "brandSlug": "steelseries",
+      "price": 1990000,
+      "stockQuantity": 8,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KB-001",
+      "name": "Bàn phím cơ Keychron K2 Pro Wireless RGB (K2P-H3-US)",
+      "categorySlug": "ban-phim",
+      "brandSlug": "keychron",
+      "price": 2290000,
+      "stockQuantity": 12,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KB-002",
+      "name": "Bàn phím cơ Logitech G413 TKL SE Mechanical Gaming (920-010446)",
+      "categorySlug": "ban-phim",
+      "brandSlug": "logitech",
+      "price": 1390000,
+      "stockQuantity": 15,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KB-003",
+      "name": "Bàn phím cơ Razer BlackWidow V3 TKL Mechanical Gaming (RZ03-03490100-R3M1)",
+      "categorySlug": "ban-phim",
+      "brandSlug": "razer",
+      "price": 2490000,
+      "stockQuantity": 8,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KB-004",
+      "name": "Bàn phím cơ SteelSeries Apex Pro Mini Wireless (64841)",
+      "categorySlug": "ban-phim",
+      "brandSlug": "steelseries",
+      "price": 4490000,
+      "stockQuantity": 5,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-KB-005",
+      "name": "Bàn phím cơ ASUS ROG Strix Scope II 96 Wireless (90MP0354-BKUA00)",
+      "categorySlug": "ban-phim",
+      "brandSlug": "asus",
+      "price": 2990000,
+      "stockQuantity": 7,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-MOUSE-001",
+      "name": "Chuột gaming Logitech G502 HERO High Performance (910-005474)",
+      "categorySlug": "chuot",
+      "brandSlug": "logitech",
+      "price": 1290000,
+      "stockQuantity": 20,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-MOUSE-002",
+      "name": "Chuột gaming không dây Razer DeathAdder V3 HyperSpeed (RZ01-04630100-R3A1)",
+      "categorySlug": "chuot",
+      "brandSlug": "razer",
+      "price": 2490000,
+      "stockQuantity": 12,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-MOUSE-003",
+      "name": "Chuột gaming SteelSeries Rival 600 (62446)",
+      "categorySlug": "chuot",
+      "brandSlug": "steelseries",
+      "price": 1890000,
+      "stockQuantity": 10,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-MOUSE-004",
+      "name": "Chuột gaming không dây Logitech G Pro X SUPERLIGHT 2 (910-006637)",
+      "categorySlug": "chuot",
+      "brandSlug": "logitech",
+      "price": 4390000,
+      "stockQuantity": 6,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-MOUSE-005",
+      "name": "Chuột gaming không dây ASUS ROG Gladius III Wireless AimPoint (90MP02Y0-BMUA00)",
+      "categorySlug": "chuot",
+      "brandSlug": "asus",
+      "price": 3290000,
+      "stockQuantity": 8,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HEAD-001",
+      "name": "Tai nghe không dây HyperX Cloud II Wireless (HHSC2X-BA-GY/G)",
+      "categorySlug": "tai-nghe",
+      "brandSlug": "hyperx",
+      "price": 2490000,
+      "stockQuantity": 10,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HEAD-002",
+      "name": "Tai nghe không dây SteelSeries Arctis Nova 7 Wireless (61553)",
+      "categorySlug": "tai-nghe",
+      "brandSlug": "steelseries",
+      "price": 3290000,
+      "stockQuantity": 8,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HEAD-003",
+      "name": "Tai nghe không dây Razer BlackShark V2 Pro (2023) (RZ04-04530100-R3M1)",
+      "categorySlug": "tai-nghe",
+      "brandSlug": "razer",
+      "price": 3990000,
+      "stockQuantity": 6,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-HEAD-004",
+      "name": "Tai nghe không dây Logitech G733 LIGHTSPEED (981-000864)",
+      "categorySlug": "tai-nghe",
+      "brandSlug": "logitech",
+      "price": 2890000,
+      "stockQuantity": 9,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-SPK-001",
+      "name": "Loa máy tính Edifier R1280T 2.0 Bookshelf Speaker (42W RMS)",
+      "categorySlug": "loa",
+      "brandSlug": "edifier",
+      "price": 1390000,
+      "stockQuantity": 15,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-SPK-002",
+      "name": "Loa máy tính Logitech Z623 2.1 Speaker (200W THX) (980-000402)",
+      "categorySlug": "loa",
+      "brandSlug": "logitech",
+      "price": 2890000,
+      "stockQuantity": 10,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-SPK-003",
+      "name": "Loa máy tính Edifier S3000 Pro 2.0 Hi-Res Bookshelf Speaker (256W RMS)",
+      "categorySlug": "loa",
+      "brandSlug": "edifier",
+      "price": 8990000,
+      "stockQuantity": 3,
+      "warrantyMonths": 12,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-CHAIR-001",
+      "name": "Ghế gaming Secretlab TITAN Evo 2022 (Regular) SoftWeave Plus",
+      "categorySlug": "ghe-gaming",
+      "brandSlug": "secretlab",
+      "price": 9990000,
+      "stockQuantity": 8,
+      "warrantyMonths": 60,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-CHAIR-002",
+      "name": "Ghế gaming DXRacer Formula Series F08 Regular Black/Red (OH/FH08/NR)",
+      "categorySlug": "ghe-gaming",
+      "brandSlug": "dxracer",
+      "price": 4990000,
+      "stockQuantity": 12,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-CHAIR-003",
+      "name": "Ghế gaming E-WIN Champion Series CPA Gaming Chair",
+      "categorySlug": "ghe-gaming",
+      "brandSlug": "e-win",
+      "price": 6490000,
+      "stockQuantity": 5,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-FAN-001",
+      "name": "Quạt case Noctua NF-A12x25 PWM 120mm 4-Pin (2000RPM)",
+      "categorySlug": "quat-case",
+      "brandSlug": "noctua",
+      "price": 490000,
+      "stockQuantity": 50,
+      "warrantyMonths": 72,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-FAN-002",
+      "name": "Quạt case Corsair LL120 RGB 120mm Triple Pack (CO-9050072-WW)",
+      "categorySlug": "quat-case",
+      "brandSlug": "corsair",
+      "price": 1290000,
+      "stockQuantity": 20,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-FAN-003",
+      "name": "Quạt case Lian Li UNI FAN SL120 V2 120mm Triple Pack (G99.12S2W3.10)",
+      "categorySlug": "quat-case",
+      "brandSlug": "lian-li",
+      "price": 1590000,
+      "stockQuantity": 15,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-FAN-004",
+      "name": "Quạt case Deepcool RF120M 120mm RGB Triple Pack (DP-FRGB-RF120M-3P)",
+      "categorySlug": "quat-case",
+      "brandSlug": "deepcool",
+      "price": 590000,
+      "stockQuantity": 25,
+      "warrantyMonths": 24,
+      "attributes": {}
+    },
+    {
+      "sku": "SEED-AIR-001",
+      "name": "Tản nhiệt CPU Noctua NH-U12S Redux 120mm Single Tower (AM4/AM5/LGA1700/LGA1851)",
+      "categorySlug": "tan-nhiet-cpu-air",
+      "brandSlug": "noctua",
+      "price": 990000,
+      "stockQuantity": 10,
+      "warrantyMonths": 72,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "cooler-height": 158
+      }
+    },
+    {
+      "sku": "SEED-AIR-002",
+      "name": "Tản nhiệt CPU DeepCool AK620 ZERO DARK 6 heatpipe 120mm Dual Tower (AM4/AM5/LGA1700)",
+      "categorySlug": "tan-nhiet-cpu-air",
+      "brandSlug": "deepcool",
+      "price": 1290000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700"
+        ],
+        "cooler-height": 160
+      }
+    },
+    {
+      "sku": "SEED-AIR-003",
+      "name": "Tản nhiệt CPU be quiet! Dark Rock 4 6 heatpipe 135mm Single Fan (AM4/AM5/LGA1700)",
+      "categorySlug": "tan-nhiet-cpu-air",
+      "brandSlug": "be-quiet",
+      "price": 1490000,
+      "stockQuantity": 6,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700"
+        ],
+        "cooler-height": 160
+      }
+    },
+    {
+      "sku": "SEED-AIR-004",
+      "name": "Tản nhiệt CPU Cooler Master Hyper 212 Halo White 4 heatpipe 120mm (AM4/AM5/LGA1700/LGA1851)",
+      "categorySlug": "tan-nhiet-cpu-air",
+      "brandSlug": "cooler-master",
+      "price": 690000,
+      "stockQuantity": 15,
+      "warrantyMonths": 24,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "cooler-height": 154
+      }
+    },
+    {
+      "sku": "SEED-AIR-005",
+      "name": "Tản nhiệt CPU Thermaltake UX210 ARGB 5 heatpipe 120mm (AM4/AM5/LGA1700/LGA1851)",
+      "categorySlug": "tan-nhiet-cpu-air",
+      "brandSlug": "thermaltake",
+      "price": 490000,
+      "stockQuantity": 20,
+      "warrantyMonths": 24,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "cooler-height": 153
+      }
+    },
+    {
+      "sku": "SEED-AIO-001",
+      "name": "Tản nhiệt nước AIO NZXT Kraken 360 RGB 360mm (RL-KR360-B1) AM4/AM5/LGA1700/LGA1851",
+      "categorySlug": "tan-nhiet-cpu-aio",
+      "brandSlug": "nzxt",
+      "price": 3490000,
+      "stockQuantity": 8,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "radiator-size": "360"
+      }
+    },
+    {
+      "sku": "SEED-AIO-002",
+      "name": "Tản nhiệt nước AIO Corsair iCUE H150i Elite LCD XT 360mm (CW-9060074-WW) AM4/AM5/LGA1700/LGA1851",
+      "categorySlug": "tan-nhiet-cpu-aio",
+      "brandSlug": "corsair",
+      "price": 4290000,
+      "stockQuantity": 5,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "radiator-size": "360"
+      }
+    },
+    {
+      "sku": "SEED-AIO-003",
+      "name": "Tản nhiệt nước AIO Deepcool LT240 240mm (R-LT240-BKAMNF-G) AM4/AM5/LGA1700/LGA1851",
+      "categorySlug": "tan-nhiet-cpu-aio",
+      "brandSlug": "deepcool",
+      "price": 2490000,
+      "stockQuantity": 10,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "radiator-size": "240"
+      }
+    },
+    {
+      "sku": "SEED-AIO-004",
+      "name": "Tản nhiệt nước AIO be quiet! Pure Loop 2 FX 280mm (BW014) AM4/AM5/LGA1700/LGA1851",
+      "categorySlug": "tan-nhiet-cpu-aio",
+      "brandSlug": "be-quiet",
+      "price": 2990000,
+      "stockQuantity": 7,
+      "warrantyMonths": 36,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ],
+        "radiator-size": "280"
+      }
+    },
+    {
+      "sku": "SEED-CUSTOM-001",
+      "name": "Tản nhiệt nước Custom Bykski Full DIY Kit 360mm (AM4/AM5/LGA1700/LGA1851) Soft Tubing",
+      "categorySlug": "tan-nhiet-cpu-custom",
+      "brandSlug": "thermaltake",
+      "price": 8990000,
+      "stockQuantity": 2,
+      "warrantyMonths": 12,
+      "attributes": {
+        "socket-cpu": [
+          "AM4",
+          "AM5",
+          "LGA 1700",
+          "LGA 1851"
+        ]
+      }
+    },
+    {
+      "sku": "SEED-CUSTOM-002",
+      "name": "Tản nhiệt nước Custom EK Quantum Power Kit 360 (AM5/LGA1851) Hard Tubing",
+      "categorySlug": "tan-nhiet-cpu-custom",
+      "brandSlug": "nzxt",
+      "price": 14990000,
+      "stockQuantity": 1,
+      "warrantyMonths": 12,
+      "attributes": {
+        "socket-cpu": [
+          "AM5",
+          "LGA 1851"
+        ]
+      }
+    }
+  ]
+}
