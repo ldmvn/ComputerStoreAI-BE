@@ -4,6 +4,7 @@ import { prisma } from '../config/prisma.js';
 import { findSafeUserById } from '../repositories/user.repository.js';
 import { AuthAccountDisabledError } from './auth.service.js';
 import { createAccessToken } from './token.service.js';
+import { getUserPermissions } from './rbac.service.js';
 
 export class GoogleAuthError extends Error {
   constructor(code, statusCode = 400) {
@@ -72,5 +73,7 @@ export async function exchangeGoogleLogin(code, verifier) {
   if (consumed.count !== 1) throw new GoogleAuthError('invalid_exchange');
   const user = await findSafeUserById(ticket.userId);
   if (!user || !user.isActive) throw new AuthAccountDisabledError();
-  return { user, token: createAccessToken(user) };
+  const perms = await getUserPermissions(ticket.userId);
+  const permissions = perms.has('*') ? ['*'] : [...perms];
+  return { user, token: createAccessToken(user), permissions };
 }

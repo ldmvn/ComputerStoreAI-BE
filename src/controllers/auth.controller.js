@@ -33,10 +33,10 @@ export async function login(req, res, next) {
 
   try {
     const rememberMe = req.body.rememberMe === true;
-    const { token, user } = await loginUser(values);
+    const { token, user, permissions } = await loginUser(values);
     await logActivity({ req, userId: user.id, action: 'login', module: 'account', targetId: user.id, description: 'Đăng nhập' });
     res.cookie(ACCESS_COOKIE, token, cookieOpts(rememberMe));
-    return res.status(200).json({ success: true, message: 'Đăng nhập thành công.', token, user });
+    return res.status(200).json({ success: true, message: 'Đăng nhập thành công.', token, user, permissions });
   } catch (error) {
     return next(error);
   }

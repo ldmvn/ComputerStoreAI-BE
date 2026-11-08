@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { createUser, findSafeUserById, findUserByEmail, findUserByIdentifier, findUserByPhone, findUserById, updateUserById } from '../repositories/user.repository.js';
 import { createAccessToken } from './token.service.js';
+import { getUserPermissions } from './rbac.service.js';
 
 export class AuthConflictError extends Error {
   constructor(field, message) {
@@ -50,7 +51,9 @@ export async function loginUser({ identifier, password }) {
   if (!user.isActive) throw new AuthAccountDisabledError();
 
   const safeUser = await findSafeUserById(user.id);
-  return { token: createAccessToken(user), user: safeUser };
+  const perms = await getUserPermissions(user.id);
+  const permissions = perms.has('*') ? ['*'] : [...perms];
+  return { token: createAccessToken(user), user: safeUser, permissions };
 }
 
 const ALLOWED_GENDERS = new Set(['male', 'female', 'other', '']);
@@ -74,7 +77,9 @@ export async function updateUserProfile(userId, { fullName, phone, gender }) {
 export async function getCurrentUser(userId) {
   const user = await findSafeUserById(userId);
   if (!user || !user.isActive) throw new AuthCredentialsError();
-  return user;
+  const perms = await getUserPermissions(userId);
+  const permissions = perms.has('*') ? ['*'] : [...perms];
+  return { ...user, permissions };
 }
 
 export class AuthWrongPasswordError extends Error {
