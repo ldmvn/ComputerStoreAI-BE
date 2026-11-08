@@ -1,5 +1,5 @@
 // ============================================================================
-// Server Entry Point — ComputerStoreAI Backend
+// Server Entry Point — ComputerStoreAI BE
 // ----------------------------------------------------------------------------
 // Phase 1: khởi tạo Express + middlewares cơ bản + health check.
 // Phase tiếp theo sẽ mount app.js (full app config) tại đây.
@@ -123,7 +123,7 @@ app.use(maintenanceGuard);
 app.get('/api/health', (_req, res) => {
   res.status(200).json({
     status: 'ok',
-    service: 'computerstoreai-backend',
+    service: 'computerstoreai-be',
     message: 'Backend is running!',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),

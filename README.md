@@ -53,8 +53,8 @@ scripts/                # Scripts tiện ích
 
 ```bash
 # Clone repo
-git clone https://github.com/ldmvn/ComputerStoreAI-Backend.git
-cd ComputerStoreAI-Backend
+git clone https://github.com/ldmvn/ComputerStoreAI-BE.git
+cd ComputerStoreAI-BE
 
 # Cài đặt dependencies
 npm install

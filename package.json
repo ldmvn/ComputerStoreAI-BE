@@ -1,5 +1,5 @@
 {
-  "name": "computerstoreai-backend",
+  "name": "computerstoreai-be",
   "version": "1.0.0",
   "description": "Backend API for ComputerStoreAI - E-commerce platform for PCs and Laptops",
   "private": true,
