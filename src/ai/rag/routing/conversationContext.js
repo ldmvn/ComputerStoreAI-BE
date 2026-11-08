@@ -1,7 +1,6 @@
 import { identifiers, normalize } from '../retrieval/text.js';
 import { resolveProductQuery } from './productContext.js';
 
-// Bounded, process-local and owner-scoped. Never retain order results or assistant prose.
 export class ConversationMemory {
   #sessions = new Map();
   constructor({ ttlMs = 30 * 60_000, maxSessions = 1000 } = {}) {
@@ -25,6 +24,22 @@ export class ConversationMemory {
   }
 }
 export const conversationMemory = new ConversationMemory();
+
+const MAX_MSG_LENGTH = 300;
+
+export function buildConversationHistory(turns) {
+  const history = [];
+  for (const turn of turns.slice(-4)) {
+    if (turn.userMessage) history.push({ role: 'user', content: turn.userMessage });
+    if (turn.assistantReply) history.push({ role: 'assistant', content: turn.assistantReply });
+  }
+  return history;
+}
+
+export function truncateForMemory(text, limit = MAX_MSG_LENGTH) {
+  if (!text || text.length <= limit) return text || '';
+  return text.slice(0, limit) + '…';
+}
 
 export function rewriteQuery(message, turns = [], { catalog = [] } = {}) {
   if (catalog.length || turns.at(-1)?.products?.length || turns.at(-1)?.pending?.length) return resolveProductQuery(message, turns, catalog);

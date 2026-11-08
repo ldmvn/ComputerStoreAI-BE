@@ -38,6 +38,7 @@ export class GeminiProvider extends AIProvider {
           parameters: t.parameters,
         })),
       }];
+      config.toolConfig = { functionCallingConfig: { mode: 'AUTO' } };
     }
     if (maxTokens) config.maxOutputTokens = maxTokens;
     if (temperature !== undefined) config.temperature = temperature;
@@ -106,6 +107,7 @@ export class GeminiProvider extends AIProvider {
           parameters: t.parameters,
         })),
       }];
+      config.toolConfig = { functionCallingConfig: { mode: 'AUTO' } };
     }
     if (maxTokens) config.maxOutputTokens = maxTokens;
     if (temperature !== undefined) config.temperature = temperature;

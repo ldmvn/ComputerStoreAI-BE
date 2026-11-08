@@ -14,7 +14,7 @@ function str(name) {
   return String(process.env[name] ?? '').trim();
 }
 
-const SUPPORTED_AI_PROVIDERS = new Set(['openai', 'gemini', 'python']);
+const SUPPORTED_AI_PROVIDERS = new Set(['openai', 'gemini', 'openrouter', 'deepseek', 'anthropic', 'python']);
 const SUPPORTED_VECTOR_STORES = new Set(['qdrant', 'memory', 'json']);
 const SUPPORTED_EMBEDDING_PROVIDERS = new Set(['openai', 'gemini']);
 
@@ -22,6 +22,9 @@ export const aiConfig = Object.freeze({
   enabled: flag('AI_ENABLED'),
   provider: str('AI_PROVIDER').toLowerCase(),
   model: str('AI_MODEL'),
+
+  buildPcProvider: (str('AI_BUILDPC_PROVIDER') || str('AI_PROVIDER')).toLowerCase(),
+  buildPcModel: str('AI_BUILDPC_MODEL') || str('AI_MODEL'),
 
   ragEnabled: flag('RAG_ENABLED'),
   vectorStoreProvider: str('VECTOR_STORE_PROVIDER').toLowerCase(),
@@ -53,6 +56,6 @@ export function getAiStatus() {
     enabled: aiConfig.enabled,
     chatAvailable: isChatConfigured(),
     ragAvailable: isRagConfigured(),
-    buildPcAvailable: isChatConfigured(), // AI Build PC rides on the same chat provider
+    buildPcAvailable: aiConfig.enabled && SUPPORTED_AI_PROVIDERS.has(aiConfig.buildPcProvider) && aiConfig.buildPcModel.length > 0,
   };
 }

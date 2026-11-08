@@ -1,4 +1,4 @@
-import { isChatConfigured } from '../config/ai.config.js';
+import { aiConfig } from '../config/ai.config.js';
 import { providerUnavailableError } from '../providers/aiProvider.interface.js';
 import { queryRag, isRagReady } from '../rag/rag.service.js';
 import { productSearchToolDefinition, searchProducts } from '../tools/productSearch.tool.js';
@@ -108,7 +108,7 @@ case-fan → "quat-case", cooler-air → "tan-nhiet-cpu-air", cooler-aio → "ta
 
 QUY TRÌNH:
 1. Phân tích yêu cầu → xác định mục đích, game, độ phân giải, FPS, ngân sách, sở thích.
-2. Tìm linh kiện bằng search_products — mỗi danh mục tìm một lần với limit 8-10 để có nhiều lựa chọn giá.
+2. QUAN TRỌNG: Danh sách sản phẩm đã được tìm sẵn ở cuối prompt. CHỌN TRỰC TIẾP từ đó bằng productId. Chỉ gọi search_products nếu cần tìm thêm danh mục phụ (tản nhiệt, màn hình...) hoặc tìm model cụ thể user yêu cầu.
 3. Từ kết quả tìm kiếm, chọn linh kiện cho 3 bản:
    - Tiết kiệm: rẻ nhất có thể, đáp ứng nhu cầu cơ bản
    - Tối ưu: cân bằng giá/hiệu năng tốt nhất (BẢN AI KHUYÊN DÙNG)
@@ -216,84 +216,147 @@ function extractJsonFromResponse(text) {
   return null;
 }
 
+const BUILDPC_TIMEOUT_MS = 90_000;
+const MAX_ROUNDS = 5;
+
+const CORE_CATEGORIES = [
+  { slug: 'cpu', label: 'CPU' },
+  { slug: 'main', label: 'Mainboard' },
+  { slug: 'ram', label: 'RAM' },
+  { slug: 'ssd-m2', label: 'SSD' },
+  { slug: 'vga', label: 'VGA' },
+  { slug: 'nguon', label: 'PSU' },
+  { slug: 'vo-case', label: 'Case' },
+];
+
+async function prefetchCatalog(budget, tools) {
+  const perSlot = Math.round(budget * 0.4);
+  const searches = CORE_CATEGORIES.map(cat =>
+    tools.search_products.run({ category: cat.slug, maxPrice: perSlot, limit: 10 })
+      .then(r => ({ slug: cat.slug, label: cat.label, items: r.items, total: r.total }))
+      .catch(() => ({ slug: cat.slug, label: cat.label, items: [], total: 0 }))
+  );
+  return Promise.all(searches);
+}
+
+function formatPrefetchedCatalog(catalog) {
+  const sections = catalog
+    .filter(c => c.items.length)
+    .map(c => {
+      const lines = c.items.map(p =>
+        `  id=${p.id} | ${p.name} | ${p.price.toLocaleString('vi-VN')}đ | ${p.stockStatus}`
+      ).join('\n');
+      return `[${c.label}] (${c.total} sản phẩm)\n${lines}`;
+    });
+  return sections.join('\n\n');
+}
+
 export function createBuildPcService({ provider, tools = TOOLS, retrieve = queryRag, ragReady = isRagReady } = {}) {
   const getProvider = provider || (() => activeProvider);
 
   return async function generateBuildConfig(rawInput) {
-    if (!isChatConfigured()) throw providerUnavailableError();
+    if (!aiConfig.enabled) throw providerUnavailableError();
     const prov = getProvider();
-    if (!prov) throw providerUnavailableError();
+    if (!prov) {
+      const err = new Error('Tính năng AI Build PC chưa khả dụng.');
+      err.statusCode = 501;
+      err.code = 'AI_PROVIDER_UNAVAILABLE';
+      throw err;
+    }
 
     const input = validateBuildPcRequest(rawInput);
     const started = performance.now();
-    const metrics = { geminiCalls: 0, embeddingCalls: 0, toolCalls: 0, searchCalls: 0, compatCalls: 0 };
+    const deadline = started + BUILDPC_TIMEOUT_MS;
+    const metrics = { geminiCalls: 0, embeddingCalls: 0, toolCalls: 0, searchCalls: 0, compatCalls: 0, prefetchMs: 0 };
 
-    let ragContext = '';
-    if (ragReady()) {
-      try {
-        const rag = await retrieve({ query: `Build PC ${input.purposeLabel || ''} ngân sách ${input.budget}`, topK: 3, complexity: 'simple' });
-        ragContext = rag.contextText || '';
-        metrics.embeddingCalls = rag.diagnostics?.embeddingCalls || 0;
-      } catch { /* RAG failure is non-fatal */ }
+    const prefetchStart = performance.now();
+    const [catalog, ragResult] = await Promise.all([
+      prefetchCatalog(input.budget, tools),
+      ragReady()
+        ? retrieve({ query: `Build PC ${input.purposeLabel || ''} ngân sách ${input.budget}`, topK: 3, complexity: 'simple' }).catch(() => null)
+        : null,
+    ]);
+    metrics.prefetchMs = Math.round(performance.now() - prefetchStart);
+    metrics.searchCalls += CORE_CATEGORIES.length;
+    metrics.toolCalls += CORE_CATEGORIES.length;
+
+    const ragContext = ragResult?.contextText || '';
+    if (ragResult?.diagnostics) metrics.embeddingCalls = ragResult.diagnostics.embeddingCalls || 0;
+
+    const catalogText = formatPrefetchedCatalog(catalog);
+    const executed = new Map();
+    for (const cat of catalog) {
+      const key = JSON.stringify(['search_products', { category: cat.slug, maxPrice: Math.round(input.budget * 0.4), limit: 10 }]);
+      executed.set(key, { items: cat.items, total: cat.total });
     }
+
+    console.log(`[AI BuildPC] Prefetch done in ${metrics.prefetchMs}ms — ${catalog.reduce((s, c) => s + c.items.length, 0)} products across ${CORE_CATEGORIES.length} categories`);
 
     const messages = [
       { role: 'system', content: buildSystemPrompt(ragContext) },
-      { role: 'user', content: buildUserPrompt(input) },
+      { role: 'user', content: buildUserPrompt(input) + `\n\n--- SẢN PHẨM HIỆN CÓ (đã tìm sẵn, chọn từ đây, chỉ gọi search_products nếu cần tìm thêm) ---\n${catalogText}` },
     ];
     const toolDefs = Object.values(tools).map(t => t.definition);
 
+    function checkTimeout() {
+      if (performance.now() > deadline) {
+        const err = new Error('Build PC vượt thời gian cho phép. Vui lòng thử lại.');
+        err.statusCode = 504;
+        throw err;
+      }
+    }
+
     async function complete(withTools = true) {
+      checkTimeout();
       metrics.geminiCalls++;
-      console.log(`[AI BuildPC] Calling Gemini #${metrics.geminiCalls} (tools=${withTools}, msgs=${messages.length})`);
+      console.log(`[AI BuildPC] AI call #${metrics.geminiCalls} (tools=${withTools}, msgs=${messages.length})`);
       try {
         const result = await prov.complete({
           messages,
           ...(withTools ? { tools: toolDefs } : {}),
           maxTokens: 8192,
         });
-        console.log(`[AI BuildPC] Gemini #${metrics.geminiCalls} returned: toolCalls=${result.toolCalls?.length || 0}, text=${(result.content || '').length} chars`);
+        console.log(`[AI BuildPC] AI call #${metrics.geminiCalls} returned: toolCalls=${result.toolCalls?.length || 0}, text=${(result.content || '').length} chars`);
         return result;
       } catch (err) {
-        console.error(`[AI BuildPC] Gemini #${metrics.geminiCalls} error:`, err.message, `statusCode=${err.statusCode}`);
+        console.error(`[AI BuildPC] AI call #${metrics.geminiCalls} error:`, err.message, `statusCode=${err.statusCode}`);
         throw err;
       }
     }
 
     let completion = await complete();
-    console.log('[AI BuildPC] Initial completion:', completion.toolCalls?.length ? `${completion.toolCalls.length} tool calls` : `text ${(completion.content || '').length} chars`);
-    const executed = new Map();
-    const MAX_ROUNDS = 10;
 
     async function runToolRounds() {
-    for (let round = 0; round < MAX_ROUNDS && completion.toolCalls?.length; round++) {
-      const roundResults = [];
-      for (const call of completion.toolCalls.slice(0, 5)) {
-        const tool = tools[call.name];
-        let result;
-        const key = JSON.stringify([call.name, call.arguments]);
-        if (!tool) { roundResults.push({ name: call.name, result: { error: 'Tool không hợp lệ.' } }); continue; }
-        try {
-          if (executed.has(key)) result = executed.get(key);
-          else { result = await tool.run(call.arguments ?? {}); executed.set(key, result); }
-          metrics.toolCalls++;
-          if (call.name === 'search_products') metrics.searchCalls++;
-          if (call.name === 'check_build_compatibility') metrics.compatCalls++;
-        } catch (e) {
-          result = { error: e.message };
-        }
-        roundResults.push({ name: call.name, result });
-      }
+      for (let round = 0; round < MAX_ROUNDS && completion.toolCalls?.length; round++) {
+        checkTimeout();
+        const calls = completion.toolCalls.slice(0, 5);
+        const roundResults = await Promise.all(calls.map(async (call) => {
+          const tool = tools[call.name];
+          if (!tool) return { id: call.id, name: call.name, result: { error: 'Tool không hợp lệ.' } };
+          const key = JSON.stringify([call.name, call.arguments]);
+          let result;
+          try {
+            if (executed.has(key)) result = executed.get(key);
+            else { result = await tool.run(call.arguments ?? {}); executed.set(key, result); }
+            metrics.toolCalls++;
+            if (call.name === 'search_products') metrics.searchCalls++;
+            if (call.name === 'check_build_compatibility') metrics.compatCalls++;
+          } catch (e) {
+            result = { error: e.message };
+          }
+          return { id: call.id, name: call.name, result };
+        }));
 
-      const assistantMsg = { role: 'assistant', content: completion.content || '', toolCalls: completion.toolCalls.slice(0, 5) };
-      if (completion._rawModelContent) assistantMsg._rawModelContent = completion._rawModelContent;
-      const toolMsgs = roundResults.map(tc => ({
-        role: 'tool', name: tc.name,
-        content: JSON.stringify(compactResult(tc.name, tc.result)),
-      }));
-      messages.push(assistantMsg, ...toolMsgs);
-      completion = await complete(round < MAX_ROUNDS - 1);
-    }
+        const assistantMsg = { role: 'assistant', content: completion.content || '', toolCalls: calls };
+        if (completion._rawModelContent) assistantMsg._rawModelContent = completion._rawModelContent;
+        const toolMsgs = roundResults.map(tc => ({
+          role: 'tool', name: tc.name, toolCallId: tc.id,
+          content: JSON.stringify(compactResult(tc.name, tc.result)),
+        }));
+        messages.push(assistantMsg, ...toolMsgs);
+        console.log(`[AI BuildPC] Tool round ${round + 1}: ${roundResults.map(r => `${r.name}→${r.result?.items?.length ?? 'ok'}`).join(', ')}`);
+        completion = await complete(round < MAX_ROUNDS - 1);
+      }
     }
     await runToolRounds();
 
@@ -314,8 +377,8 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
     if (!parsed?.tiers?.length && completion.toolCalls?.length) {
       const assistantMsg = { role: 'assistant', content: completion.content || '', toolCalls: completion.toolCalls };
       if (completion._rawModelContent) assistantMsg._rawModelContent = completion._rawModelContent;
-      const toolResults = [];
-      for (const call of completion.toolCalls.slice(0, 5)) {
+      const calls = completion.toolCalls.slice(0, 5);
+      const toolResults = await Promise.all(calls.map(async (call) => {
         const tool = tools[call.name];
         const key = JSON.stringify([call.name, call.arguments]);
         let result;
@@ -323,10 +386,10 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
           result = (tool && executed.has(key)) ? executed.get(key)
             : tool ? await tool.run(call.arguments ?? {}) : { error: 'Tool không hợp lệ.' };
         } catch (e) { result = { error: e.message }; }
-        toolResults.push({ name: call.name, result });
-      }
+        return { id: call.id, name: call.name, result };
+      }));
       messages.push(assistantMsg, ...toolResults.map(tc => ({
-        role: 'tool', name: tc.name,
+        role: 'tool', name: tc.name, toolCallId: tc.id,
         content: JSON.stringify(compactResult(tc.name, tc.result)),
       })));
       messages.push({ role: 'user', content: 'Hãy trả về kết quả 3 cấu hình PC dưới dạng JSON block theo format đã yêu cầu (với parsedRequirements, tiers, selectedTier). Không gọi thêm tool.' });
@@ -357,10 +420,11 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       } catch { return []; }
     };
     for (let attempt = 0; attempt < 2; attempt++) {
+      checkTimeout();
       const bad = [];
+      const allErrs = await Promise.all(parsed.tiers.map(tier => tierErrors(tier)));
       for (let i = 0; i < parsed.tiers.length; i++) {
-        const errs = await tierErrors(parsed.tiers[i]);
-        if (errs.length) bad.push({ index: i, name: parsed.tiers[i].name, errors: errs.map(e => e.message || e.code || JSON.stringify(e)) });
+        if (allErrs[i].length) bad.push({ index: i, name: parsed.tiers[i].name, errors: allErrs[i].map(e => e.message || e.code || JSON.stringify(e)) });
       }
       if (!bad.length) break;
       messages.push({ role: 'assistant', content: responseText });
@@ -374,30 +438,25 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       parsed = fixed;
     }
 
-    const validatedTiers = [];
-    for (const tier of parsed.tiers) {
-      if (!tier.items?.length) continue;
+    const tiersToValidate = parsed.tiers.filter(t => t.items?.length);
+    for (const tier of tiersToValidate) {
+      for (const it of tier.items) { if (!it.productId && it.id) it.productId = it.id; }
+    }
 
-      for (const it of tier.items) {
-        if (!it.productId && it.id) it.productId = it.id;
-      }
-
+    const validations = await Promise.all(tiersToValidate.map(async (tier) => {
       const configItems = tier.items
         .filter(it => it.productId && it.slot)
         .map(it => ({ slot: it.slot, productId: it.productId, quantity: it.quantity || 1 }));
+      try { return { data: (await validateBuildConfig(configItems))?.data, error: null }; }
+      catch (e) { return { data: null, error: e.message }; }
+    }));
 
-      let validation = null;
-      let validationError = null;
-      try {
-        validation = await validateBuildConfig(configItems);
-      } catch (e) {
-        validationError = e.message;
-      }
-
+    const validatedTiers = tiersToValidate.map((tier, idx) => {
+      const validation = validations[idx];
       const items = tier.items
         .filter(it => it.productId && it.slot)
         .map(aiItem => {
-          const validated = validation?.data?.items?.find(v => v.slot === aiItem.slot);
+          const validated = validation.data?.items?.find(v => v.slot === aiItem.slot);
           return {
             slot: aiItem.slot,
             productId: aiItem.productId,
@@ -412,25 +471,23 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
             slug: validated?.slug || '',
           };
         });
-
-      const totalPrice = validation?.data?.total ?? items.reduce((s, it) => s + it.lineTotal, 0);
-
-      validatedTiers.push({
-        name: tier.name || `Bản ${validatedTiers.length + 1}`,
+      const totalPrice = validation.data?.total ?? items.reduce((s, it) => s + it.lineTotal, 0);
+      return {
+        name: tier.name || `Bản ${idx + 1}`,
         description: tier.description || '',
         items,
         totalPrice,
         budgetDiff: totalPrice - input.budget,
         fpsEstimates: Array.isArray(tier.fpsEstimates) ? tier.fpsEstimates : [],
-        compatibilityStatus: validation?.data?.issues?.some(i => i.level === 'error') ? 'fail'
-          : validation?.data?.issues?.length ? 'warning' : 'pass',
-        compatibilityIssues: validation?.data?.issues || [],
-        compatibilityMissing: validation?.data?.missing || [],
-        canAddToCart: validation?.data?.canAddToCart ?? false,
-        isComplete: validation?.data?.isComplete ?? false,
-        validationError,
-      });
-    }
+        compatibilityStatus: validation.data?.issues?.some(i => i.level === 'error') ? 'fail'
+          : validation.data?.issues?.length ? 'warning' : 'pass',
+        compatibilityIssues: validation.data?.issues || [],
+        compatibilityMissing: validation.data?.missing || [],
+        canAddToCart: validation.data?.canAddToCart ?? false,
+        isComplete: validation.data?.isComplete ?? false,
+        validationError: validation.error,
+      };
+    });
 
     if (!validatedTiers.length) {
       return {

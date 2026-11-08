@@ -73,6 +73,10 @@ npm run dev
 
 Server sẽ chạy tại `http://localhost:5000`.
 
+### Thư mục `uploads/` (ảnh sản phẩm, banner, logo, review)
+
+`uploads/` nằm trong `.gitignore` nên **không có trong repo**. DB chỉ lưu đường dẫn dạng `/media/...`, nếu thiếu file thì ảnh sẽ hiện alt text. Sau khi clone cần copy/khôi phục thư mục này từ bản backup hoặc máy cũ vào `uploads/` (giữ nguyên cấu trúc `products/`, `brands/`, `banners/`, ...), hoặc trỏ `MEDIA_STORAGE_DIR` tới nơi chứa ảnh.
+
 ## API Endpoints
 
 | Nhóm | Đường dẫn | Mô tả |

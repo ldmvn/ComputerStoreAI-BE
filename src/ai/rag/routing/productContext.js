@@ -51,6 +51,30 @@ function mention(part, catalog) {
     missing: matching.length === 0, ambiguous: matching.length > 1 };
 }
 
+const CATEGORY_KEYWORDS = [
+  [/\b(card|vga|rtx|gtx|geforce|radeon)\b/i, 'card màn hình'],
+  [/\b(cpu|core i[3579]|ryzen|xeon)\b/i, 'CPU'],
+  [/\b(ram|ddr[345])\b/i, 'RAM'],
+  [/\b(ssd|hdd|nvme|o cung)\b/i, 'ổ cứng'],
+  [/\b(mainboard|bo mach)\b/i, 'mainboard'],
+  [/\b(nguon|psu)\b/i, 'nguồn'],
+  [/\b(laptop)\b/i, 'laptop'],
+  [/\b(man hinh|monitor)\b/i, 'màn hình'],
+  [/\b(chuot|mouse)\b/i, 'chuột'],
+  [/\b(ban phim|keyboard)\b/i, 'bàn phím'],
+  [/\b(tai nghe|headset)\b/i, 'tai nghe'],
+  [/\b(tan nhiet|cooler)\b/i, 'tản nhiệt'],
+  [/\b(case|vo may)\b/i, 'case'],
+];
+
+function extractCategoryFromEntities(entities) {
+  const text = normalize(entities.join(' '));
+  for (const [pattern, label] of CATEGORY_KEYWORDS) {
+    if (pattern.test(text)) return label;
+  }
+  return null;
+}
+
 const REF = /(?<![\p{L}\p{N}])(?:sản phẩm (?:đó|này|trên)|cái (?:này|đó)|con (?:này|đó)|ổ (?:này|đó)|mẫu (?:này|đó|trên)|nó)(?![\p{L}\p{N}])/giu;
 const NREF = /\b(?:san pham (?:do|nay|tren)|cai (?:nay|do)|con (?:nay|do)|o (?:nay|do)|mau (?:nay|do|tren)|no)\b/;
 const uniq = products => [...new Map(products.map(p => [p.productId || `${p.models?.join(',')}:${p.capacity}`, p])).values()];
@@ -58,23 +82,34 @@ const uniq = products => [...new Map(products.map(p => [p.productId || `${p.mode
 export function resolveProductQuery(message, turns, catalog) {
   const text = String(message).trim(), n = normalize(text), last = turns.at(-1);
   const previous = last?.products || [];
+  const recentProducts = uniq(turns.slice(-3).flatMap(t => t?.products || []));
   const reference = NREF.test(n);
-  const plural = /\b(ca hai|hai con|hai san pham)\b/.test(n);
+  const plural = /\b(ca hai|hai con|2 con|hai san pham|2 san pham)\b/.test(n);
   const ordinal = /\b(con dau|con thu 1|con truoc|con sau|con thu 2)\b/.test(n);
   const comparison = /\b(so sanh|so voi|hon)\b/.test(n);
   const explicit = uniq(text.split(/\s+(?:với|và|so với|vs\.?|versus)\s+/iu).map(part => mention(part, catalog)).filter(Boolean));
   const elliptical = /^(con |the |vay |gia|bao hanh|co |ho tro|dung |choi |ban |phien ban |so voi)/.test(n) && !explicit.length;
   const courtesy = /^(cam on( ban)?|thanks?|ok|vang|da)[.!\s]*$/.test(n);
+  const superlative = !explicit.length && /\b(re nhat|dat nhat|tot nhat|manh nhat|re hon|dat hon|tot hon|con nao re|con nao dat)\b/.test(n) && n.length < 40;
   const base = { query: text, rewritten: false, ambiguous: false, products: explicit, entities: explicit.map(p => p.label), historyTurns: 0, courtesy };
   if (courtesy) return { ...base, products: previous, entities: previous.map(p => p.label) };
+
+  if (superlative && last?.entities?.length) {
+    const category = extractCategoryFromEntities(last.entities);
+    if (category) {
+      return { ...base, query: `${category} ${text}`, rewritten: true, entities: [], historyTurns: 1 };
+    }
+  }
+
   let referents = [];
-  if (reference || plural || ordinal || elliptical || /^con so voi|^vay so voi|^so voi/.test(n)) {
-    referents = previous;
+  const implicitComparison = comparison && !explicit.length && recentProducts.length > 1;
+  if (reference || plural || ordinal || elliptical || implicitComparison || /^con so voi|^vay so voi|^so voi/.test(n)) {
+    referents = (plural || comparison || implicitComparison) ? recentProducts : previous;
     if (ordinal) referents = /\b(con sau|con thu 2)\b/.test(n) ? previous.slice(1, 2) : previous.slice(0, 1);
     if (!referents.length && (reference || plural || ordinal)) {
       return { ...base, ambiguous: true, clarification: explicit.length ? `Bạn muốn so sánh ${explicit.map(p => p.label).join(' và ')} với sản phẩm nào?` : 'Bạn muốn hỏi sản phẩm nào? Vui lòng cho mình tên sản phẩm hoặc SKU.' };
     }
-    if (referents.length > 1 && !plural && !ordinal) {
+    if (referents.length > 1 && !plural && !ordinal && !comparison) {
       return { ...base, ambiguous: true, products: previous, clarification: `Bạn muốn nói đến ${previous.map(p => p.label).join(' hay ')}?${explicit.length ? ' Sản phẩm so sánh mới là ' + explicit.map(p => p.label).join(' và ') + '.' : ''}` };
     }
   }

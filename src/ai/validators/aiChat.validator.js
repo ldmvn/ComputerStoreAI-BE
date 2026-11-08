@@ -1,4 +1,5 @@
 import { aiConfig } from '../config/ai.config.js';
+import { PAGE_KEYS } from '../config/pageContext.js';
 
 const ALLOWED_CONTEXTS = new Set(['general', 'product_advice', 'order_lookup', 'build_pc', 'faq']);
 
@@ -9,8 +10,8 @@ function chatError(message) {
 }
 
 /**
- * @param {{ message?: unknown, conversationId?: unknown, context?: unknown }} body
- * @returns {{ message: string, conversationId: string|null, context: string }}
+ * @param {{ message?: unknown, conversationId?: unknown, context?: unknown, currentProductId?: unknown }} body
+ * @returns {{ message: string, conversationId: string|null, context: string, currentProductId: number|null }}
  */
 export function parseChatRequest(body = {}) {
   const message = typeof body.message === 'string' ? body.message.trim() : '';
@@ -39,5 +40,12 @@ export function parseChatRequest(body = {}) {
     context = body.context;
   }
 
-  return { message, conversationId, context };
+  // Optional storefront hint; a malformed value is ignored, never an error.
+  const rawProductId = body.currentProductId;
+  const currentProductId = typeof rawProductId === 'number' && Number.isSafeInteger(rawProductId) && rawProductId > 0 ? rawProductId : null;
+
+  // Closed set only: a client string never reaches the prompt.
+  const pageKey = typeof body.pageKey === 'string' && PAGE_KEYS.has(body.pageKey) ? body.pageKey : null;
+
+  return { message, conversationId, context, currentProductId, pageKey };
 }
