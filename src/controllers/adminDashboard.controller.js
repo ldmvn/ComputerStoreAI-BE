@@ -1,7 +1,7 @@
 import * as service from '../services/adminDashboard.service.js';
 
 const asyncHandler = fn => (req, res, next) => Promise.resolve(fn(req, res)).catch(next);
-const ALLOWED_RANGES = ['7d', '30d', 'month', '12m', 'custom'];
+const ALLOWED_RANGES = ['today', '7d', '30d', 'month', '12m', 'custom'];
 
 function safeRangeOf(req) {
   const { range, from, to } = req.query;

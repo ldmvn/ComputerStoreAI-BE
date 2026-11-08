@@ -5,11 +5,14 @@ import { prisma } from '../config/prisma.js';
 function startOfDay(d) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; }
 function endOfDay(d) { const x = new Date(d); x.setHours(23, 59, 59, 999); return x; }
 
-// range: '7d' | '30d' | 'month' | '12m' | 'custom'
+// range: 'today' | '7d' | '30d' | 'month' | '12m' | 'custom'
 export function resolveRange({ range = '7d', from, to } = {}) {
   const now = new Date();
   if (range === 'custom' && from && to) {
     return { start: startOfDay(new Date(from)), end: endOfDay(new Date(to)), bucket: 'day' };
+  }
+  if (range === 'today') {
+    return { start: startOfDay(now), end: endOfDay(now), bucket: 'day' };
   }
   if (range === '30d') {
     const start = startOfDay(now); start.setDate(start.getDate() - 29);
@@ -287,11 +290,63 @@ export async function getPaymentStats({ start, end }) {
 
 // ── Profit & loss ────────────────────────────────────────────────────────────
 
+// Percent change vs the previous period; null when the previous value is 0 (no baseline).
+// Uses |previous| so a loss turning into a profit reads as an increase.
+function changePercent(current, previous) {
+  if (!previous) return null;
+  return Math.round(((current - previous) / Math.abs(previous)) * 1000) / 10;
+}
+
+// Same rules as getProfitLoss, totals only: DELIVERED orders created in [start, end], revenue =
+// Order.subtotal, cost/profit only from lines with costPrice > 0.
+async function periodProfitTotals(start, end) {
+  const [revenueRows, lineRows] = await Promise.all([
+    prisma.$queryRaw`
+      SELECT COALESCE(SUM(o.subtotal), 0) AS revenue
+      FROM \`Order\` o
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end}
+    `,
+    prisma.$queryRaw`
+      SELECT COALESCE(SUM(oi.price * oi.quantity), 0) AS costedRevenue,
+             COALESCE(SUM(oi.costPrice * oi.quantity), 0) AS cost
+      FROM OrderItem oi
+      JOIN \`Order\` o ON o.id = oi.orderId
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end} AND oi.costPrice > 0
+    `,
+  ]);
+  const revenue = Number(revenueRows[0]?.revenue ?? 0);
+  const costedRevenue = Number(lineRows[0]?.costedRevenue ?? 0);
+  const cost = Number(lineRows[0]?.cost ?? 0);
+  const profit = costedRevenue - cost;
+  return { revenue, cost, profit, marginPercent: costedRevenue > 0 ? Math.round((profit / costedRevenue) * 1000) / 10 : 0 };
+}
+
+// Point-in-time snapshot of active stock (independent of the selected date range).
+async function inventorySnapshot() {
+  const rows = await prisma.$queryRaw`
+    SELECT
+      COALESCE(SUM(CASE WHEN costPrice > 0 THEN costPrice * stockQuantity END), 0) AS costValue,
+      COALESCE(SUM(CASE WHEN costPrice > 0 THEN price * stockQuantity END), 0) AS retailValue,
+      COALESCE(SUM(CASE WHEN costPrice > 0 THEN 1 ELSE 0 END), 0) AS productsCounted,
+      COALESCE(SUM(CASE WHEN costPrice IS NULL OR costPrice <= 0 THEN 1 ELSE 0 END), 0) AS productsMissingCost
+    FROM Product
+    WHERE isActive = 1 AND isDeleted = 0
+  `;
+  const r = rows[0] ?? {};
+  return {
+    costValue: Number(r.costValue ?? 0),
+    retailValue: Number(r.retailValue ?? 0),
+    productsCounted: Number(r.productsCounted ?? 0),
+    productsMissingCost: Number(r.productsMissingCost ?? 0),
+  };
+}
+
 // Revenue matches the dashboard KPI cards: DELIVERED orders, createdAt in range, Order.subtotal
 // (before voucher discount). Lines without a cost (NULL/0) are excluded from cost AND profit,
 // never treated as cost 0. Day buckets use the server's local date so no order is dropped.
 export async function getProfitLoss({ start, end, bucket }) {
-  const [orderRows, productRows, missingRows] = await Promise.all([
+  const prev = previousPeriod(start, end);
+  const [orderRows, productRows, missingRows, missingSampleRows, inventory, previousTotals] = await Promise.all([
     prisma.$queryRaw`
       SELECT o.id AS id, o.createdAt AS createdAt, o.subtotal AS subtotal,
         COALESCE(SUM(CASE WHEN oi.costPrice > 0 THEN oi.price * oi.quantity END), 0) AS costedRevenue,
@@ -302,7 +357,7 @@ export async function getProfitLoss({ start, end, bucket }) {
       GROUP BY o.id, o.createdAt, o.subtotal
     `,
     prisma.$queryRaw`
-      SELECT oi.productId AS productId, MAX(oi.name) AS name, MAX(oi.slug) AS slug,
+      SELECT oi.productId AS productId, MAX(oi.name) AS name, MAX(oi.slug) AS slug, MAX(oi.primaryImage) AS primaryImage,
         SUM(oi.quantity) AS quantitySold,
         SUM(oi.price * oi.quantity) AS revenue,
         SUM(oi.costPrice * oi.quantity) AS cost
@@ -318,6 +373,18 @@ export async function getProfitLoss({ start, end, bucket }) {
       WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end}
         AND (oi.costPrice IS NULL OR oi.costPrice <= 0)
     `,
+    prisma.$queryRaw`
+      SELECT MAX(oi.name) AS name
+      FROM OrderItem oi
+      JOIN \`Order\` o ON o.id = oi.orderId
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end}
+        AND (oi.costPrice IS NULL OR oi.costPrice <= 0)
+      GROUP BY oi.productId
+      ORDER BY SUM(oi.price * oi.quantity) DESC
+      LIMIT 5
+    `,
+    inventorySnapshot(),
+    periodProfitTotals(prev.start, prev.end),
   ]);
 
   const pad = (n) => String(n).padStart(2, '0');
@@ -353,7 +420,11 @@ export async function getProfitLoss({ start, end, bucket }) {
 
   const products = productRows.map(r => {
     const rev = Number(r.revenue), c = Number(r.cost);
-    return { productId: r.productId, name: r.name, slug: r.slug, quantitySold: Number(r.quantitySold), revenue: rev, cost: c, profit: rev - c };
+    return {
+      productId: r.productId, name: r.name, slug: r.slug, primaryImage: r.primaryImage ?? null,
+      quantitySold: Number(r.quantitySold), revenue: rev, cost: c, profit: rev - c,
+      marginPercent: rev > 0 ? Math.round(((rev - c) / rev) * 1000) / 10 : 0,
+    };
   });
 
   return {
@@ -366,6 +437,15 @@ export async function getProfitLoss({ start, end, bucket }) {
     topLoss: products.filter(p => p.profit < 0).sort((a, b) => a.profit - b.profit).slice(0, 5),
     missingCostItems: Number(missingRows[0]?.missingLines ?? 0),
     missingCostProducts: Number(missingRows[0]?.products ?? 0),
+    missingCostSamples: missingSampleRows.map(r => r.name).filter(Boolean),
+    inventory,
+    previous: {
+      ...previousTotals,
+      changePercent: {
+        revenue: changePercent(revenue, previousTotals.revenue),
+        profit: changePercent(profit, previousTotals.profit),
+      },
+    },
   };
 }
 
