@@ -1,4 +1,4 @@
-import { createProduct, getFilterMetadata, getProduct, getProductBySlug, listCategories, listProducts, removeImage, setStatus, softDeleteProduct, updateProduct, updateProductDescription } from '../services/productCatalog.service.js';
+import { createProduct, getFilterMetadata, getProduct, getProductBySlug, getRelatedProducts, listCategories, listProducts, removeImage, setStatus, softDeleteProduct, updateProduct, updateProductDescription } from '../services/productCatalog.service.js';
 import { discardProductTemp, removeProductImage, saveDescriptionImage, saveProductImages, uploadDescriptionImageMiddleware } from '../services/productMedia.service.js';
 import { parseFilterContextQuery, parseProductListQuery, parseProductPayload, productId, productError } from '../validators/product.validator.js';
 import { recordProductView } from '../services/productStatistics.service.js';
@@ -38,6 +38,10 @@ export const publicDetail = asyncHandler(async (req, res) => {
   const product = await getProductBySlug(req.params.slug);
   if (product?.description) product.description = sanitizeHtml(product.description, DESCRIPTION_SANITIZE);
   res.json({ product });
+});
+export const publicRelated = asyncHandler(async (req, res) => {
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 8, 1), 12);
+  res.json({ products: await getRelatedProducts(req.params.slug, limit) });
 });
 export const publicView = asyncHandler(async (req, res) => res.json(await recordProductView(req.params.slug, req.body?.viewId)));
 export const create = asyncHandler(async (req, res) => withImages(req, async images => res.status(201).json({ product: await createProduct(parseBody(req), images), message: 'Đã tạo sản phẩm.' })));

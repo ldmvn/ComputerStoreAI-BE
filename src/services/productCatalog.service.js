@@ -152,6 +152,32 @@ function mapUniqueError(error) {
   throw productError(target.includes('sku') ? 'SKU đã tồn tại.' : 'Slug đã tồn tại.', 409);
 }
 
+// "Hot" = bán từ HOT_MIN_SOLD cái trở lên trong HOT_WINDOW_DAYS ngày gần nhất (đơn đã xác nhận,
+// đang giao hoặc đã giao; bỏ đơn hủy/chưa xác nhận). Kết quả cache ngắn để không truy vấn mỗi request.
+const HOT_MIN_SOLD = 5;
+const HOT_WINDOW_DAYS = 90;
+const HOT_STATUSES = ['CONFIRMED', 'SHIPPING', 'DELIVERED'];
+const HOT_CACHE_MS = 5 * 60 * 1000;
+let hotCache = { at: 0, ids: new Set() };
+
+async function getHotProductIds() {
+  if (Date.now() - hotCache.at < HOT_CACHE_MS) return hotCache.ids;
+  const since = new Date(Date.now() - HOT_WINDOW_DAYS * 86400000);
+  const rows = await prisma.orderItem.groupBy({
+    by: ['productId'],
+    where: { order: { status: { in: HOT_STATUSES }, createdAt: { gte: since } } },
+    _sum: { quantity: true },
+    having: { quantity: { _sum: { gte: HOT_MIN_SOLD } } },
+  });
+  hotCache = { at: Date.now(), ids: new Set(rows.map(row => row.productId)) };
+  return hotCache.ids;
+}
+
+async function markHot(products) {
+  const hotIds = await getHotProductIds();
+  return products.map(product => ({ ...product, isHot: hotIds.has(product.id) }));
+}
+
 export async function listProducts(filters) {
   const resolvedBrand = await resolveBrandFilter(filters);
   const where = await whereForQuery(filters, resolvedBrand);
@@ -163,7 +189,8 @@ export async function listProducts(filters) {
     prisma.product.count({ where: { isDeleted: false, stockQuantity: 0 } }),
     prisma.product.count({ where: { isDeleted: false, isActive: false } }),
   ]);
-  return { filters: { brand: resolvedBrand }, items: rows.map(product => serialize(product)), meta: { page: filters.page, limit: filters.limit, total, totalPages: Math.ceil(total / filters.limit) }, stats: { total: await prisma.product.count({ where: { isDeleted: false } }), active, outOfStock, inactive } };
+  const items = await markHot(rows.map(product => serialize(product)));
+  return { filters: { brand: resolvedBrand }, items, meta: { page: filters.page, limit: filters.limit, total, totalPages: Math.ceil(total / filters.limit) }, stats: { total: await prisma.product.count({ where: { isDeleted: false } }), active, outOfStock, inactive } };
 }
 
 // Filter options are built from the browsing context (category + search) and the Admin
@@ -248,6 +275,24 @@ export async function getProductBySlug(slug) {
   if (!product) throw productError('Không tìm thấy sản phẩm.', 404);
   const promotions = await getActivePromotionsForProduct(product.id, product.categoryId);
   return { ...serialize(product, true, true), ...await getProductStatistics(product.id), promotions };
+}
+// Cùng danh mục, đang bán và còn hàng. Xếp cùng thương hiệu trước, rồi theo độ lệch giá
+// so với sản phẩm đang xem (mới nhất là tiêu chí phụ khi bằng nhau).
+export async function getRelatedProducts(slug, limit = 8) {
+  const source = await prisma.product.findFirst({ where: { slug, isDeleted: false, isActive: true }, select: { id: true, categoryId: true, brandId: true, price: true } });
+  if (!source) throw productError('Không tìm thấy sản phẩm.', 404);
+  if (!source.categoryId) return [];
+  const candidates = await prisma.product.findMany({
+    where: { id: { not: source.id }, categoryId: source.categoryId, isDeleted: false, isActive: true, stockQuantity: { gt: 0 } },
+    include: listInclude,
+    orderBy: { createdAt: 'desc' },
+    take: 60,
+  });
+  const priceGap = product => source.price > 0 ? Math.abs(product.price - source.price) / source.price : 0;
+  return markHot(candidates
+    .sort((a, b) => Number(b.brandId === source.brandId) - Number(a.brandId === source.brandId) || priceGap(a) - priceGap(b))
+    .slice(0, limit)
+    .map(product => serialize(product)));
 }
 export async function listCategories() {
   const rows = await prisma.product.findMany({ where: { isDeleted: false, category: { not: null } }, distinct: ['category'], select: { category: true }, orderBy: { category: 'asc' } });
