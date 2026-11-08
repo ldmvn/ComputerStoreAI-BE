@@ -135,6 +135,18 @@ export async function updateOrderStatus(id, { status, note, trackingNumber, ship
       data: { orderId: id, status, note: note?.trim() || null, adminId },
     });
 
+    // Auto-confirm COD payment when delivered
+    if (status === 'DELIVERED' && order.paymentMethod === 'COD') {
+      const payment = await tx.payment.findUnique({ where: { orderId: id } });
+      if (payment && payment.status !== 'PAID') {
+        await tx.payment.update({
+          where: { id: payment.id },
+          data: { status: 'PAID', paidAt: now },
+        });
+      }
+      updated.payment = await tx.payment.findUnique({ where: { orderId: id }, select: PAYMENT_SELECT });
+    }
+
     // Refund voucher usage on admin cancel
     if (status === 'CANCELLED') {
       await refundVoucherUsage(tx, id);
