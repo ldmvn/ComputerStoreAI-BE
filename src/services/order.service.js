@@ -65,7 +65,7 @@ export async function createOrder(userId, { items, addressId, paymentMethod, not
   const products = await prisma.product.findMany({
     where: { id: { in: productIds }, isActive: true, isDeleted: false },
     select: {
-      id: true, name: true, slug: true, price: true, stockQuantity: true,
+      id: true, name: true, slug: true, price: true, costPrice: true, stockQuantity: true,
       images: { where: { isPrimary: true }, select: { imageUrl: true }, take: 1 },
     },
   });
@@ -94,7 +94,7 @@ export async function createOrder(userId, { items, addressId, paymentMethod, not
       throw err;
     }
     const primaryImage = product.images?.[0]?.imageUrl ?? null;
-    return { productId: pid, name: product.name, slug: product.slug, price: product.price, quantity: qty, primaryImage };
+    return { productId: pid, name: product.name, slug: product.slug, price: product.price, costPrice: product.costPrice, quantity: qty, primaryImage };
   });
 
   const subtotal = orderItems.reduce((sum, i) => sum + i.price * i.quantity, 0);

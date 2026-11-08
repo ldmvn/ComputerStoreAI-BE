@@ -695,6 +695,7 @@ model OrderItem {
   name         String  @db.VarChar(500)
   slug         String  @db.VarChar(191)
   price        Int
+  costPrice    Int?
   quantity     Int
   primaryImage String? @db.VarChar(1000)
   order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)

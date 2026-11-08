@@ -285,6 +285,90 @@ export async function getPaymentStats({ start, end }) {
   };
 }
 
+// ── Profit & loss ────────────────────────────────────────────────────────────
+
+// Revenue matches the dashboard KPI cards: DELIVERED orders, createdAt in range, Order.subtotal
+// (before voucher discount). Lines without a cost (NULL/0) are excluded from cost AND profit,
+// never treated as cost 0. Day buckets use the server's local date so no order is dropped.
+export async function getProfitLoss({ start, end, bucket }) {
+  const [orderRows, productRows, missingRows] = await Promise.all([
+    prisma.$queryRaw`
+      SELECT o.id AS id, o.createdAt AS createdAt, o.subtotal AS subtotal,
+        COALESCE(SUM(CASE WHEN oi.costPrice > 0 THEN oi.price * oi.quantity END), 0) AS costedRevenue,
+        COALESCE(SUM(CASE WHEN oi.costPrice > 0 THEN oi.costPrice * oi.quantity END), 0) AS cost
+      FROM \`Order\` o
+      LEFT JOIN OrderItem oi ON oi.orderId = o.id
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end}
+      GROUP BY o.id, o.createdAt, o.subtotal
+    `,
+    prisma.$queryRaw`
+      SELECT oi.productId AS productId, MAX(oi.name) AS name, MAX(oi.slug) AS slug,
+        SUM(oi.quantity) AS quantitySold,
+        SUM(oi.price * oi.quantity) AS revenue,
+        SUM(oi.costPrice * oi.quantity) AS cost
+      FROM OrderItem oi
+      JOIN \`Order\` o ON o.id = oi.orderId
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end} AND oi.costPrice > 0
+      GROUP BY oi.productId
+    `,
+    prisma.$queryRaw`
+      SELECT COUNT(*) AS missingLines, COUNT(DISTINCT oi.productId) AS products
+      FROM OrderItem oi
+      JOIN \`Order\` o ON o.id = oi.orderId
+      WHERE o.status = 'DELIVERED' AND o.createdAt BETWEEN ${start} AND ${end}
+        AND (oi.costPrice IS NULL OR oi.costPrice <= 0)
+    `,
+  ]);
+
+  const pad = (n) => String(n).padStart(2, '0');
+  const key = (d) => bucket === 'month'
+    ? `${d.getFullYear()}-${pad(d.getMonth() + 1)}`
+    : `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+  const buckets = new Map();
+  if (bucket === 'month') {
+    const cursor = new Date(start.getFullYear(), start.getMonth(), 1);
+    while (cursor <= end) {
+      buckets.set(key(cursor), { date: key(cursor), revenue: 0, cost: 0, profit: 0 });
+      cursor.setMonth(cursor.getMonth() + 1);
+    }
+  } else {
+    const cursor = new Date(start);
+    while (cursor <= end) {
+      buckets.set(key(cursor), { date: key(cursor), revenue: 0, cost: 0, profit: 0 });
+      cursor.setDate(cursor.getDate() + 1);
+    }
+  }
+
+  let revenue = 0, cost = 0, costedRevenue = 0;
+  for (const o of orderRows) {
+    const orderRevenue = Number(o.subtotal);
+    const orderCosted = Number(o.costedRevenue);
+    const orderCost = Number(o.cost);
+    revenue += orderRevenue; cost += orderCost; costedRevenue += orderCosted;
+    const row = buckets.get(key(new Date(o.createdAt)));
+    if (row) { row.revenue += orderRevenue; row.cost += orderCost; row.profit += orderCosted - orderCost; }
+  }
+  const profit = costedRevenue - cost;
+
+  const products = productRows.map(r => {
+    const rev = Number(r.revenue), c = Number(r.cost);
+    return { productId: r.productId, name: r.name, slug: r.slug, quantitySold: Number(r.quantitySold), revenue: rev, cost: c, profit: rev - c };
+  });
+
+  return {
+    revenue,
+    cost,
+    profit,
+    marginPercent: costedRevenue > 0 ? Math.round((profit / costedRevenue) * 1000) / 10 : 0,
+    timeline: Array.from(buckets.values()),
+    topProfit: products.filter(p => p.profit > 0).sort((a, b) => b.profit - a.profit).slice(0, 5),
+    topLoss: products.filter(p => p.profit < 0).sort((a, b) => a.profit - b.profit).slice(0, 5),
+    missingCostItems: Number(missingRows[0]?.missingLines ?? 0),
+    missingCostProducts: Number(missingRows[0]?.products ?? 0),
+  };
+}
+
 // ── Combined dashboard payload ────────────────────────────────────────────────
 
 export async function getDashboard({ range = '7d', from, to } = {}) {

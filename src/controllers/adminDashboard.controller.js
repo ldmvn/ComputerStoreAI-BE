@@ -19,7 +19,13 @@ export const getRevenueTimeline = asyncHandler(async (req, res) => {
   res.json({ revenueTimeline });
 });
 
-export const getCategoryRevenue = asyncHandler(async (req, res) => {
+export const getProfitLoss = asyncHandler(async (req, res) => {
+  const { start, end, bucket } = service.resolveRange(safeRangeOf(req));
+  const profitLoss = await service.getProfitLoss({ start, end, bucket });
+  res.json({ range: { start, end, bucket }, ...profitLoss });
+});
+
+export const getCategoryRevenue =asyncHandler(async (req, res) => {
   const { start, end } = service.resolveRange(safeRangeOf(req));
   const categoryRevenue = await service.getCategoryRevenue({ start, end });
   res.json({ categoryRevenue });
