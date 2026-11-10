@@ -1,6 +1,7 @@
 import * as service from '../services/order.service.js';
 import { notifyNewOrder, notifyOrderCancelled } from '../services/telegramNotification.service.js';
 import { logActivity } from '../services/activityLog.service.js';
+import { sendOrderConfirmation } from '../services/orderConfirmationMail.service.js';
 
 const asyncHandler = fn => (req, res, next) => Promise.resolve(fn(req, res)).catch(next);
 
@@ -21,6 +22,7 @@ export const create = asyncHandler(async (req, res) => {
 
   await logActivity({ req, action: 'create', module: 'orders', targetId: order.id, targetLabel: `#${order.id}`, description: `Đặt đơn hàng #${order.id}` });
   notifyNewOrder(order).catch(e => console.error('[Telegram]', e.message));
+  sendOrderConfirmation(order).catch(e => console.error('[OrderMail]', e.message));
   res.status(201).json({ order, message: 'Đặt hàng thành công.' });
 });
 
