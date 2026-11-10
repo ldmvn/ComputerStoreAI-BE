@@ -110,6 +110,10 @@ export function parseAttributeFilters(query = {}) {
   return [...collected.entries()].map(([slug, values]) => ({ slug, values: [...values] }));
 }
 
+// Sorts that need data from other tables (sales / reviews); handled by listProducts, not by a plain orderBy.
+// `featured` = best sellers, `rating` = highest average review rating. Both fall back to `newest`.
+const RANK_SORTS = new Set(['featured', 'rating']);
+
 export function parseProductListQuery(query = {}) {
   const brandId = query.brandId === undefined || query.brandId === '' ? undefined : int(query.brandId, 'ID thương hiệu', 1);
   if (brandId !== undefined && brandId > 2147483647) throw productError('ID thương hiệu không hợp lệ.');
@@ -123,7 +127,7 @@ export function parseProductListQuery(query = {}) {
   const sortMap = { newest: [{ updatedAt: 'desc' }], oldest: [{ createdAt: 'asc' }], priceAsc: [{ price: 'asc' }], priceDesc: [{ price: 'desc' }], nameAsc: [{ name: 'asc' }], nameDesc: [{ name: 'desc' }], stockAsc: [{ stockQuantity: 'asc' }], stockDesc: [{ stockQuantity: 'desc' }] };
   // `attribute`/`attributeValue` stay on the result for existing callers; `attributeFilters` is the
   // normalized list the query builder reads.
-  return { page, limit, minPrice, maxPrice, attributeFilters, attribute: String(query.attribute || '').trim(), attributeValue: String(query.attributeValue || '').trim(), brandId, search: String(query.search || '').trim(), category: String(query.category || '').trim(), brand: String(query.brand || '').trim(), status: String(query.status || '').trim(), stock: String(query.stock || '').trim(), sectionSlug: String(query.section || '').trim(), orderBy: sortMap[query.sort] || sortMap.newest };
+  return { page, limit, minPrice, maxPrice, attributeFilters, attribute: String(query.attribute || '').trim(), attributeValue: String(query.attributeValue || '').trim(), brandId, search: String(query.search || '').trim(), category: String(query.category || '').trim(), brand: String(query.brand || '').trim(), status: String(query.status || '').trim(), stock: String(query.stock || '').trim(), sectionSlug: String(query.section || '').trim(), orderBy: sortMap[query.sort] || sortMap.newest, rankBy: RANK_SORTS.has(query.sort) ? query.sort : undefined };
 }
 
 // Filter metadata is scoped by browsing context only (category + search), never by the

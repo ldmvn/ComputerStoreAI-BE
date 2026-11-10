@@ -178,12 +178,57 @@ async function markHot(products) {
   return products.map(product => ({ ...product, isHot: hotIds.has(product.id) }));
 }
 
+// Ranks every product matching `where` by a cross-table score and returns the requested page, in order.
+//  - featured: units sold in the last HOT_WINDOW_DAYS days (confirmed / shipping / delivered orders)
+//  - rating:   smoothed average of published reviews. A product with few reviews is pulled toward a
+//              neutral prior, so well-reviewed products lead, unreviewed ones sit in the middle and a
+//              single 1-star review does not outrank products nobody has rated.
+// Ties fall back to most recently updated first. The shop catalogue is small, so ranking the matching
+// ids in memory and paginating the sorted ids stays cheap.
+const RATING_PRIOR_MEAN = 3.5;
+const RATING_PRIOR_WEIGHT = 3;
+
+async function pageRankedByScore(where, rankBy, { skip, take }) {
+  const matches = await prisma.product.findMany({ where, select: { id: true, updatedAt: true } });
+  const ids = matches.map(m => m.id);
+  const score = new Map();
+  if (rankBy === 'featured') {
+    const since = new Date(Date.now() - HOT_WINDOW_DAYS * 86400000);
+    const rows = await prisma.orderItem.groupBy({
+      by: ['productId'], where: { productId: { in: ids }, order: { status: { in: HOT_STATUSES }, createdAt: { gte: since } } }, _sum: { quantity: true },
+    });
+    for (const r of rows) score.set(r.productId, [Number(r._sum.quantity) || 0, 0]);
+  } else {
+    const rows = await prisma.productReview.groupBy({
+      by: ['productId'], where: { productId: { in: ids }, isPublished: true }, _avg: { rating: true }, _count: { _all: true },
+    });
+    for (const r of rows) {
+      const n = r._count._all;
+      const smoothed = (RATING_PRIOR_WEIGHT * RATING_PRIOR_MEAN + (Number(r._avg.rating) || 0) * n) / (RATING_PRIOR_WEIGHT + n);
+      score.set(r.productId, [smoothed, n]);
+    }
+  }
+  // Products without any score: 0 sold (featured) or the neutral prior (rating).
+  const none = rankBy === 'rating' ? [RATING_PRIOR_MEAN, 0] : [0, 0];
+  const ranked = matches.sort((a, b) => {
+    const [sa1, sa2] = score.get(a.id) ?? none;
+    const [sb1, sb2] = score.get(b.id) ?? none;
+    return (sb1 - sa1) || (sb2 - sa2) || (b.updatedAt - a.updatedAt) || (b.id - a.id);
+  });
+  const pageIds = ranked.slice(skip, skip + take).map(m => m.id);
+  const rows = await prisma.product.findMany({ where: { id: { in: pageIds } }, include: listInclude });
+  const byId = new Map(rows.map(r => [r.id, r]));
+  return pageIds.map(id => byId.get(id)).filter(Boolean);
+}
+
 export async function listProducts(filters) {
   const resolvedBrand = await resolveBrandFilter(filters);
   const where = await whereForQuery(filters, resolvedBrand);
   const skip = (filters.page - 1) * filters.limit;
   const [rows, total, active, outOfStock, inactive] = await Promise.all([
-    prisma.product.findMany({ where, include: listInclude, orderBy: filters.orderBy, skip, take: filters.limit }),
+    filters.rankBy
+      ? pageRankedByScore(where, filters.rankBy, { skip, take: filters.limit })
+      : prisma.product.findMany({ where, include: listInclude, orderBy: filters.orderBy, skip, take: filters.limit }),
     prisma.product.count({ where }),
     prisma.product.count({ where: { isDeleted: false, isActive: true } }),
     prisma.product.count({ where: { isDeleted: false, stockQuantity: 0 } }),
