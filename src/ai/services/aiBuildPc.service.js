@@ -28,6 +28,16 @@ const PURPOSE_LABELS = {
   'may-tram': 'Máy trạm', 'chung-khoan': 'Chứng khoán', khac: 'Khác',
 };
 
+const money = (n) => `${Math.round(n).toLocaleString('vi-VN')} VNĐ`;
+
+// Một cấu hình chỉ hợp lệ khi đủ linh kiện bắt buộc; bản thiếu (ví dụ chỉ có RAM, nguồn, case) không phải
+// một bộ máy dùng được nên không được hiện ra như "vừa ngân sách".
+const REQUIRED_SLOTS = ['cpu', 'mainboard', 'ram', 'ssd', 'psu', 'case'];
+const isFullBuild = (tier) => {
+  const slots = new Set((tier?.items || []).filter(it => it.slot && (it.productId || it.id)).map(it => it.slot));
+  return REQUIRED_SLOTS.every(slot => slots.has(slot));
+};
+
 export function validateBuildPcRequest(input = {}) {
   const prompt = typeof input.prompt === 'string' ? input.prompt.trim().slice(0, 1000) : '';
 
@@ -45,7 +55,16 @@ export function validateBuildPcRequest(input = {}) {
       const rawMatch = prompt.match(/(\d{7,9})/);
       if (rawMatch) budget = parseInt(rawMatch[1], 10);
     }
-    if (budget < 3_000_000) budget = 20_000_000;
+    // Ngân sách chọn riêng (nút "Dựng lại với X triệu") ưu tiên hơn số trích từ câu mô tả.
+    const override = Number(input.budget);
+    if (Number.isFinite(override) && override >= 3_000_000) budget = Math.min(override, 500_000_000);
+    if (!budget) {
+      budget = 20_000_000;
+    } else if (budget < 3_000_000) {
+      const error = new Error('Ngân sách tối thiểu là 3.000.000 VNĐ.');
+      error.statusCode = 400;
+      throw error;
+    }
     if (budget > 500_000_000) budget = 500_000_000;
     return { prompt, budget, purpose: 'khac', purposeLabel: 'Khác', mode: 'freetext' };
   }
@@ -398,7 +417,21 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       parsed = extractJsonFromResponse(responseText);
     }
 
-    if (!parsed?.tiers?.length) {
+    // Ngân sách quá thấp: AI hay trả "tiers" rỗng. Vẫn cần 1 cấu hình rẻ nhất khả thi để báo khách mức
+    // ngân sách tối thiểu, nên hỏi lại đúng một lần với yêu cầu bỏ qua giới hạn ngân sách.
+    // "Có cấu hình" nghĩa là ít nhất một bản ĐỦ linh kiện bắt buộc (AI đôi khi trả bản rỗng hoặc thiếu).
+    const hasBuild = (p) => Array.isArray(p?.tiers) && p.tiers.some(isFullBuild);
+    if (!hasBuild(parsed)) {
+      console.log('[AI BuildPC] Empty tiers, asking for the cheapest feasible build...');
+      messages.push({ role: 'assistant', content: responseText || '(không có cấu hình)' });
+      messages.push({ role: 'user', content: `Không có cấu hình nào nằm trong ngân sách ${money(input.budget)}. Hãy trả JSON block (cùng format) với ĐÚNG 1 bản trong "tiers" là cấu hình RẺ NHẤT có thể lắp hoàn chỉnh (đủ CPU, Mainboard, RAM, SSD, PSU, Case và VGA/iGPU đủ dùng cho nhu cầu), dù tổng vượt ngân sách. Chọn sản phẩm thật từ search_products, đúng tương thích. Tuyệt đối không để "tiers" rỗng; nói rõ trong summary rằng ngân sách chưa đủ.` });
+      completion = await complete();
+      await runToolRounds();
+      responseText = completion.content || '';
+      parsed = extractJsonFromResponse(responseText);
+    }
+
+    if (!hasBuild(parsed)) {
       console.error('[AI BuildPC] Failed to parse tiers from Gemini response.');
       console.error('[AI BuildPC] Metrics:', JSON.stringify(metrics));
       console.error('[AI BuildPC] Response (first 800 chars):', responseText.slice(0, 800));
@@ -411,24 +444,42 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
     }
 
     // Mọi bản đều phải qua Compatibility Engine; bản lỗi được trả lại cho AI sửa (tối đa 2 lượt).
-    const tierErrors = async (tier) => {
+    const tierCheck = async (tier) => {
       const cfg = (tier.items || []).filter(it => (it.productId || it.id) && it.slot)
         .map(it => ({ slot: it.slot, productId: it.productId || it.id, quantity: it.quantity || 1 }));
       try {
         const v = await validateBuildConfig(cfg);
-        return (v?.data?.issues || []).filter(i => i.level === 'error');
-      } catch { return []; }
+        return { errors: (v?.data?.issues || []).filter(i => i.level === 'error'), total: Number.isFinite(v?.data?.total) ? v.data.total : null };
+      } catch { return { errors: [], total: null }; }
     };
-    for (let attempt = 0; attempt < 2; attempt++) {
+    // Sửa lỗi tương thích tối đa 3 lượt. Bản vượt ngân sách được yêu cầu chọn lại ở lượt đầu, và thêm
+    // một lượt nữa CHỈ khi bản gần đạt nhất vượt không quá 30%: vượt nhiều thường là ngân sách quá thấp
+    // so với giá linh kiện, gọi thêm AI (mỗi lượt 10-20 giây) cũng không đạt.
+    const NEAR_BUDGET_RATIO = 0.3;
+    // Nhớ bản hợp lệ (không lỗi tương thích) rẻ nhất gặp được qua mọi lượt: AI đôi khi chọn lại còn tệ hơn.
+    let bestTier = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
       checkTimeout();
       const bad = [];
-      const allErrs = await Promise.all(parsed.tiers.map(tier => tierErrors(tier)));
+      const checks = await Promise.all(parsed.tiers.map(tier => tierCheck(tier)));
+      parsed.tiers.forEach((t, i) => {
+        const c = checks[i];
+        if (isFullBuild(t) && c.total !== null && c.errors.length === 0 && (!bestTier || c.total < bestTier.total)) {
+          bestTier = { total: c.total, tier: JSON.parse(JSON.stringify(t)) };
+        }
+      });
+      const overRatios = checks.filter(c => c.total !== null && c.total > input.budget).map(c => (c.total - input.budget) / input.budget);
+      const askBudget = overRatios.length > 0 && (attempt === 0 || (attempt === 1 && Math.min(...overRatios) <= NEAR_BUDGET_RATIO));
       for (let i = 0; i < parsed.tiers.length; i++) {
-        if (allErrs[i].length) bad.push({ index: i, name: parsed.tiers[i].name, errors: allErrs[i].map(e => e.message || e.code || JSON.stringify(e)) });
+        const problems = checks[i].errors.map(e => e.message || e.code || JSON.stringify(e));
+        if (askBudget && checks[i].total !== null && checks[i].total > input.budget) {
+          problems.push(`Tổng ${money(checks[i].total)} VƯỢT ngân sách ${money(input.budget)}, cần giảm ít nhất ${money(checks[i].total - input.budget)}. Phải thay linh kiện rẻ hơn (ưu tiên hạ linh kiện đắt nhất như VGA/CPU/main) để tổng KHÔNG vượt ngân sách.`);
+        }
+        if (problems.length) bad.push({ index: i, name: parsed.tiers[i].name, errors: problems });
       }
       if (!bad.length) break;
       messages.push({ role: 'assistant', content: responseText });
-      messages.push({ role: 'user', content: `Compatibility Engine báo lỗi tương thích ở các bản sau:\n${JSON.stringify(bad)}\nHãy thay linh kiện gây lỗi (ví dụ tản nhiệt quá cao so với Case thì đổi tản thấp hơn hoặc đổi Case khác; dùng search_products và check_build_compatibility cho TỪNG bản), vẫn trong ngân sách, rồi trả lại đầy đủ JSON block 3 bản theo format cũ.` });
+      messages.push({ role: 'user', content: `Hệ thống kiểm tra phát hiện vấn đề ở các bản sau:\n${JSON.stringify(bad)}\nHãy khắc phục: với lỗi tương thích thì thay linh kiện gây lỗi (ví dụ tản nhiệt quá cao so với Case thì đổi tản thấp hơn hoặc đổi Case khác; dùng search_products và check_build_compatibility cho TỪNG bản); với bản vượt ngân sách thì chọn linh kiện rẻ hơn (hạ VGA/CPU/main, bỏ linh kiện tùy chọn) sao cho tổng ≤ ngân sách. Nếu thật sự không thể lắp đủ linh kiện bắt buộc trong ngân sách, giữ cấu hình rẻ nhất có thể và nói rõ điều đó trong summary. Rồi trả lại đầy đủ JSON block 3 bản theo format cũ.` });
       completion = await complete();
       await runToolRounds();
       const fixedText = completion.content || '';
@@ -438,7 +489,13 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       parsed = fixed;
     }
 
-    const tiersToValidate = parsed.tiers.filter(t => t.items?.length);
+    if (bestTier) {
+      const finalChecks = await Promise.all(parsed.tiers.map(tier => tierCheck(tier)));
+      const minFinal = Math.min(...finalChecks.map((c, i) => (isFullBuild(parsed.tiers[i]) && c.total !== null && c.errors.length === 0 ? c.total : Infinity)));
+      if (minFinal > input.budget && bestTier.total < minFinal) parsed.tiers.push(bestTier.tier);
+    }
+
+    const tiersToValidate = parsed.tiers.filter(isFullBuild);
     for (const tier of tiersToValidate) {
       for (const it of tier.items) { if (!it.productId && it.id) it.productId = it.id; }
     }
@@ -478,6 +535,7 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
         items,
         totalPrice,
         budgetDiff: totalPrice - input.budget,
+        overBudget: totalPrice > input.budget,
         fpsEstimates: Array.isArray(tier.fpsEstimates) ? tier.fpsEstimates : [],
         compatibilityStatus: validation.data?.issues?.some(i => i.level === 'error') ? 'fail'
           : validation.data?.issues?.length ? 'warning' : 'pass',
@@ -498,11 +556,34 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       };
     }
 
+    // Có bản nằm trong ngân sách thì chỉ hiện các bản đó. Cả ba đều vượt thì chỉ giữ bản rẻ nhất kèm
+    // cảnh báo, không bày ra nhiều cấu hình đều ngoài tầm ngân sách của khách.
+    const requestedTier = validatedTiers[Math.min(parsed.selectedTier ?? 0, validatedTiers.length - 1)];
+    const fitting = validatedTiers.filter(t => !t.overBudget);
+    const hidden = validatedTiers.filter(t => t.overBudget);
+    const cheapestTier = validatedTiers.reduce((best, t) => (t.totalPrice < best.totalPrice ? t : best), validatedTiers[0]);
+    const finalTiers = fitting.length ? fitting : [cheapestTier];
+    let budgetNotice = '';
+    if (!fitting.length) {
+      budgetNotice = `Ngân sách ${money(input.budget)} chưa đủ cho nhu cầu này với linh kiện hiện có tại cửa hàng. Cấu hình rẻ nhất là ${money(cheapestTier.totalPrice)} (cao hơn ${money(cheapestTier.totalPrice - input.budget)}). Bạn có thể tăng ngân sách hoặc tham khảo cấu hình rẻ nhất bên dưới.`;
+    } else if (hidden.length) {
+      budgetNotice = `Đã ẩn bản ${hidden.map(t => t.name).join(', ')} vì vượt ngân sách ${money(input.budget)}. Bạn có thể tăng ngân sách để xem thêm lựa chọn.`;
+    }
+    const selectedIndex = fitting.length ? Math.max(0, finalTiers.indexOf(requestedTier)) : 0;
+    const budgetShortfall = fitting.length ? null : {
+      minimumBudget: cheapestTier.totalPrice,
+      // Dư thêm 10%: AI không phải lúc nào cũng tìm ra cấu hình rẻ nhất, nên mức đề xuất sát đáy dễ dựng lại vẫn trượt.
+      suggestedBudget: Math.min(Math.ceil((cheapestTier.totalPrice * 1.1) / 1_000_000) * 1_000_000, 500_000_000),
+      shortfall: cheapestTier.totalPrice - input.budget,
+    };
+
     return {
       success: true,
       parsedRequirements: parsed.parsedRequirements || {},
-      tiers: validatedTiers,
-      selectedTier: Math.min(parsed.selectedTier ?? 0, validatedTiers.length - 1),
+      tiers: finalTiers,
+      budgetNotice,
+      budgetShortfall,
+      selectedTier: selectedIndex,
       budget: input.budget,
       purpose: input.purpose || parsed.parsedRequirements?.purpose || '',
       purposeLabel: input.purposeLabel || parsed.parsedRequirements?.purpose || '',
