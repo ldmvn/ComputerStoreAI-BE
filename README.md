@@ -9,7 +9,7 @@ REST API server cho hệ thống bán hàng máy tính **DUCMANHPC**, xây dựn
 - **ORM:** Prisma
 - **Database:** MySQL 8.0
 - **Authentication:** JWT + Google OAuth 2.0
-- **AI:** Google Gemini (RAG, tư vấn mua hàng, Build PC)
+- **AI:** Claude, Deepseek (RAG, tư vấn mua hàng, Build PC)
 - **Thanh toán:** VNPay, MoMo, SePay (chuyển khoản ngân hàng)
 - **Upload:** Cloudinary + Local storage
 - **Thông báo:** Telegram Bot API
