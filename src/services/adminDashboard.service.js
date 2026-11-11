@@ -124,9 +124,11 @@ export async function getRevenueTimeline({ start, end, bucket }) {
     select: { createdAt: true, subtotal: true },
   });
 
+  const pad = (n) => String(n).padStart(2, '0');
+  // Ngày theo giờ máy chủ, cùng hệ quy chiếu với resolveRange (không dùng toISOString/UTC).
   const key = (d) => bucket === 'month'
-    ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
-    : d.toISOString().slice(0, 10);
+    ? `${d.getFullYear()}-${pad(d.getMonth() + 1)}`
+    : `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
   const buckets = new Map();
   // pre-fill buckets so empty days/months still show on the chart
