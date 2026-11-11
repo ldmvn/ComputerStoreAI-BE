@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
+import { publishFile, removePublished } from './objectStorage.service.js';
 
 // sharp/libvips keeps an internal operation cache that mmaps/retains a handle
 // on the source file passed to sharp(path). On Windows this makes an
@@ -78,8 +79,13 @@ export async function saveWidgetMedia(file, channel) {
     await removeWidgetMedia(key);
     throw widgetMediaError('Ảnh không hợp lệ hoặc vượt giới hạn 20 triệu pixel.');
   }
-  const base = (process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '');
-  return { key, url: `${base}/support-widget/${key}` };
+  try {
+    return { key, url: await publishFile(dest, `support-widget/${key}`) };
+  } catch (error) {
+    await unlink(dest).catch(() => {});
+    console.error('Cannot publish support-widget media:', error.name || error.code);
+    throw widgetMediaError('Không lưu được ảnh lên kho lưu trữ. Vui lòng thử lại.');
+  }
 }
 
 export async function discardWidgetMediaTemp(file) {
@@ -94,6 +100,7 @@ export async function removeWidgetMedia(key) {
   await unlink(path.join(supportWidgetMediaDirectory, key)).catch(e => {
     if (e.code !== 'ENOENT') console.error('Cannot remove support-widget media:', e.code);
   });
+  await removePublished(`support-widget/${key}`);
 }
 
 export function keyFromWidgetMediaUrl(url) {

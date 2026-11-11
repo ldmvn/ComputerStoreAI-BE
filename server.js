@@ -6,6 +6,7 @@
 // ============================================================================
 
 import './src/config/env.js';
+import { isR2Enabled, r2PublicBase } from './src/services/objectStorage.service.js';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -211,6 +212,12 @@ app.use('/media/reviews', express.static(reviewMediaDirectory, {
   maxAge: '1y',
   setHeaders: res => res.set('X-Content-Type-Options', 'nosniff'),
 }));
+// Ảnh không còn trên đĩa (đã chuyển sang R2): địa chỉ /media/... cũ vẫn mở được nhờ chuyển hướng sang R2.
+app.use('/media', (req, res, next) => {
+  if (!isR2Enabled() || !['GET', 'HEAD'].includes(req.method)) return next();
+  res.set('Cache-Control', 'public, max-age=300');
+  res.redirect(302, `${r2PublicBase()}${req.path}`);
+});
 
 
 // ---------------------------------------------------------------------------

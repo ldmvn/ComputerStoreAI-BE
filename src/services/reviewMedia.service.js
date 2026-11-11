@@ -6,6 +6,17 @@ import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
 import { reviewError } from '../validators/productReview.validator.js';
+import { publishFile, removePublished } from './objectStorage.service.js';
+
+async function publishReviewFile(destination, storageKey) {
+  try {
+    return await publishFile(destination, `reviews/${storageKey}`);
+  } catch (error) {
+    await unlink(destination).catch(() => {});
+    console.error('Cannot publish review image:', error.name || error.code);
+    throw reviewError('Không lưu được ảnh lên kho lưu trữ. Vui lòng thử lại.');
+  }
+}
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 export const reviewMediaDirectory = path.join(path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads')), 'reviews');
@@ -53,7 +64,7 @@ export async function saveReviewImages(files = [], userId) {
         await removeReviewImage(storageKey);
         throw reviewError('Ảnh không hợp lệ hoặc vượt giới hạn 40 triệu pixel.');
       }
-      saved.push({ storageKey, imageUrl: `${(process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '')}/reviews/${userDirectoryName}/${key}` });
+      saved.push({ storageKey, imageUrl: await publishReviewFile(destination, storageKey) });
     }
     return saved;
   } catch (error) {
@@ -66,4 +77,5 @@ export async function removeReviewImage(key) {
   const match = String(key || '').replaceAll('\\', '/').match(/(?:^|\/reviews\/)((?:user-\d+\/)?[a-f0-9-]+\.webp)$/i);
   if (!match) return;
   await unlink(path.join(reviewMediaDirectory, ...match[1].split('/'))).catch(error => { if (error.code !== 'ENOENT') console.error('Cannot remove review image:', error.code); });
+  await removePublished(`reviews/${match[1]}`);
 }

@@ -6,6 +6,18 @@ import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
 import { productError } from '../validators/product.validator.js';
+import { publishFile, removePublished } from './objectStorage.service.js';
+
+// Đẩy ảnh đã xử lý lên kho lưu trữ (R2 nếu bật); lỗi mạng/khóa được đổi thành thông báo thân thiện.
+async function publishProductFile(destination, key) {
+  try {
+    return await publishFile(destination, `products/${key}`);
+  } catch (error) {
+    await unlink(destination).catch(() => {});
+    console.error('Cannot publish product image:', error.name || error.code);
+    throw productError('Không lưu được ảnh lên kho lưu trữ. Vui lòng thử lại.');
+  }
+}
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 export const productMediaDirectory = path.join(path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads')), 'products');
@@ -48,7 +60,7 @@ export async function saveProductImages(files = []) {
         await removeProductImage(key);
         throw productError('Ảnh không hợp lệ hoặc vượt giới hạn 40 triệu pixel.');
       }
-      saved.push({ storageKey: key, imageUrl: `${(process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '')}/products/${key}` });
+      saved.push({ storageKey: key, imageUrl: await publishProductFile(destination, key) });
     }
     return saved;
   } catch (error) {
@@ -60,6 +72,7 @@ export async function saveProductImages(files = []) {
 export async function removeProductImage(key) {
   if (!/^[a-f0-9-]+\.webp$/.test(key || '')) return;
   await unlink(path.join(productMediaDirectory, key)).catch(error => { if (error.code !== 'ENOENT') console.error('Cannot remove product image:', error.code); });
+  await removePublished(`products/${key}`);
 }
 
 // ── Description image upload (single file, reuses products directory) ─────────
@@ -100,5 +113,5 @@ export async function saveDescriptionImage(file) {
   } finally {
     await unlink(file.path).catch(() => {});
   }
-  return { key, url: `${(process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '')}/products/${key}` };
+  return { key, url: await publishProductFile(destination, key) };
 }

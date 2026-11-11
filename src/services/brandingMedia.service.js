@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
+import { publishFile, removePublished } from './objectStorage.service.js';
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 const mediaRoot = path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads'));
@@ -78,8 +79,7 @@ export async function saveBrandingLogo(file) {
     await removeBrandingFile(key);
     throw brandingError('Logo không hợp lệ hoặc vượt giới hạn 40 triệu pixel.');
   }
-  const base = (process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '');
-  return { key, url: `${base}/branding/${key}` };
+  return { key, url: await publishBrandingFile(dest, key) };
 }
 
 export async function saveBrandingFavicon(file) {
@@ -99,8 +99,17 @@ export async function saveBrandingFavicon(file) {
     await removeBrandingFile(key);
     throw brandingError('Favicon không hợp lệ hoặc không thể xử lý.');
   }
-  const base = (process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '');
-  return { key, url: `${base}/branding/${key}` };
+  return { key, url: await publishBrandingFile(dest, key) };
+}
+
+async function publishBrandingFile(dest, key) {
+  try {
+    return await publishFile(dest, `branding/${key}`);
+  } catch (error) {
+    await unlink(dest).catch(() => {});
+    console.error('Cannot publish branding file:', error.name || error.code);
+    throw brandingError('Không lưu được file lên kho lưu trữ. Vui lòng thử lại.');
+  }
 }
 
 export async function discardBrandingTemp(file) {
@@ -112,6 +121,7 @@ export async function removeBrandingFile(key) {
   await unlink(path.join(brandingMediaDirectory, key)).catch(e => {
     if (e.code !== 'ENOENT') console.error('Cannot remove branding file:', e.code);
   });
+  await removePublished(`branding/${key}`);
 }
 
 export function keyFromBrandingUrl(url) {

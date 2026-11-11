@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
+import { publishFile, removePublished } from './objectStorage.service.js';
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 const mediaRoot = path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads'));
@@ -54,8 +55,13 @@ export async function savePromoImage(file) {
   } finally {
     await unlink(file.path).catch(() => {});
   }
-  const base = (process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '');
-  return { key, imageUrl: `${base}/promo-sections/${key}` };
+  try {
+    return { key, imageUrl: await publishFile(dest, `promo-sections/${key}`) };
+  } catch (error) {
+    await unlink(dest).catch(() => {});
+    console.error('Cannot publish promo image:', error.name || error.code);
+    throw promoError('Không lưu được ảnh lên kho lưu trữ. Vui lòng thử lại.');
+  }
 }
 
 export async function removePromoImage(imageUrl) {
@@ -65,4 +71,5 @@ export async function removePromoImage(imageUrl) {
   await unlink(path.join(promoMediaDirectory, key)).catch(e => {
     if (e.code !== 'ENOENT') console.error('Cannot remove promo image:', e.code);
   });
+  await removePublished(`promo-sections/${key}`);
 }

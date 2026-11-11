@@ -6,6 +6,7 @@ import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
 import { bannerError } from '../validators/banner.validator.js';
+import { publishFile, removePublished } from './objectStorage.service.js';
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 export const mediaDirectory = path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads'));
@@ -64,8 +65,14 @@ export async function saveBannerMedia(file, mediaType) {
     } else {
       await rename(file.path, destination);
     }
-    const base = (process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '');
-    return { mediaKey: key, mediaUrl: `${base}/banners/${key}` };
+    let mediaUrl;
+    try {
+      mediaUrl = await publishFile(destination, `banners/${key}`);
+    } catch (error) {
+      console.error('Cannot publish banner media:', error.name || error.code);
+      throw bannerError('Không lưu được banner lên kho lưu trữ. Vui lòng thử lại.');
+    }
+    return { mediaKey: key, mediaUrl };
   } catch (error) {
     await removeBannerMedia(key);
     throw error;
@@ -77,4 +84,5 @@ export async function removeBannerMedia(key) {
   await unlink(path.join(bannerMediaDirectory, key)).catch(error => {
     if (error.code !== 'ENOENT') console.error('Cannot remove banner media:', error.code);
   });
+  await removePublished(`banners/${key}`);
 }

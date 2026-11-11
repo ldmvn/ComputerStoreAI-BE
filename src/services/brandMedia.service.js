@@ -6,6 +6,7 @@ import multer from 'multer';
 import { fileTypeFromFile } from 'file-type';
 import sharp from 'sharp';
 import { brandError } from '../validators/brand.validator.js';
+import { publishFile, removePublished } from './objectStorage.service.js';
 
 const backendRoot = fileURLToPath(new URL('../../', import.meta.url));
 const mediaRoot = path.resolve(process.env.MEDIA_STORAGE_DIR || path.join(backendRoot, 'uploads'));
@@ -41,7 +42,13 @@ export async function saveBrandLogo(file) {
     await removeBrandLogo(key);
     throw brandError('Logo không hợp lệ hoặc vượt giới hạn 40 triệu pixel.');
   }
-  return { key, logoUrl: `${(process.env.MEDIA_PUBLIC_URL || '/media').replace(/\/$/, '')}/brands/${key}` };
+  try {
+    return { key, logoUrl: await publishFile(path.join(brandMediaDirectory, key), `brands/${key}`) };
+  } catch (error) {
+    await unlink(path.join(brandMediaDirectory, key)).catch(() => {});
+    console.error('Cannot publish brand logo:', error.name || error.code);
+    throw brandError('Không lưu được logo lên kho lưu trữ. Vui lòng thử lại.');
+  }
 }
 
 export async function discardBrandLogoTemp(file) {
@@ -51,6 +58,7 @@ export async function discardBrandLogoTemp(file) {
 export async function removeBrandLogo(key) {
   if (!/^[a-f0-9-]+\.webp$/.test(key || '')) return;
   await unlink(path.join(brandMediaDirectory, key)).catch(error => { if (error.code !== 'ENOENT') console.error('Cannot remove brand logo:', error.code); });
+  await removePublished(`brands/${key}`);
 }
 
 export async function removeBrandLogoUrl(url) {
