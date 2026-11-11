@@ -100,7 +100,7 @@ export async function createTicket(req, res) {
     });
   } catch (e) {
     console.error('[Support] createTicket error:', e.message);
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(500).json({ success: false, message: 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.' });
   }
 }
 
@@ -119,7 +119,8 @@ export async function getTicketGuest(req, res) {
 
     return res.json({ success: true, data: ticket });
   } catch (e) {
-    return res.status(500).json({ success: false, message: e.message });
+    console.error('[Support] getTicketGuest error:', e.message);
+    return res.status(500).json({ success: false, message: 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.' });
   }
 }
 
@@ -153,6 +154,7 @@ export async function addGuestMessage(req, res) {
     if (e.message.includes('đóng')) {
       return res.status(409).json({ success: false, message: e.message });
     }
-    return res.status(500).json({ success: false, message: e.message });
+    console.error('[Support] guest reply error:', e.message);
+    return res.status(500).json({ success: false, message: 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau.' });
   }
 }
