@@ -19,7 +19,12 @@
 // (not a bigger transaction-level lock) is what makes every branch below
 // race-safe; see docs/payment-architecture.md §"Concurrency model" for why.
 
-import { isTerminal, PAID_PREDECESSOR_STATUSES } from '../validators/paymentStatus.validator.js';
+import { PAID_PREDECESSOR_STATUSES } from '../validators/paymentStatus.validator.js';
+
+// Một attempt đã ở các trạng thái này thì callback xác nhận sau đó là "đến muộn". Không dùng
+// isTerminal(): máy trạng thái cho phép FAILED/CANCELLED/EXPIRED -> PROCESSING (thanh toán lại)
+// nên isTerminal() trả false cho chúng và sẽ bỏ qua chốt chặn bên dưới.
+const DEAD_ATTEMPT_STATUSES = new Set(['FAILED', 'CANCELLED', 'EXPIRED', 'REFUNDED']);
 
 /**
  * @param {{
@@ -61,7 +66,7 @@ export async function confirmPaymentAttempt({ tx, merchantReference, verifiedAmo
     return { outcome: 'amount_mismatch', attemptId: attempt.id };
   }
 
-  const wasTerminalNonPaid = isTerminal(attempt.status); // FAILED / CANCELLED / EXPIRED / REFUNDED
+  const wasTerminalNonPaid = DEAD_ATTEMPT_STATUSES.has(attempt.status);
 
   // Safety gate for a LATE callback (this attempt already reached a terminal
   // non-PAID status before the provider's confirmation arrived): only

@@ -40,11 +40,18 @@ test('PAID is reachable but not a dead end — only REFUNDED is allowed next, no
   }
 });
 
-test('FAILED/CANCELLED/EXPIRED/REFUNDED are fully terminal — no transition out, including to PAID', () => {
-  for (const from of ['FAILED', 'CANCELLED', 'EXPIRED', 'REFUNDED']) {
-    assert.equal(isTerminal(from), true, `${from} should be terminal`);
-    for (const to of PAYMENT_STATUSES) assert.equal(isValidTransition(from, to), false, `${from} -> ${to} must be rejected`);
+test('FAILED/CANCELLED/EXPIRED can only be retried (-> PROCESSING), never jump straight to PAID', () => {
+  for (const from of ['FAILED', 'CANCELLED', 'EXPIRED']) {
+    assert.equal(isValidTransition(from, 'PROCESSING'), true, `${from} -> PROCESSING (pay again) must be allowed`);
+    for (const to of PAYMENT_STATUSES.filter(status => status !== 'PROCESSING')) {
+      assert.equal(isValidTransition(from, to), false, `${from} -> ${to} must be rejected`);
+    }
   }
+});
+
+test('REFUNDED is fully terminal — no transition out, including to PAID', () => {
+  assert.equal(isTerminal('REFUNDED'), true);
+  for (const to of PAYMENT_STATUSES) assert.equal(isValidTransition('REFUNDED', to), false, `REFUNDED -> ${to} must be rejected`);
 });
 
 test('PAID is NOT terminal (REFUNDED is still reachable) — isTerminal must reflect that', () => {
