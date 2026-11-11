@@ -25,15 +25,36 @@ export function itemHref(item, rootSlug, activeCategoryIds, attributeCounts) {
     if (item.maxPrice !== null) params.maxPrice = String(item.maxPrice);
     return productUrl(params);
   }
-  if (item.type === 'ATTRIBUTE_FILTER') return hasValidReference(item, activeCategoryIds) ? productUrl({ ...params, attribute: item.attribute.slug, attributeValue: String(item.attributeValueId) }) : null;
+  if (item.type === 'ATTRIBUTE_FILTER') {
+    if (!hasValidReference(item, activeCategoryIds)) return null;
+    // Giá trị thuộc tính không có sản phẩm nào đang bán thì ẩn khỏi menu công khai (tránh trang rỗng).
+    if (attributeCounts && !attributeCounts.get(JSON.stringify([item.attributeId, item.attributeValueId]))) return null;
+    return productUrl({ ...params, attribute: item.attribute.slug, attributeValue: String(item.attributeValueId) });
+  }
   return item.type === 'CUSTOM_URL' && safeMenuUrl(item.customUrl) ? item.customUrl : null;
 }
 async function visibility(db) {
-  const [categories, specs] = await Promise.all([
+  const [categories, specs, tagged] = await Promise.all([
     db.category.findMany({ select: { id: true, parentId: true, isActive: true } }),
     db.productAttributeValue.groupBy({ by: ['attributeId', 'attributeValueId'], where: { product: { isDeleted: false, isActive: true }, attributeValueId: { not: null } }, _count: { _all: true } }),
+    db.productAttributeValue.findMany({ where: { product: { isDeleted: false, isActive: true }, attributeValueId: { not: null } }, select: { attributeId: true, attributeValueId: true, product: { select: { categoryId: true } } } }),
   ]);
   const byId = new Map(categories.map(c => [c.id, c]));
+  const rootOf = (categoryId) => {
+    let current = byId.get(categoryId); const seen = new Set();
+    while (current && current.parentId !== null && !seen.has(current.id)) { seen.add(current.id); current = byId.get(current.parentId); }
+    return current?.id ?? null;
+  };
+  // Đếm theo danh mục gốc: link trong menu lọc trong danh mục đó, nên giá trị chỉ có ở danh mục khác sẽ ra trang rỗng.
+  const rootAttributeCounts = new Map();
+  for (const row of tagged) {
+    const root = rootOf(row.product.categoryId);
+    if (root === null) continue;
+    const counts = rootAttributeCounts.get(root) || new Map();
+    const key = JSON.stringify([row.attributeId, row.attributeValueId]);
+    counts.set(key, (counts.get(key) || 0) + 1);
+    rootAttributeCounts.set(root, counts);
+  }
   const valid = new Set();
   for (const category of categories) {
     let current = category; const seen = new Set();
@@ -43,7 +64,7 @@ async function visibility(db) {
       current = byId.get(current.parentId);
     }
   }
-  return { valid, attributeCounts: new Map(specs.map(row => [JSON.stringify([row.attributeId, row.attributeValueId]), row._count._all])) };
+  return { valid, rootAttributeCounts, attributeCounts: new Map(specs.map(row => [JSON.stringify([row.attributeId, row.attributeValueId]), row._count._all])) };
 }
 export async function getAdminMenu(categoryId) {
   const category = await prisma.category.findUnique({ where: { id: categoryId } });
@@ -99,6 +120,6 @@ export async function publicMenus(slug) {
   ]);
   return categories.map(category => {
     const menu = category.megaMenu?.isActive ? category.megaMenu : null;
-    return { category: { id: category.id, name: category.name, slug: category.slug, icon: category.icon, href: productUrl({ category: category.slug }), children: category.children }, groups: (menu?.groups || []).filter(g => g.isActive).map(g => ({ id: g.id, title: g.title, columnSpan: g.columnSpan, items: g.items.filter(i => i.isActive).map(i => ({ id: i.id, label: i.label, type: i.type, href: itemHref(i, category.slug, state.valid, state.attributeCounts) })).filter(i => i.href) })).filter(g => g.items.length), brands: (menu?.brands || []).filter(b => b.brand.isActive).map(({ brand }) => ({ id: brand.id, name: brand.name, slug: brand.slug, logoUrl: brand.logoUrl, href: productUrl({ category: category.slug, brand: brand.slug }) })) };
+    return { category: { id: category.id, name: category.name, slug: category.slug, icon: category.icon, href: productUrl({ category: category.slug }), children: category.children }, groups: (menu?.groups || []).filter(g => g.isActive).map(g => ({ id: g.id, title: g.title, columnSpan: g.columnSpan, items: g.items.filter(i => i.isActive).map(i => ({ id: i.id, label: i.label, type: i.type, href: itemHref(i, category.slug, state.valid, state.rootAttributeCounts.get(category.id) ?? new Map()) })).filter(i => i.href) })).filter(g => g.items.length), brands: (menu?.brands || []).filter(b => b.brand.isActive).map(({ brand }) => ({ id: brand.id, name: brand.name, slug: brand.slug, logoUrl: brand.logoUrl, href: productUrl({ category: category.slug, brand: brand.slug }) })) };
   });
 }
