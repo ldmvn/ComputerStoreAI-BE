@@ -867,6 +867,9 @@ model ReturnRequest {
   userId      Int
   reason      String       @db.VarChar(200)
   description String?      @db.VarChar(1000)
+  images      String?      @db.Text
+  resolution   String?     @db.VarChar(20)
+  contactPhone String?     @db.VarChar(20)
   status      ReturnStatus @default(PENDING)
   adminNote   String?      @db.VarChar(500)
   createdAt   DateTime     @default(now())
