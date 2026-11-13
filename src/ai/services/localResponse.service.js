@@ -115,7 +115,7 @@ async function handleOrderLookup(args, userId) {
   if (data.order) {
     const o = data.order;
     return {
-      reply: `**Đơn hàng #${o.id}**\n- Trạng thái: **${o.status}**\n- Tổng tiền: **${formatPrice(o.totalAmount)}**\n- Ngày đặt: ${new Date(o.createdAt).toLocaleDateString('vi-VN')}`,
+      reply: `**Đơn hàng #${o.id}**\n- Trạng thái: **${o.statusLabel}**\n- Tổng tiền: **${formatPrice(o.totalAmount)}**\n- Ngày đặt: ${new Date(o.createdAt).toLocaleDateString('vi-VN')}`,
       toolCalls: [{ name: 'lookup_my_orders', result: data }],
     };
   }
@@ -124,10 +124,11 @@ async function handleOrderLookup(args, userId) {
       return { reply: 'Bạn chưa có đơn hàng nào.', toolCalls: [{ name: 'lookup_my_orders', result: data }] };
     }
     const lines = data.orders.slice(0, 5).map(o =>
-      `- **#${o.id}** — ${o.status} — ${formatPrice(o.totalAmount)} — ${new Date(o.createdAt).toLocaleDateString('vi-VN')}`
+      `- **#${o.id}** — ${o.statusLabel} — ${formatPrice(o.totalAmount)} — ${new Date(o.createdAt).toLocaleDateString('vi-VN')}`
     );
-    let reply = `**Đơn hàng gần đây:**\n${lines.join('\n')}`;
-    if (data.orders.length > 5) reply += `\n\n_...và ${data.orders.length - 5} đơn hàng khác._`;
+    const summary = Object.entries(data.countsByStatus ?? {}).map(([label, n]) => `${label} ${n}`).join(' · ');
+    let reply = `Bạn có **${data.totalOrders} đơn hàng**${summary ? ` (${summary})` : ''}.\n\n**Đơn gần đây:**\n${lines.join('\n')}`;
+    if (data.totalOrders > 5) reply += `\n\n_...và ${data.totalOrders - 5} đơn hàng khác._`;
     return { reply, toolCalls: [{ name: 'lookup_my_orders', result: data }] };
   }
   if (data.message) return { reply: data.message, toolCalls: [{ name: 'lookup_my_orders', result: data }] };

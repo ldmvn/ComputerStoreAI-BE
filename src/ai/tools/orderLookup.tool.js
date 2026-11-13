@@ -18,6 +18,22 @@ export const orderLookupToolDefinition = {
   },
 };
 
+// Cùng tên trạng thái khách thấy ở trang "Đơn hàng của tôi" (CONFIRMED hiển thị là "Chờ lấy hàng").
+export const ORDER_STATUS_LABEL = {
+  PENDING: 'Chờ xác nhận',
+  CONFIRMED: 'Chờ lấy hàng',
+  SHIPPING: 'Đang giao',
+  DELIVERED: 'Hoàn thành',
+  CANCELLED: 'Đã hủy',
+};
+
+// Đơn trong DB chỉ lưu subtotal và discountAmount; tổng tiền khách phải trả = subtotal - discountAmount.
+export function presentOrder(order) {
+  const subtotal = Number(order.subtotal) || 0;
+  const discountAmount = Number(order.discountAmount) || 0;
+  return { ...order, statusLabel: ORDER_STATUS_LABEL[order.status] ?? order.status, totalAmount: subtotal - discountAmount };
+}
+
 /**
  * @param {{ orderId?: number }} args
  * @param {number} userId - from req.user.userId; never accepted from the request body or the model.
@@ -30,8 +46,14 @@ export async function lookupMyOrders(args = {}, userId) {
   }
   if (args.orderId) {
     const order = await getOrder(userId, Number(args.orderId));
-    return order ? { order } : { order: null, message: 'Không tìm thấy đơn hàng này của bạn.' };
+    return order ? { order: presentOrder(order) } : { order: null, message: 'Không tìm thấy đơn hàng này của bạn.' };
   }
   const orders = await listOrders(userId);
-  return { orders: orders.slice(0, 10) };
+  // Đếm trên TOÀN BỘ đơn (không chỉ 10 đơn gần nhất) để trả lời đúng "tôi có bao nhiêu đơn chờ lấy hàng".
+  const countsByStatus = {};
+  for (const o of orders) {
+    const label = ORDER_STATUS_LABEL[o.status] ?? o.status;
+    countsByStatus[label] = (countsByStatus[label] ?? 0) + 1;
+  }
+  return { totalOrders: orders.length, countsByStatus, orders: orders.slice(0, 10).map(presentOrder) };
 }
