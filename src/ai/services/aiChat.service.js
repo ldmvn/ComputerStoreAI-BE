@@ -13,6 +13,7 @@ import { bestSellersToolDefinition, getBestSellers } from '../tools/bestSellers.
 import { slowMoversToolDefinition, getSlowMovers } from '../tools/slowMovers.tool.js';
 import { identifiers } from '../rag/retrieval/text.js';
 import { getPageContext } from '../config/pageContext.js';
+import { cartPrompt } from './cartContext.service.js';
 import { loadCurrentProduct, currentProductPrompt, noProductPagePrompt } from './currentProduct.service.js';
 
 let activeProvider = new UnavailableProvider();
@@ -88,7 +89,8 @@ return async function send(input, ctx = { userId: null }) {
     { role: 'system', content: buildSystemPrompt(ragContext.contextText, ragContext.hasContext) +
       (turns.length ? '\nĐang tiếp tục cùng một cuộc hội thoại. Không chào hỏi lại hoặc giới thiệu lại bản thân.' : '') +
       (currentProduct ? currentProductPrompt(currentProduct, turns.at(-1)?.viewing, page)
-        : noProductPagePrompt(turns.at(-1)?.viewing?.name, page)) },
+        : noProductPagePrompt(turns.at(-1)?.viewing?.name, page)) +
+      cartPrompt(input.cart) },
     ...history,
     { role: 'user', content: input.message },
   ];

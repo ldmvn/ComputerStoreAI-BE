@@ -1,5 +1,6 @@
 import { aiConfig } from '../config/ai.config.js';
 import { PAGE_KEYS } from '../config/pageContext.js';
+import { parseCart } from '../services/cartContext.service.js';
 
 const ALLOWED_CONTEXTS = new Set(['general', 'product_advice', 'order_lookup', 'build_pc', 'faq']);
 
@@ -47,5 +48,8 @@ export function parseChatRequest(body = {}) {
   // Closed set only: a client string never reaches the prompt.
   const pageKey = typeof body.pageKey === 'string' && PAGE_KEYS.has(body.pageKey) ? body.pageKey : null;
 
-  return { message, conversationId, context, currentProductId, pageKey };
+  // Tóm tắt giỏ hàng từ trình duyệt (null nếu không gửi); phần tử sai định dạng bị bỏ qua.
+  const cart = parseCart(body.cart);
+
+  return { message, conversationId, context, currentProductId, pageKey, cart };
 }
