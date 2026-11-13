@@ -66,6 +66,7 @@ export async function homeBanners() {
     mainHero: forPosition('MAIN_HERO'),
     bottomLeft: forPosition('BOTTOM_LEFT')[0] || null,
     bottomRight: forPosition('BOTTOM_RIGHT')[0] || null,
+    bottom4: forPosition('BOTTOM_4')[0] || null,
     sideLeft: forPosition('SIDE_LEFT')[0] || null,
     sideRightTop: forPosition('SIDE_RIGHT_TOP')[0] || null,
     sideRightMiddle: forPosition('SIDE_RIGHT_MIDDLE')[0] || null,

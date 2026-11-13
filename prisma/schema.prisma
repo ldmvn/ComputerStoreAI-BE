@@ -527,6 +527,7 @@ enum BannerPosition {
   SIDE_RIGHT_TOP
   SIDE_RIGHT_MIDDLE
   SIDE_RIGHT_BOTTOM
+  BOTTOM_4
 }
 
 enum MediaType {
