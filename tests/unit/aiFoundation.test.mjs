@@ -199,7 +199,10 @@ test('validateBuildPcRequest enforces budget/purpose (structured) and accepts pr
   assert.equal(parsed.cpuPreference, 'Intel');
   assert.equal(parsed.mode, 'structured');
 
-  assert.throws(() => validateBuildPcRequest({ budget: -1, purpose: 'gaming' }), /3\.000\.000/);
+  // Không còn chặn ngân sách thấp theo một con số cố định: chỉ từ chối giá trị không phải số dương.
+  assert.throws(() => validateBuildPcRequest({ budget: -1, purpose: 'gaming' }), /ngân sách hợp lệ/);
+  assert.throws(() => validateBuildPcRequest({ budget: 0, purpose: 'gaming' }), /ngân sách hợp lệ/);
+  assert.equal(validateBuildPcRequest({ budget: 2_000_000, purpose: 'gaming' }).budget, 2_000_000);
   assert.throws(() => validateBuildPcRequest({ budget: 5000000, purpose: 'not-valid' }), /Mục đích/);
 
   const freetext = validateBuildPcRequest({ prompt: 'Máy chơi game tầm 25 triệu' });
@@ -209,4 +212,8 @@ test('validateBuildPcRequest enforces budget/purpose (structured) and accepts pr
 
   const nobudget = validateBuildPcRequest({ prompt: 'Máy chơi game mạnh' });
   assert.equal(nobudget.budget, 20_000_000);
+
+  // Ngân sách thấp (ví dụ "2 triệu") không bị chặn: bước dựng cấu hình sẽ báo mức tối thiểu thật.
+  const low = validateBuildPcRequest({ prompt: 'build pc 2 triệu chơi game' });
+  assert.equal(low.budget, 2_000_000);
 });

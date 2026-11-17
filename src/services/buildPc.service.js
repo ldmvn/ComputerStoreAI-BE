@@ -587,7 +587,7 @@ export async function validateBuildConfig(rawItems) {
     quantity: item.quantity,
   }));
 
-  const { issues, missing } = evaluateCompatibility({ configItems, groupById, rules, categorySlugById });
+  const { issues, missing, checks } = evaluateCompatibility({ configItems, groupById, rules, categorySlugById });
 
   let total = 0;
   const items = rawItems.map(item => {
@@ -608,7 +608,7 @@ export async function validateBuildConfig(rawItems) {
   const canAddToCart  = !hasErrorIssue; // ≥1 item guaranteed by validateSaveItems guard above
   const isComplete    = missing.length === 0 && !hasErrorIssue;
 
-  return { data: { items, total, issues, missing, canAddToCart, isComplete }, meta: {}, message: 'OK' };
+  return { data: { items, total, issues, missing, checks, canAddToCart, isComplete }, meta: {}, message: 'OK' };
 }
 
 // ── Save & share build config ─────────────────────────────────────────────────

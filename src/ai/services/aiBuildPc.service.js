@@ -32,10 +32,13 @@ const money = (n) => `${Math.round(n).toLocaleString('vi-VN')} VNĐ`;
 
 // Một cấu hình chỉ hợp lệ khi đủ linh kiện bắt buộc; bản thiếu (ví dụ chỉ có RAM, nguồn, case) không phải
 // một bộ máy dùng được nên không được hiện ra như "vừa ngân sách".
+// Bộ PC tối thiểu có 7 linh kiện: CPU, mainboard, RAM, SSD, nguồn, vỏ case và một tản nhiệt CPU
+// (khí, nước AIO hoặc custom). Tản nhiệt luôn tính là bắt buộc, kể cả khi CPU có kèm tản box.
 const REQUIRED_SLOTS = ['cpu', 'mainboard', 'ram', 'ssd', 'psu', 'case'];
-const isFullBuild = (tier) => {
+const COOLER_SLOTS = ['cooler-air', 'cooler-aio', 'cooler-custom'];
+export const isFullBuild = (tier) => {
   const slots = new Set((tier?.items || []).filter(it => it.slot && (it.productId || it.id)).map(it => it.slot));
-  return REQUIRED_SLOTS.every(slot => slots.has(slot));
+  return REQUIRED_SLOTS.every(slot => slots.has(slot)) && COOLER_SLOTS.some(slot => slots.has(slot));
 };
 
 export function validateBuildPcRequest(input = {}) {
@@ -57,21 +60,17 @@ export function validateBuildPcRequest(input = {}) {
     }
     // Ngân sách chọn riêng (nút "Dựng lại với X triệu") ưu tiên hơn số trích từ câu mô tả.
     const override = Number(input.budget);
-    if (Number.isFinite(override) && override >= 3_000_000) budget = Math.min(override, 500_000_000);
-    if (!budget) {
-      budget = 20_000_000;
-    } else if (budget < 3_000_000) {
-      const error = new Error('Ngân sách tối thiểu là 3.000.000 VNĐ.');
-      error.statusCode = 400;
-      throw error;
-    }
+    if (Number.isFinite(override) && override > 0) budget = Math.min(override, 500_000_000);
+    // Không chặn ngân sách thấp ở đây: mức tối thiểu thật phụ thuộc linh kiện đang có trong kho, nên để bước dựng
+    // cấu hình tính ra và báo "cần tối thiểu X" (budgetShortfall) thay vì dùng một con số cố định dễ sai lệch.
+    if (!budget) budget = 20_000_000;
     if (budget > 500_000_000) budget = 500_000_000;
     return { prompt, budget, purpose: 'khac', purposeLabel: 'Khác', mode: 'freetext' };
   }
 
   const budget = Number(input.budget);
-  if (!Number.isFinite(budget) || budget < 3_000_000) {
-    const error = new Error('Ngân sách tối thiểu là 3.000.000 VNĐ.');
+  if (!Number.isFinite(budget) || budget <= 0) {
+    const error = new Error('Vui lòng nhập ngân sách hợp lệ.');
     error.statusCode = 400;
     throw error;
   }
@@ -115,8 +114,10 @@ QUY TẮC BẮT BUỘC:
 4. Không đề xuất sản phẩm hết hàng (OUT_OF_STOCK).
 5. TẤT CẢ 3 bản PHẢI nằm trong ngân sách (không vượt).
 6. Nếu không tìm đủ linh kiện, giải thích và đề xuất phương án gần nhất.
-7. Slot bắt buộc: CPU, Mainboard, RAM, SSD (ít nhất 1), PSU, Case.
-8. Slot tùy chọn theo nhu cầu: VGA, HDD, Monitor, Cooler...
+7. Slot bắt buộc, MỖI BẢN tối thiểu 7 linh kiện: CPU, Mainboard, RAM, SSD (ít nhất 1), PSU, Case và TẢN NHIỆT CPU
+   (cooler-air, hoặc cooler-aio/cooler-custom cho bản cao cấp). Luôn thêm tản nhiệt CPU, kể cả khi CPU có kèm tản box;
+   bản nào thiếu tản nhiệt bị coi là chưa đủ bộ và sẽ bị loại.
+8. Slot tùy chọn theo nhu cầu: VGA, HDD, Monitor, case-fan...
 
 BẢNG CATEGORY SLUG (dùng cho search_products):
 cpu → "cpu", mainboard → "main", ram → "ram", ssd → "ssd-m2" (hoặc "ssd-25"), hdd → "hdd",
@@ -246,12 +247,14 @@ const CORE_CATEGORIES = [
   { slug: 'vga', label: 'VGA' },
   { slug: 'nguon', label: 'PSU' },
   { slug: 'vo-case', label: 'Case' },
+  // Tản nhiệt CPU bắt buộc: tìm sẵn để mô hình chọn trực tiếp; giá một tản không thể lớn như CPU/VGA nên giới hạn thấp hơn.
+  { slug: 'tan-nhiet-cpu-air', label: 'Tản nhiệt CPU (khí)', share: 0.1 },
 ];
 
 async function prefetchCatalog(budget, tools) {
   const perSlot = Math.round(budget * 0.4);
   const searches = CORE_CATEGORIES.map(cat =>
-    tools.search_products.run({ category: cat.slug, maxPrice: perSlot, limit: 10 })
+    tools.search_products.run({ category: cat.slug, maxPrice: cat.share ? Math.round(budget * cat.share) : perSlot, limit: 10 })
       .then(r => ({ slug: cat.slug, label: cat.label, items: r.items, total: r.total }))
       .catch(() => ({ slug: cat.slug, label: cat.label, items: [], total: 0 }))
   );
@@ -424,7 +427,7 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
     if (!hasBuild(parsed)) {
       console.log('[AI BuildPC] Empty tiers, asking for the cheapest feasible build...');
       messages.push({ role: 'assistant', content: responseText || '(không có cấu hình)' });
-      messages.push({ role: 'user', content: `Không có cấu hình nào nằm trong ngân sách ${money(input.budget)}. Hãy trả JSON block (cùng format) với ĐÚNG 1 bản trong "tiers" là cấu hình RẺ NHẤT có thể lắp hoàn chỉnh (đủ CPU, Mainboard, RAM, SSD, PSU, Case và VGA/iGPU đủ dùng cho nhu cầu), dù tổng vượt ngân sách. Chọn sản phẩm thật từ search_products, đúng tương thích. Tuyệt đối không để "tiers" rỗng; nói rõ trong summary rằng ngân sách chưa đủ.` });
+      messages.push({ role: 'user', content: `Không có cấu hình nào nằm trong ngân sách ${money(input.budget)}. Hãy trả JSON block (cùng format) với ĐÚNG 1 bản trong "tiers" là cấu hình RẺ NHẤT có thể lắp hoàn chỉnh (đủ CPU, Mainboard, RAM, SSD, PSU, Case, tản nhiệt CPU và VGA/iGPU đủ dùng cho nhu cầu), dù tổng vượt ngân sách. Chọn sản phẩm thật từ search_products, đúng tương thích. Tuyệt đối không để "tiers" rỗng; nói rõ trong summary rằng ngân sách chưa đủ.` });
       completion = await complete();
       await runToolRounds();
       responseText = completion.content || '';
@@ -479,7 +482,7 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
       }
       if (!bad.length) break;
       messages.push({ role: 'assistant', content: responseText });
-      messages.push({ role: 'user', content: `Hệ thống kiểm tra phát hiện vấn đề ở các bản sau:\n${JSON.stringify(bad)}\nHãy khắc phục: với lỗi tương thích thì thay linh kiện gây lỗi (ví dụ tản nhiệt quá cao so với Case thì đổi tản thấp hơn hoặc đổi Case khác; dùng search_products và check_build_compatibility cho TỪNG bản); với bản vượt ngân sách thì chọn linh kiện rẻ hơn (hạ VGA/CPU/main, bỏ linh kiện tùy chọn) sao cho tổng ≤ ngân sách. Nếu thật sự không thể lắp đủ linh kiện bắt buộc trong ngân sách, giữ cấu hình rẻ nhất có thể và nói rõ điều đó trong summary. Rồi trả lại đầy đủ JSON block 3 bản theo format cũ.` });
+      messages.push({ role: 'user', content: `Hệ thống kiểm tra phát hiện vấn đề ở các bản sau:\n${JSON.stringify(bad)}\nHãy khắc phục: với lỗi tương thích thì thay linh kiện gây lỗi (ví dụ tản nhiệt quá cao so với Case thì đổi tản thấp hơn hoặc đổi Case khác; dùng search_products và check_build_compatibility cho TỪNG bản); với bản vượt ngân sách thì chọn linh kiện rẻ hơn (hạ VGA/CPU/main, bỏ linh kiện tùy chọn, KHÔNG được bỏ tản nhiệt CPU) sao cho tổng ≤ ngân sách. Nếu thật sự không thể lắp đủ linh kiện bắt buộc trong ngân sách, giữ cấu hình rẻ nhất có thể và nói rõ điều đó trong summary. Rồi trả lại đầy đủ JSON block 3 bản theo format cũ.` });
       completion = await complete();
       await runToolRounds();
       const fixedText = completion.content || '';
@@ -540,6 +543,7 @@ export function createBuildPcService({ provider, tools = TOOLS, retrieve = query
         compatibilityStatus: validation.data?.issues?.some(i => i.level === 'error') ? 'fail'
           : validation.data?.issues?.length ? 'warning' : 'pass',
         compatibilityIssues: validation.data?.issues || [],
+        compatibilityChecks: validation.data?.checks || [],
         compatibilityMissing: validation.data?.missing || [],
         canAddToCart: validation.data?.canAddToCart ?? false,
         isComplete: validation.data?.isComplete ?? false,
