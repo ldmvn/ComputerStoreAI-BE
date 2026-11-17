@@ -15,13 +15,15 @@ import {
   updateSectionImage,
   deleteSectionImage,
 } from '../services/productSection.service.js';
-import { productId, sectionId, validateProductIds, validateQuickFilterConfig, validateReorderIds, validateSection, validatePromoSection } from '../validators/productSection.validator.js';
+import { productId, sectionId, validateProductIds, validateQuickFilterConfig, validateReorderIds, validateSection, validatePromoSection, validateEventSection } from '../validators/productSection.validator.js';
 import { savePromoImage, uploadPromoImageMiddleware } from '../services/promoMedia.service.js';
 
 const asyncHandler = handler => (req, res, next) => Promise.resolve(handler(req, res)).catch(next);
 
 function pickValidator(body) {
-  return body?.type === 'PROMOTIONAL_SECTION' ? validatePromoSection : validateSection;
+  if (body?.type === 'PROMOTIONAL_SECTION') return validatePromoSection;
+  if (body?.type === 'EVENT_SECTION') return validateEventSection;
+  return validateSection;
 }
 
 export const home = asyncHandler(async (_req, res) => res.json({ sections: await getHomeSections() }));

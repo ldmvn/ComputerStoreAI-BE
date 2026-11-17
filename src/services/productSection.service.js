@@ -61,6 +61,11 @@ function serialize(section) {
     imagePos: section.imagePos ?? 'right',
     colorPreset: section.colorPreset ?? 'dark-premium',
     layout: section.layout ?? 'text-left-cta-right',
+    // Event Section fields
+    eventTheme: section.eventTheme ?? 'nha-giao',
+    eventIcon: section.eventIcon ?? 'cap',
+    startsAt: section.startsAt ?? null,
+    endsAt: section.endsAt ?? null,
     createdAt: section.createdAt,
     updatedAt: section.updatedAt,
     products: section.items.map(item => ({
@@ -130,12 +135,15 @@ export async function getSection(id) {
 }
 
 export async function getHomeSections() {
+  const now = new Date();
   const sections = await prisma.productSection.findMany({
     where: {
       isActive: true,
       OR: [
         { type: 'PRODUCT_SECTION', items: { some: { product: { isDeleted: false, isActive: true } } } },
         { type: 'PROMOTIONAL_SECTION' },
+        // Khối sự kiện chỉ hiện trong khoảng thời gian diễn ra và khi có ít nhất một sản phẩm đang bán.
+        { type: 'EVENT_SECTION', startsAt: { lte: now }, endsAt: { gt: now }, items: { some: { product: { isDeleted: false, isActive: true } } } },
       ],
     },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],

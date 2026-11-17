@@ -369,6 +369,7 @@ model ProductView {
 enum SectionType {
   PRODUCT_SECTION
   PROMOTIONAL_SECTION
+  EVENT_SECTION
 }
 
 model ProductSection {
@@ -396,6 +397,12 @@ model ProductSection {
   imagePos            String               @default("right") @db.VarChar(20)
   colorPreset         String               @default("dark-premium") @db.VarChar(30)
   layout              String               @default("text-left-cta-right") @db.VarChar(30)
+  // Event Section (khối sự kiện/flash sale). Tên ở giữa ruy băng = name, tên sự kiện = badge,
+  // phần nhấn (ví dụ 20/11) = promoTitle, câu phụ = subtitle.
+  eventTheme          String               @default("nha-giao") @db.VarChar(30)
+  eventIcon           String               @default("cap") @db.VarChar(20)
+  startsAt            DateTime?
+  endsAt              DateTime?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   items               ProductSectionItem[]

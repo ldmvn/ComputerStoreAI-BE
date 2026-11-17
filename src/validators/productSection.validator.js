@@ -92,6 +92,53 @@ export function validatePromoSection(input) {
   };
 }
 
+// Khối sự kiện (flash sale): tên ở giữa ruy băng = name, tên sự kiện = badge, phần nhấn = promoTitle, câu phụ = subtitle.
+export const EVENT_THEMES = ['nha-giao', 'black-friday', '11-11', 'tet'];
+export const EVENT_ICONS = ['cap', 'tag', 'gift', 'flower', 'bolt'];
+
+function eventDate(value, label) {
+  const date = new Date(value);
+  if (typeof value !== 'string' || !value.trim() || Number.isNaN(date.getTime())) throw productSectionError(`${label} không hợp lệ.`);
+  return date;
+}
+
+export function validateEventSection(input) {
+  if (!input || typeof input.name !== 'string' || !input.name.trim() || input.name.trim().length > 150) {
+    throw productSectionError('Tên ở giữa (ví dụ FLASH SALE GIÁ SỐC) bắt buộc, tối đa 150 ký tự.');
+  }
+  const slug = typeof input.slug === 'string' ? input.slug.trim().toLowerCase() : '';
+  if (!slug || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 191) {
+    throw productSectionError('Slug chỉ gồm chữ thường, số và dấu gạch ngang.');
+  }
+  const badge = typeof input.badge === 'string' ? input.badge.trim() : '';
+  if (!badge || badge.length > 100) throw productSectionError('Tên sự kiện bắt buộc, tối đa 100 ký tự.');
+  const promoTitle = typeof input.promoTitle === 'string' ? input.promoTitle.trim() : '';
+  if (promoTitle.length > 40) throw productSectionError('Phần nhấn (ví dụ 20/11) tối đa 40 ký tự.');
+  const subtitle = typeof input.subtitle === 'string' ? input.subtitle.trim() : '';
+  if (subtitle.length > 191) throw productSectionError('Câu phụ tối đa 191 ký tự.');
+  const viewAllUrl = typeof input.viewAllUrl === 'string' ? input.viewAllUrl.trim() : '';
+  if (viewAllUrl.length > 1000 || (viewAllUrl && !isSafeUrl(viewAllUrl))) throw productSectionError('Link Xem tất cả không hợp lệ.');
+  const startsAt = eventDate(input.startsAt, 'Thời gian bắt đầu');
+  const endsAt = eventDate(input.endsAt, 'Thời gian kết thúc');
+  if (endsAt <= startsAt) throw productSectionError('Thời gian kết thúc phải sau thời gian bắt đầu.');
+  return {
+    type: 'EVENT_SECTION',
+    name: input.name.trim(),
+    slug,
+    badge,
+    promoTitle: promoTitle || null,
+    subtitle: subtitle || null,
+    // Bỏ trống (hoặc giá trị mặc định cũ "tất cả sản phẩm") thì trỏ tới đúng các sản phẩm của khối này.
+    viewAllUrl: !viewAllUrl || viewAllUrl === '/customer/products' ? `/customer/products?section=${slug}` : viewAllUrl,
+    eventTheme: EVENT_THEMES.includes(input.eventTheme) ? input.eventTheme : 'nha-giao',
+    eventIcon: EVENT_ICONS.includes(input.eventIcon) ? input.eventIcon : 'cap',
+    startsAt,
+    endsAt,
+    sortOrder: integer(input.sortOrder ?? 0, 'Thứ tự'),
+    isActive: input.isActive === false || input.isActive === 'false' ? false : true,
+  };
+}
+
 export function validateProductIds(input) {
   if (!Array.isArray(input?.productIds) || !input.productIds.length || input.productIds.length > 100) {
     throw productSectionError('Hãy chọn ít nhất một sản phẩm, tối đa 100 sản phẩm mỗi lần.');
