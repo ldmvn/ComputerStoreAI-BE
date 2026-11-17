@@ -2,7 +2,7 @@ import { prisma } from '../config/prisma.js';
 import { productSectionError } from '../validators/productSection.validator.js';
 import { removePromoImage } from './promoMedia.service.js';
 
-const productSelect = { id: true, slug: true, sku: true, name: true, price: true, isActive: true, stockQuantity: true, images: { orderBy: [{ isPrimary: 'desc' }, { sortOrder: 'asc' }, { id: 'asc' }], select: { imageUrl: true }, take: 1 } };
+const productSelect = { id: true, slug: true, sku: true, name: true, price: true, originalPrice: true, isActive: true, stockQuantity: true, images: { orderBy: [{ isPrimary: 'desc' }, { sortOrder: 'asc' }, { id: 'asc' }], select: { imageUrl: true }, take: 1 } };
 const homeProductSelect = {
   ...productSelect,
   originalPrice: true,

@@ -32,3 +32,7 @@ db_backups/
 reports/
 src/ai/rag/evaluation/reports/*.json
 src/ai/rag/evaluation/reports/*.txt
+
+.claude/
+CLAUDE.md
+graphify-out/
