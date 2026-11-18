@@ -27,9 +27,13 @@ test('chủ đề và biểu tượng lạ được đưa về mặc định', (
 
 test('thiếu tên, tên sự kiện hoặc thời gian bị từ chối', () => {
   assert.throws(() => validateEventSection({ ...valid, name: '  ' }), /Tên ở giữa/);
-  assert.throws(() => validateEventSection({ ...valid, badge: '' }), /Tên sự kiện/);
   assert.throws(() => validateEventSection({ ...valid, startsAt: '' }), /bắt đầu/);
   assert.throws(() => validateEventSection({ ...valid, endsAt: 'không phải ngày' }), /kết thúc/);
+});
+
+test('tên sự kiện không bắt buộc', () => {
+  assert.equal(validateEventSection({ ...valid, badge: '  ' }).badge, null);
+  assert.throws(() => validateEventSection({ ...valid, badge: 'x'.repeat(101) }), /tối đa 100/);
 });
 
 test('kết thúc phải sau bắt đầu', () => {

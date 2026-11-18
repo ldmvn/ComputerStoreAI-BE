@@ -111,7 +111,7 @@ export function validateEventSection(input) {
     throw productSectionError('Slug chỉ gồm chữ thường, số và dấu gạch ngang.');
   }
   const badge = typeof input.badge === 'string' ? input.badge.trim() : '';
-  if (!badge || badge.length > 100) throw productSectionError('Tên sự kiện bắt buộc, tối đa 100 ký tự.');
+  if (badge.length > 100) throw productSectionError('Tên sự kiện tối đa 100 ký tự.');
   const promoTitle = typeof input.promoTitle === 'string' ? input.promoTitle.trim() : '';
   if (promoTitle.length > 40) throw productSectionError('Phần nhấn (ví dụ 20/11) tối đa 40 ký tự.');
   const subtitle = typeof input.subtitle === 'string' ? input.subtitle.trim() : '';
@@ -125,7 +125,7 @@ export function validateEventSection(input) {
     type: 'EVENT_SECTION',
     name: input.name.trim(),
     slug,
-    badge,
+    badge: badge || null,
     promoTitle: promoTitle || null,
     subtitle: subtitle || null,
     // Bỏ trống (hoặc giá trị mặc định cũ "tất cả sản phẩm") thì trỏ tới đúng các sản phẩm của khối này.

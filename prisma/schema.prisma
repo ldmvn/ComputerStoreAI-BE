@@ -8,43 +8,43 @@ generator client {
 }
 
 model Product {
-  id                Int                     @id @default(autoincrement())
-  name              String                  @db.VarChar(191)
-  slug              String                  @unique @db.VarChar(191)
-  sku               String                  @unique @db.VarChar(100)
-  category          String?                 @db.VarChar(100)
-  categoryId        Int?
-  brand             String?                 @db.VarChar(191)
-  brandId           Int?
-  shortDescription  String?                 @db.VarChar(500)
-  description       String?                 @db.Text
-  price             Int
-  originalPrice     Int?
-  costPrice         Int?
-  stockQuantity     Int                     @default(0)
-  lowStockThreshold Int                     @default(5)
-  isActive          Boolean                 @default(true)
-  isDeleted         Boolean                 @default(false)
-  deletedAt         DateTime?
-  createdAt         DateTime                @default(now())
-  updatedAt         DateTime                @updatedAt
-  sectionItems      ProductSectionItem[]
-  images            ProductImage[]
-  specifications    ProductSpecification[]
-  highlightSpecs    ProductHighlightSpec[]
-  attributeValues   ProductAttributeValue[]
-  reviews           ProductReview[]
-  comments          ProductComment[]
-  views             ProductView[]
-  wishlistItems     WishlistItem[]
-  orderItems        OrderItem[]
-  inventoryLogs     InventoryLog[]
-  pcBuildItems      PcBuildItem[]
+  id                 Int                     @id @default(autoincrement())
+  name               String                  @db.VarChar(191)
+  slug               String                  @unique @db.VarChar(191)
+  sku                String                  @unique @db.VarChar(100)
+  category           String?                 @db.VarChar(100)
+  categoryId         Int?
+  brand              String?                 @db.VarChar(191)
+  brandId            Int?
+  shortDescription   String?                 @db.VarChar(500)
+  description        String?                 @db.Text
+  price              Int
+  originalPrice      Int?
+  costPrice          Int?
+  stockQuantity      Int                     @default(0)
+  lowStockThreshold  Int                     @default(5)
+  isActive           Boolean                 @default(true)
+  isDeleted          Boolean                 @default(false)
+  deletedAt          DateTime?
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt
+  sectionItems       ProductSectionItem[]
+  images             ProductImage[]
+  specifications     ProductSpecification[]
+  highlightSpecs     ProductHighlightSpec[]
+  attributeValues    ProductAttributeValue[]
+  reviews            ProductReview[]
+  comments           ProductComment[]
+  views              ProductView[]
+  wishlistItems      WishlistItem[]
+  orderItems         OrderItem[]
+  inventoryLogs      InventoryLog[]
+  pcBuildItems       PcBuildItem[]
   buildPcPresetItems BuildPcPresetItem[]
-  categoryRecord    Category?               @relation("ProductCategory", fields: [categoryId], references: [id], onDelete: Restrict)
-  brandRecord       Brand?                  @relation("ProductBrand", fields: [brandId], references: [id], onDelete: Restrict)
-  promotionGifts    Promotion[]             @relation("PromotionGiftProduct")
-  promotionLinks    PromotionProduct[]      @relation("PromotionAppliedProduct")
+  categoryRecord     Category?               @relation("ProductCategory", fields: [categoryId], references: [id], onDelete: Restrict)
+  brandRecord        Brand?                  @relation("ProductBrand", fields: [brandId], references: [id], onDelete: Restrict)
+  promotionGifts     Promotion[]             @relation("PromotionGiftProduct")
+  promotionLinks     PromotionProduct[]      @relation("PromotionAppliedProduct")
 
   @@index([isActive, isDeleted, stockQuantity])
   @@index([category])
@@ -72,24 +72,24 @@ model Brand {
 }
 
 model Category {
-  id          Int                 @id @default(autoincrement())
-  name        String              @db.VarChar(191)
-  slug        String              @unique @db.VarChar(191)
-  description String?             @db.Text
-  icon        String?             @db.VarChar(64)
-  parentId    Int?
-  sortOrder   Int                 @default(0)
-  isActive    Boolean             @default(true)
-  skuPrefix   String?             @unique @db.VarChar(8)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  parent      Category?           @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
-  children    Category[]          @relation("CategoryTree")
-  products    Product[]           @relation("ProductCategory")
-  megaMenu    MegaMenu?
-  menuItems   MegaMenuItem[]      @relation("MenuItemCategory")
-  attributes  CategoryAttribute[]
-  buildPcGroups BuildPcGroupCategory[]
+  id             Int                    @id @default(autoincrement())
+  name           String                 @db.VarChar(191)
+  slug           String                 @unique @db.VarChar(191)
+  description    String?                @db.Text
+  icon           String?                @db.VarChar(64)
+  parentId       Int?
+  sortOrder      Int                    @default(0)
+  isActive       Boolean                @default(true)
+  skuPrefix      String?                @unique @db.VarChar(8)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  parent         Category?              @relation("CategoryTree", fields: [parentId], references: [id], onDelete: Restrict)
+  children       Category[]             @relation("CategoryTree")
+  products       Product[]              @relation("ProductCategory")
+  megaMenu       MegaMenu?
+  menuItems      MegaMenuItem[]         @relation("MenuItemCategory")
+  attributes     CategoryAttribute[]
+  buildPcGroups  BuildPcGroupCategory[]
   promotionLinks PromotionCategory[]
 
   @@index([parentId, sortOrder])
@@ -373,39 +373,39 @@ enum SectionType {
 }
 
 model ProductSection {
-  id                  Int                  @id @default(autoincrement())
-  type                SectionType          @default(PRODUCT_SECTION)
-  name                String
-  slug                String               @unique
-  subtitle            String?
-  viewAllUrl          String?              @db.VarChar(1000)
-  sortOrder           Int                  @default(0)
-  isActive            Boolean              @default(true)
-  showHighlightSpecs  Boolean              @default(true)
-  quickFilterConfig   Json?
+  id                 Int                  @id @default(autoincrement())
+  type               SectionType          @default(PRODUCT_SECTION)
+  name               String
+  slug               String               @unique
+  subtitle           String?
+  viewAllUrl         String?              @db.VarChar(1000)
+  sortOrder          Int                  @default(0)
+  isActive           Boolean              @default(true)
+  showHighlightSpecs Boolean              @default(true)
+  quickFilterConfig  Json?
   // Promotional Section fields (null for PRODUCT_SECTION)
-  badge               String?              @db.VarChar(100)
-  promoTitle          String?              @db.VarChar(200)
-  description         String?              @db.Text
-  ctaEnabled          Boolean              @default(true)
-  ctaLabel            String?              @db.VarChar(100)
-  ctaUrl              String?              @db.VarChar(1000)
-  ctaStyle            String               @default("primary") @db.VarChar(20)
-  ctaRounded          String               @default("pill") @db.VarChar(20)
-  imageUrl            String?              @db.VarChar(1000)
-  imageAlt            String?              @db.VarChar(300)
-  imagePos            String               @default("right") @db.VarChar(20)
-  colorPreset         String               @default("dark-premium") @db.VarChar(30)
-  layout              String               @default("text-left-cta-right") @db.VarChar(30)
+  badge              String?              @db.VarChar(100)
+  promoTitle         String?              @db.VarChar(200)
+  description        String?              @db.Text
+  ctaEnabled         Boolean              @default(true)
+  ctaLabel           String?              @db.VarChar(100)
+  ctaUrl             String?              @db.VarChar(1000)
+  ctaStyle           String               @default("primary") @db.VarChar(20)
+  ctaRounded         String               @default("pill") @db.VarChar(20)
+  imageUrl           String?              @db.VarChar(1000)
+  imageAlt           String?              @db.VarChar(300)
+  imagePos           String               @default("right") @db.VarChar(20)
+  colorPreset        String               @default("dark-premium") @db.VarChar(30)
+  layout             String               @default("text-left-cta-right") @db.VarChar(30)
   // Event Section (khối sự kiện/flash sale). Tên ở giữa ruy băng = name, tên sự kiện = badge,
   // phần nhấn (ví dụ 20/11) = promoTitle, câu phụ = subtitle.
-  eventTheme          String               @default("nha-giao") @db.VarChar(30)
-  eventIcon           String               @default("cap") @db.VarChar(20)
-  startsAt            DateTime?
-  endsAt              DateTime?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  items               ProductSectionItem[]
+  eventTheme         String               @default("nha-giao") @db.VarChar(30)
+  eventIcon          String               @default("cap") @db.VarChar(20)
+  startsAt           DateTime?
+  endsAt             DateTime?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  items              ProductSectionItem[]
 }
 
 model ProductSectionItem {
@@ -423,29 +423,29 @@ model ProductSectionItem {
 }
 
 model User {
-  id           Int             @id @default(autoincrement())
-  fullName     String
-  email        String          @unique
-  phone        String?         @unique
-  passwordHash String
-  googleId     String?         @unique @db.VarChar(191)
-  avatarUrl    String?         @db.VarChar(1000)
-  gender       String?         @db.VarChar(20)
-  role         String          @default("USER")
-  adminRoleId  Int?
-  isActive     Boolean         @default(true)
-  lastLoginAt  DateTime?
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  adminRole    Role?           @relation(fields: [adminRoleId], references: [id], onDelete: SetNull)
-  reviews         ProductReview[]
-  wishlist        Wishlist?
-  addresses       Address[]
-  orders          Order[]
-  returnRequests  ReturnRequest[]
-  activityLogs    ActivityLog[]
-  supportTickets  SupportTicket[]
-  pcBuilds        PcBuild[]
+  id             Int             @id @default(autoincrement())
+  fullName       String
+  email          String          @unique
+  phone          String?         @unique
+  passwordHash   String
+  googleId       String?         @unique @db.VarChar(191)
+  avatarUrl      String?         @db.VarChar(1000)
+  gender         String?         @db.VarChar(20)
+  role           String          @default("USER")
+  adminRoleId    Int?
+  isActive       Boolean         @default(true)
+  lastLoginAt    DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  adminRole      Role?           @relation(fields: [adminRoleId], references: [id], onDelete: SetNull)
+  reviews        ProductReview[]
+  wishlist       Wishlist?
+  addresses      Address[]
+  orders         Order[]
+  returnRequests ReturnRequest[]
+  activityLogs   ActivityLog[]
+  supportTickets SupportTicket[]
+  pcBuilds       PcBuild[]
 
   @@index([role, isActive])
   @@index([adminRoleId])
@@ -505,7 +505,6 @@ model StoreSetting {
   value     String   @db.Text
   updatedAt DateTime @updatedAt
 }
-
 
 // ── Policy Pages ───────────────────────────────────────────────────────────────
 // Fixed-key pages whose body is edited via Dashboard. Phase 1: warranty only.
@@ -573,12 +572,12 @@ model Wishlist {
 }
 
 model WishlistItem {
-  id           Int      @id @default(autoincrement())
-  wishlistId   Int
-  productId    Int
-  createdAt    DateTime @default(now())
-  wishlist     Wishlist @relation(fields: [wishlistId], references: [userId], onDelete: Cascade)
-  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id         Int      @id @default(autoincrement())
+  wishlistId Int
+  productId  Int
+  createdAt  DateTime @default(now())
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [userId], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@unique([wishlistId, productId])
   @@index([productId])
@@ -646,49 +645,49 @@ enum PaymentStatus {
 }
 
 model Payment {
-  id         Int              @id @default(autoincrement())
-  orderId    Int              @unique
-  method     PaymentMethod
-  status     PaymentStatus    @default(PENDING)
-  amount     Int // VNĐ — Backend tự tính lại từ Order, không nhận từ Frontend
-  currency   String           @default("VND") @db.VarChar(10)
-  paidAt     DateTime?
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  order      Order            @relation(fields: [orderId], references: [id], onDelete: Restrict)
-  attempts   PaymentAttempt[]
+  id        Int              @id @default(autoincrement())
+  orderId   Int              @unique
+  method    PaymentMethod
+  status    PaymentStatus    @default(PENDING)
+  amount    Int // VNĐ — Backend tự tính lại từ Order, không nhận từ Frontend
+  currency  String           @default("VND") @db.VarChar(10)
+  paidAt    DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  order     Order            @relation(fields: [orderId], references: [id], onDelete: Restrict)
+  attempts  PaymentAttempt[]
 
   @@index([status])
   @@index([method])
 }
 
 model PaymentAttempt {
-  id                     Int           @id @default(autoincrement())
-  paymentId              Int
-  method                 PaymentMethod
-  merchantReference      String        @unique @db.VarChar(100) // mã tham chiếu DUY NHẤT — chống trùng/replay
-  providerTransactionId  String?       @db.VarChar(100) // mã giao dịch MoMo/VNPAY trả về
-  amount                 Int
-  currency               String        @default("VND") @db.VarChar(10)
-  status                 PaymentStatus @default(PENDING)
+  id                    Int           @id @default(autoincrement())
+  paymentId             Int
+  method                PaymentMethod
+  merchantReference     String        @unique @db.VarChar(100) // mã tham chiếu DUY NHẤT — chống trùng/replay
+  providerTransactionId String?       @db.VarChar(100) // mã giao dịch MoMo/VNPAY trả về
+  amount                Int
+  currency              String        @default("VND") @db.VarChar(10)
+  status                PaymentStatus @default(PENDING)
 
   // VietQR — snapshot TOÀN BỘ thông tin thụ hưởng tại thời điểm tạo giao dịch
   // (đọc từ StoreSetting payment.bank.* một lần, lưu cứng). Admin đổi cấu hình
   // ngân hàng sau này không ảnh hưởng các attempt cũ.
-  bankBin                String?  @db.VarChar(20) // MB Bank hiện tại = "970422"
-  bankName               String?  @db.VarChar(100)
-  bankAccountNumber      String?  @db.VarChar(50)
-  bankAccountName        String?  @db.VarChar(191)
-  transferContent        String?  @db.VarChar(255)
+  bankBin           String? @db.VarChar(20) // MB Bank hiện tại = "970422"
+  bankName          String? @db.VarChar(100)
+  bankAccountNumber String? @db.VarChar(50)
+  bankAccountName   String? @db.VarChar(191)
+  transferContent   String? @db.VarChar(255)
 
-  requestPayload         Json? // tham số gửi đi — KHÔNG chứa secret
-  responsePayload        Json? // IPN/return đã verify, lưu để audit
-  errorMessage           String?  @db.VarChar(500)
-  reportedAt             DateTime? // khách tự báo đã CK (VietQR)
-  paidAt                 DateTime? // xác nhận chính thức
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-  payment                Payment  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  requestPayload  Json? // tham số gửi đi — KHÔNG chứa secret
+  responsePayload Json? // IPN/return đã verify, lưu để audit
+  errorMessage    String?   @db.VarChar(500)
+  reportedAt      DateTime? // khách tự báo đã CK (VietQR)
+  paidAt          DateTime? // xác nhận chính thức
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  payment         Payment   @relation(fields: [paymentId], references: [id], onDelete: Restrict)
 
   @@unique([method, providerTransactionId], name: "PaymentAttempt_method_providerTxId_key")
   @@index([paymentId])
@@ -802,23 +801,23 @@ enum PromotionScope {
 }
 
 model Promotion {
-  id              Int             @id @default(autoincrement())
-  name            String          @db.VarChar(191)
-  displayTitle    String          @db.VarChar(200)
-  description     String?         @db.Text
-  conditionText   String?         @db.Text
-  detailUrl       String?         @db.VarChar(1000)
+  id              Int                 @id @default(autoincrement())
+  name            String              @db.VarChar(191)
+  displayTitle    String              @db.VarChar(200)
+  description     String?             @db.Text
+  conditionText   String?             @db.Text
+  detailUrl       String?             @db.VarChar(1000)
   type            PromotionType
-  scope           PromotionScope  @default(ALL)
-  sortOrder       Int             @default(0)
-  isActive        Boolean         @default(true)
+  scope           PromotionScope      @default(ALL)
+  sortOrder       Int                 @default(0)
+  isActive        Boolean             @default(true)
   startAt         DateTime?
   endAt           DateTime?
   giftProductId   Int?
-  giftProductName String?         @db.VarChar(191)
+  giftProductName String?             @db.VarChar(191)
   giftQuantity    Int?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
   giftProduct     Product?            @relation("PromotionGiftProduct", fields: [giftProductId], references: [id], onDelete: SetNull)
   categories      PromotionCategory[]
   products        PromotionProduct[]
@@ -869,20 +868,20 @@ model SearchLog {
 }
 
 model ReturnRequest {
-  id          Int          @id @default(autoincrement())
-  orderId     Int
-  userId      Int
-  reason      String       @db.VarChar(200)
-  description String?      @db.VarChar(1000)
-  images      String?      @db.Text
-  resolution   String?     @db.VarChar(20)
-  contactPhone String?     @db.VarChar(20)
-  status      ReturnStatus @default(PENDING)
-  adminNote   String?      @db.VarChar(500)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  order       Order        @relation(fields: [orderId], references: [id])
-  user        User         @relation(fields: [userId], references: [id])
+  id           Int          @id @default(autoincrement())
+  orderId      Int
+  userId       Int
+  reason       String       @db.VarChar(200)
+  description  String?      @db.VarChar(1000)
+  images       String?      @db.Text
+  resolution   String?      @db.VarChar(20)
+  contactPhone String?      @db.VarChar(20)
+  status       ReturnStatus @default(PENDING)
+  adminNote    String?      @db.VarChar(500)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  order        Order        @relation(fields: [orderId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
 
   @@index([orderId])
   @@index([userId])
@@ -1015,20 +1014,20 @@ model BuildPcGroupCategory {
 }
 
 model CompatibilityRule {
-  id              Int      @id @default(autoincrement())
-  name            String   @db.VarChar(200)
-  description     String?  @db.VarChar(500)
-  ruleType        String   @db.VarChar(50)
-  groupAId        Int?
-  attributeASlug  String?  @db.VarChar(100)
-  groupBId        Int?
-  attributeBSlug  String?  @db.VarChar(100)
-  config          Json?
-  errorMessage    String?  @db.VarChar(300)
-  isActive        Boolean  @default(true)
-  sortOrder       Int      @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  name           String   @db.VarChar(200)
+  description    String?  @db.VarChar(500)
+  ruleType       String   @db.VarChar(50)
+  groupAId       Int?
+  attributeASlug String?  @db.VarChar(100)
+  groupBId       Int?
+  attributeBSlug String?  @db.VarChar(100)
+  config         Json?
+  errorMessage   String?  @db.VarChar(300)
+  isActive       Boolean  @default(true)
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   @@index([ruleType, isActive])
 }
@@ -1094,29 +1093,29 @@ enum SupportMessageSender {
 }
 
 model SupportTicket {
-  id              Int                   @id @default(autoincrement())
-  code            String                @unique @db.VarChar(30)
+  id              Int                 @id @default(autoincrement())
+  code            String              @unique @db.VarChar(30)
   // Contact info (may differ from user profile)
-  guestName       String                @db.VarChar(191)
-  guestPhone      String                @db.VarChar(30)
-  guestEmail      String?               @db.VarChar(191)
-  category        String                @db.VarChar(100)
+  guestName       String              @db.VarChar(191)
+  guestPhone      String              @db.VarChar(30)
+  guestEmail      String?             @db.VarChar(191)
+  category        String              @db.VarChar(100)
   // Linked user (if submitted while logged in)
   userId          Int?
   // Admin assigned to handle this ticket
   assignedAdminId Int?
-  status          SupportTicketStatus   @default(WAITING_ADMIN)
+  status          SupportTicketStatus @default(WAITING_ADMIN)
   // Secret token for guest access (UUID v4, stored as-is for simple lookup)
-  accessToken     String                @unique @db.Char(36)
+  accessToken     String              @unique @db.Char(36)
   // Honeypot / spam guard passed
-  ipAddress       String?               @db.VarChar(45)
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  ipAddress       String?             @db.VarChar(45)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
   closedAt        DateTime?
 
-  user            User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
-  messages        SupportMessage[]
-  notifications   SupportNotification[]
+  user          User?                 @relation(fields: [userId], references: [id], onDelete: SetNull)
+  messages      SupportMessage[]
+  notifications SupportNotification[]
 
   @@index([status, createdAt])
   @@index([userId])
@@ -1136,26 +1135,26 @@ model SupportMessage {
   body       String               @db.Text
   createdAt  DateTime             @default(now())
 
-  ticket     SupportTicket        @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId, createdAt])
 }
 
 // Outbox for email notifications — idempotency key = ticketId + messageId
 model SupportNotification {
-  id           Int       @id @default(autoincrement())
-  ticketId     Int
-  messageId    Int?
+  id             Int       @id @default(autoincrement())
+  ticketId       Int
+  messageId      Int?
   // idempotency: prevent duplicate sends
-  idempotencyKey String  @unique @db.VarChar(100)
-  status       String    @default("pending") @db.VarChar(20)
-  attempts     Int       @default(0)
-  lastError    String?   @db.VarChar(500)
-  sentAt       DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  idempotencyKey String    @unique @db.VarChar(100)
+  status         String    @default("pending") @db.VarChar(20)
+  attempts       Int       @default(0)
+  lastError      String?   @db.VarChar(500)
+  sentAt         DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  ticket       SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
 
   @@index([ticketId])
   @@index([status, createdAt])
