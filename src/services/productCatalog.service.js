@@ -8,7 +8,7 @@ import { getActivePromotionsForProduct } from './promotion.service.js';
 
 const imageOrder = [{ isPrimary: 'desc' }, { sortOrder: 'asc' }, { id: 'asc' }];
 const detailInclude = { images: { orderBy: imageOrder }, specifications: { orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }] }, attributeValues: { include: { attribute: true, attributeValue: true }, orderBy: { id: 'asc' } }, highlightSpecs: { orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }] }, brandRecord: true, categoryRecord: { select: { id: true, name: true, slug: true } } };
-const listInclude = { images: { orderBy: imageOrder, take: 1 }, brandRecord: true };
+const listInclude = { images: { orderBy: imageOrder, take: 1 }, highlightSpecs: { orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }] }, brandRecord: true };
 
 function serialize(product, detail = false, publicView = false) {
   const primary = product.images?.find(image => image.isPrimary) || product.images?.[0] || null;
@@ -26,7 +26,7 @@ function serialize(product, detail = false, publicView = false) {
     originalPrice: product.originalPrice, costPrice: detail && !publicView ? product.costPrice : undefined, stockQuantity: product.stockQuantity,
     lowStockThreshold: product.lowStockThreshold, isActive: product.isActive, isDeleted: product.isDeleted,
     stockStatus: product.stockQuantity === 0 ? 'OUT_OF_STOCK' : product.stockQuantity <= product.lowStockThreshold ? 'LOW_STOCK' : 'IN_STOCK',
-    primaryImage: primary?.imageUrl || null, images: detail ? product.images : undefined, customSpecifications: detail ? (product.specifications || []) : undefined, productAttributes: detail ? productAttributes : undefined, highlightSpecs: detail ? product.highlightSpecs : undefined,
+    primaryImage: primary?.imageUrl || null, images: detail ? product.images : undefined, customSpecifications: detail ? (product.specifications || []) : undefined, productAttributes: detail ? productAttributes : undefined, highlightSpecs: product.highlightSpecs,
     createdAt: product.createdAt, updatedAt: product.updatedAt,
   };
 }
