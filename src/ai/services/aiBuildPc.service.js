@@ -41,19 +41,22 @@ export const isFullBuild = (tier) => {
   return REQUIRED_SLOTS.every(slot => slots.has(slot)) && COOLER_SLOTS.some(slot => slots.has(slot));
 };
 
+// Đọc ngân sách từ câu mô tả tự do. Chấp nhận cả cách gõ tắt/sai dấu: "50 triệu", "50tr", "50 trieu", "50 chiệu", "50 củ", "1,5 tỷ".
+function extractBudgetFromText(prompt) {
+  const text = prompt.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase();
+  const match = text.match(/(\d+(?:[.,]\d+)*)\s*(trieu|trjeu|chieu|tr|cu|ty)(?![a-z])/);
+  if (!match) return 0;
+  const raw = match[1];
+  const value = /^\d+[.,]\d{1,2}$/.test(raw) ? parseFloat(raw.replace(',', '.')) : parseFloat(raw.replace(/[.,]/g, ''));
+  if (!Number.isFinite(value)) return 0;
+  return Math.round(value * (match[2] === 'ty' ? 1_000_000_000 : 1_000_000));
+}
+
 export function validateBuildPcRequest(input = {}) {
   const prompt = typeof input.prompt === 'string' ? input.prompt.trim().slice(0, 1000) : '';
 
   if (prompt) {
-    const budgetMatch = prompt.match(/(\d[\d.,]*)\s*(triệu|tr|trieu)/i);
-    let budget = 0;
-    if (budgetMatch) {
-      budget = parseFloat(budgetMatch[1].replace(/[.,]/g, '')) * 1_000_000;
-      if (budgetMatch[1].includes('.') || budgetMatch[1].includes(',')) {
-        const num = parseFloat(budgetMatch[1].replace(',', '.'));
-        if (num < 1000) budget = num * 1_000_000;
-      }
-    }
+    let budget = extractBudgetFromText(prompt);
     if (!budget) {
       const rawMatch = prompt.match(/(\d{7,9})/);
       if (rawMatch) budget = parseInt(rawMatch[1], 10);
