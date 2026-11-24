@@ -41,7 +41,7 @@ export async function searchProducts(args = {}) {
     maxPrice: args.maxPrice,
     status: 'active', // AI never surfaces inactive/hidden products
     limit: Math.min(Math.max(Number.parseInt(args.limit, 10) || 5, 1), 10),
-    sort: 'newest',
+    sort: args.sort === 'priceAsc' ? 'priceAsc' : 'newest',
   });
   const result = await listProducts(query);
   const items = result.items.map(p => ({

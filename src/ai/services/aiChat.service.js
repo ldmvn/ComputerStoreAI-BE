@@ -98,9 +98,16 @@ return async function send(input, ctx = { userId: null }) {
   // [4] Always send ALL tool definitions — model decides which to call
   const toolDefs = Object.values(tools).map(t => t.definition);
 
-  async function complete(withTools = true) {
+  async function complete(withTools = true, { noThinking = false } = {}) {
     metrics.geminiCalls++;
-    const request = { messages, ...(withTools && toolDefs.length ? { tools: toolDefs } : {}), maxTokens: intent.complexity === 'comparison' ? 1500 : 900 };
+    // maxTokens gồm cả phần model "suy nghĩ": để thấp thì suy nghĩ ngốn hết và câu trả lời bị trống.
+    const request = {
+      messages,
+      ...(withTools && toolDefs.length ? { tools: toolDefs } : {}),
+      maxTokens: intent.complexity === 'comparison' ? 3000 : 2000,
+      ...(aiConfig.chatEffort ? { effort: aiConfig.chatEffort } : {}),
+      ...(noThinking ? { disableThinking: true } : {}),
+    };
     metrics.estimatedPromptTokens += estimateTokens(JSON.stringify(request));
     const result = await provider().complete(request);
     metrics.promptTokens += result.usage?.promptTokens || 0;
@@ -149,6 +156,16 @@ return async function send(input, ctx = { userId: null }) {
   }
 
   let reply = completion.content || '';
+  // Model trả trống sau khi tìm kiếm: thử lại một lần, tắt suy nghĩ, để nó tự viết câu trả lời thay vì đổ danh sách thô.
+  if (!reply && resolvedToolCalls.length) {
+    try {
+      messages.push({ role: 'user', content: 'Hãy trả lời khách dựa trên kết quả tìm kiếm ở trên: ngắn gọn, đúng nhu cầu của khách, nêu rõ còn hàng hay hết hàng. Không gọi thêm công cụ.' });
+      const rescue = await complete(false, { noThinking: true });
+      reply = rescue.content || '';
+    } catch (e) {
+      console.error('[AI Chat] Rescue call failed:', e.message);
+    }
+  }
   if (!reply && resolvedToolCalls.length) {
     reply = formatToolFallback(resolvedToolCalls);
   }
@@ -233,6 +250,8 @@ Quy tắc:
 - Dùng get_best_sellers khi khách hỏi sản phẩm bán chạy/được mua nhiều/hot nhất. Kết quả có soldQuantity là số lượng đã bán thực tế.
 - Dùng get_slow_movers khi khách hỏi sản phẩm ế/tồn kho/bán chậm. soldQuantity là số bán trong periodDays ngày; 0 nghĩa là chưa bán được cái nào trong kỳ.
 - Tư vấn Build PC: hỏi ngân sách + nhu cầu, tìm linh kiện qua search_products, kiểm tra tương thích qua check_build_compatibility.
+- Khi khách muốn cả bộ máy ("bộ PC", "build PC", "cấu hình", "lắp máy") kèm ngân sách: KHÔNG chỉ liệt kê một loại linh kiện. Tóm tắt ngắn hướng phân bổ ngân sách (CPU, VGA, mainboard, RAM, SSD, nguồn, case) cho nhu cầu của khách, và mời khách dùng trang AI Build PC của cửa hàng (/customer/build-pc/ai) để AI dựng ngay 3 cấu hình hoàn chỉnh có kiểm tra tương thích. Thiếu nhu cầu thì hỏi thêm 1 câu.
+- Khi liệt kê sản phẩm, ưu tiên hàng còn hàng; nếu nêu sản phẩm hết hàng thì nói rõ.
 - Phân biệt rõ: items=[] nghĩa là không tìm thấy/không có; stockStatus="OUT_OF_STOCK" nghĩa là hết hàng tạm thời; stockStatus="IN_STOCK" là còn hàng.
 - Không đề xuất sản phẩm không có trong kết quả search. Nếu thiếu dữ liệu, nói rõ.
 - Không ghi/sửa/xóa dữ liệu, không đặt hàng thay khách.

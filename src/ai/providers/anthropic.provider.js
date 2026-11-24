@@ -15,7 +15,7 @@ export class AnthropicProvider extends AIProvider {
   get name() { return 'anthropic'; }
 
   async complete(request) {
-    const { messages, tools, maxTokens, temperature, signal } = request;
+    const { messages, tools, maxTokens, temperature, signal, effort, disableThinking } = request;
     const { system, converted } = this.#convertMessages(messages);
 
     const body = {
@@ -24,6 +24,11 @@ export class AnthropicProvider extends AIProvider {
       messages: converted,
       ...(system ? { system } : {}),
       ...(temperature !== undefined ? { temperature } : {}),
+      // Mức "effort" giới hạn lượng suy nghĩ của model (low|medium|high|xhigh|max); không đặt thì dùng mặc định của model.
+      ...(effort ? { output_config: { effort } } : {}),
+      // Bên gọi quyết định khi nào tắt suy nghĩ (lần viết lại JSON, hoặc sau khi suy nghĩ đã ngốn hết max_tokens).
+      // API chỉ chấp nhận thinking disabled khi effort <= high, nên chỉ gửi khi đã đặt effort thấp.
+      ...(disableThinking && effort ? { thinking: { type: 'disabled' } } : {}),
     };
 
     if (tools?.length) {
@@ -91,6 +96,7 @@ export class AnthropicProvider extends AIProvider {
       content,
       toolCalls: toolCalls.length ? toolCalls : undefined,
       finishReason: data.stop_reason === 'tool_use' ? 'tool_calls' : 'stop',
+      stopReason: data.stop_reason,
       _rawModelContent: data.content,
       usage: data.usage ? {
         promptTokens: data.usage.input_tokens || 0,
