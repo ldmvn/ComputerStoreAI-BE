@@ -13,6 +13,7 @@ const homeProductSelect = {
     select: { attributeValueId: true },
   },
   specifications: {
+    where: { isHidden: false },
     orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
     select: { id: true, name: true, value: true, sortOrder: true },
   },

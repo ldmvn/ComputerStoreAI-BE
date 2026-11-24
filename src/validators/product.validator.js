@@ -37,7 +37,7 @@ export function parseProductPayload(input = {}) {
     const attributeValueIds = (item?.attributeValueIds ?? []).map(value => int(value, 'ID giá trị thuộc tính', 1));
     const valueText = item?.valueText == null ? null : String(item.valueText).trim();
     if (valueText && valueText.length > 1000) throw productError('Giá trị thuộc tính tối đa 1000 ký tự.');
-    return { attributeId, attributeValueIds: [...new Set(attributeValueIds)], valueText };
+    return { attributeId, attributeValueIds: [...new Set(attributeValueIds)], valueText, isHidden: item?.isHidden === true || item?.isHidden === 'true' };
   });
   let customSpecifications = [];
   if (input.customSpecifications) {
@@ -49,7 +49,7 @@ export function parseProductPayload(input = {}) {
     if (!specName || !value || specName.length > 100 || value.length > 500) throw productError('Tên và giá trị thông số tự do không được để trống.');
     const orderRaw = item?.sortOrder;
     const order = orderRaw === undefined || orderRaw === null || orderRaw === '' ? index : int(orderRaw, 'Thứ tự thông số tự do', 0);
-    return { name: specName, value, sortOrder: order };
+    return { name: specName, value, sortOrder: order, isHidden: item?.isHidden === true || item?.isHidden === 'true' };
   }).sort((a, b) => a.sortOrder - b.sortOrder);
   let highlightSpecs = [];
   if (input.highlightSpecs) {

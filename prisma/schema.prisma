@@ -268,6 +268,8 @@ model ProductAttributeValue {
   attributeValueId Int?
   valueText        String?         @db.VarChar(1000)
   valueNumber      Decimal?        @db.Decimal(12, 4)
+  // Ẩn khỏi trang chi tiết sản phẩm của khách; vẫn dùng cho bộ lọc và kiểm tra tương thích Build PC.
+  isHidden         Boolean         @default(false)
   createdAt        DateTime        @default(now())
   product          Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
   attribute        Attribute       @relation(fields: [attributeId], references: [id], onDelete: Restrict)
@@ -320,6 +322,8 @@ model ProductSpecification {
   name      String   @db.VarChar(100)
   value     String   @db.VarChar(500)
   sortOrder Int      @default(0)
+  // Ẩn khỏi trang chi tiết sản phẩm của khách (quản trị vẫn thấy và sửa được).
+  isHidden  Boolean  @default(false)
   createdAt DateTime @default(now())
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)

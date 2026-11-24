@@ -295,7 +295,7 @@ export async function listBuildPcProducts(slotSlug, filters, settings, compatPar
     stockQuantity: true,
     brandRecord: { select: { id: true, name: true } },
     images: { where: { isPrimary: true }, select: { imageUrl: true }, take: 1 },
-    specifications: { where: { name: WARRANTY_SPEC_NAME }, select: { value: true }, take: 1 },
+    specifications: { where: { name: WARRANTY_SPEC_NAME, isHidden: false }, select: { value: true }, take: 1 },
   };
   if (needAttrValues) {
     productSelect.attributeValues = { select: { attribute: { select: { slug: true } } } };

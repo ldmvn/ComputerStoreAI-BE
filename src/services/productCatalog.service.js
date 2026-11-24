@@ -13,8 +13,11 @@ const listInclude = { images: { orderBy: imageOrder, take: 1 }, highlightSpecs: 
 function serialize(product, detail = false, publicView = false) {
   const primary = product.images?.find(image => image.isPrimary) || product.images?.[0] || null;
   const normalized = new Map();
-  for (const row of product.attributeValues || []) {
-    const current = normalized.get(row.attributeId) || { id: row.attributeId, name: row.attribute.name, slug: row.attribute.slug, type: row.attribute.type, unit: row.attribute.unit, sortOrder: row.attribute.sortOrder, valueIds: [], values: [] };
+  // Trang khách không thấy thông số đã bị ẩn; quản trị nhận đủ kèm cờ isHidden để hiện ô tích.
+  const attributeRows = (product.attributeValues || []).filter(row => !(publicView && row.isHidden));
+  const specificationRows = (product.specifications || []).filter(spec => !(publicView && spec.isHidden));
+  for (const row of attributeRows) {
+    const current = normalized.get(row.attributeId) || { id: row.attributeId, name: row.attribute.name, slug: row.attribute.slug, type: row.attribute.type, unit: row.attribute.unit, sortOrder: row.attribute.sortOrder, isHidden: Boolean(row.isHidden), valueIds: [], values: [] };
     if (row.attributeValue) { current.valueIds.push(row.attributeValue.id); current.values.push(row.attributeValue.value); }
     else if (row.valueText !== null) current.values.push(row.attribute.type === 'BOOLEAN' ? (row.valueText === 'true' ? 'Có' : 'Không') : row.valueText);
     normalized.set(row.attributeId, current);
@@ -26,7 +29,7 @@ function serialize(product, detail = false, publicView = false) {
     originalPrice: product.originalPrice, costPrice: detail && !publicView ? product.costPrice : undefined, stockQuantity: product.stockQuantity,
     lowStockThreshold: product.lowStockThreshold, isActive: product.isActive, isDeleted: product.isDeleted,
     stockStatus: product.stockQuantity === 0 ? 'OUT_OF_STOCK' : product.stockQuantity <= product.lowStockThreshold ? 'LOW_STOCK' : 'IN_STOCK',
-    primaryImage: primary?.imageUrl || null, images: detail ? product.images : undefined, customSpecifications: detail ? (product.specifications || []) : undefined, productAttributes: detail ? productAttributes : undefined, highlightSpecs: product.highlightSpecs,
+    primaryImage: primary?.imageUrl || null, images: detail ? product.images : undefined, customSpecifications: detail ? specificationRows : undefined, productAttributes: detail ? productAttributes : undefined, highlightSpecs: product.highlightSpecs,
     createdAt: product.createdAt, updatedAt: product.updatedAt,
   };
 }
@@ -134,11 +137,11 @@ async function replaceProductAttributes(tx, productId, categoryId, entries) {
       if (attribute.type === 'SELECT' && selected.length > 1) throw productError(`Thuộc tính “${attribute.name}” chỉ được chọn một giá trị.`);
       const valid = new Set(attribute.values.filter(value => value.isActive).map(value => value.id));
       if (selected.some(id => !valid.has(id))) throw productError(`Giá trị của thuộc tính “${attribute.name}” không hợp lệ.`);
-      rows.push(...selected.map(attributeValueId => ({ productId, attributeId: attribute.id, attributeValueId })));
+      rows.push(...selected.map(attributeValueId => ({ productId, attributeId: attribute.id, attributeValueId, isHidden: entry.isHidden === true })));
     } else if (entry.valueText !== null && entry.valueText !== '') {
       if (attribute.type === 'NUMBER' && !Number.isFinite(Number(entry.valueText))) throw productError(`Thuộc tính “${attribute.name}” phải là số.`);
       if (attribute.type === 'BOOLEAN' && !['true', 'false'].includes(entry.valueText)) throw productError(`Thuộc tính “${attribute.name}” phải là Có/Không.`);
-      const row = { productId, attributeId: attribute.id, valueText: entry.valueText };
+      const row = { productId, attributeId: attribute.id, valueText: entry.valueText, isHidden: entry.isHidden === true };
       if (attribute.type === 'NUMBER') row.valueNumber = Number(entry.valueText);
       rows.push(row);
     }

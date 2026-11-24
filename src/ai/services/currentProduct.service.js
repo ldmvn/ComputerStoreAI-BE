@@ -15,7 +15,7 @@ export async function loadCurrentProduct(id) {
         id: true, name: true, sku: true, brand: true, category: true,
         price: true, originalPrice: true, stockQuantity: true, shortDescription: true,
         categoryRecord: { select: { slug: true, parent: { select: { slug: true } } } },
-        specifications: { orderBy: { sortOrder: 'asc' }, take: 60, select: { name: true, value: true } },
+        specifications: { where: { isHidden: false }, orderBy: { sortOrder: 'asc' }, take: 60, select: { name: true, value: true } },
       },
     });
     if (!p) return null;

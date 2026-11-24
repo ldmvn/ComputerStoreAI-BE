@@ -82,7 +82,7 @@ export async function loadProductDocuments({ productIds } = {}) {
       categoryId: true,
       brandId: true,
       updatedAt: true,
-      specifications: { select: { name: true, value: true }, orderBy: { sortOrder: 'asc' } },
+      specifications: { where: { isHidden: false }, select: { name: true, value: true }, orderBy: { sortOrder: 'asc' } },
       highlightSpecs: { select: { content: true }, orderBy: { sortOrder: 'asc' } },
     },
   });
