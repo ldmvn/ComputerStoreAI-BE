@@ -9,11 +9,11 @@ import { listOrders, getOrder } from '../../services/order.service.js';
 
 export const orderLookupToolDefinition = {
   name: 'lookup_my_orders',
-  description: 'Tra cứu đơn hàng của chính khách hàng đang đăng nhập. Chỉ dùng được sau khi xác thực — không thể tra cứu đơn hàng của người khác.',
+  description: 'Tra cứu đơn hàng của chính khách hàng đang đăng nhập. Khi không truyền orderId, trả về danh sách tóm tắt TẤT CẢ đơn kèm thống kê tính sẵn trong stats: stats.donConHieuLuc (đơn chưa hủy) và stats.donDaHuy (đơn đã hủy), mỗi nhóm có donDatNhat, donReNhat, tongChiTieu. LUÔN dùng số liệu từ stats, KHÔNG tự so sánh.',
   parameters: {
     type: 'object',
     properties: {
-      orderId: { type: 'number', description: 'ID đơn hàng cụ thể cần tra cứu. Bỏ trống để liệt kê tất cả đơn hàng gần đây.' },
+      orderId: { type: 'number', description: 'ID đơn hàng cụ thể cần tra cứu chi tiết. Bỏ trống để liệt kê tóm tắt tất cả đơn hàng.' },
     },
   },
 };
@@ -55,5 +55,43 @@ export async function lookupMyOrders(args = {}, userId) {
     const label = ORDER_STATUS_LABEL[o.status] ?? o.status;
     countsByStatus[label] = (countsByStatus[label] ?? 0) + 1;
   }
-  return { totalOrders: orders.length, countsByStatus, orders: orders.slice(0, 10).map(presentOrder) };
+  // Tính tổng tiền cho mỗi đơn một lần.
+  const withTotal = orders.map(o => {
+    const subtotal = Number(o.subtotal) || 0;
+    const discountAmount = Number(o.discountAmount) || 0;
+    return { order: o, totalAmount: subtotal - discountAmount };
+  });
+
+  // Thống kê tính sẵn để LLM không phải tự so sánh (tránh hallucination).
+  const active = withTotal.filter(x => x.order.status !== 'CANCELLED');
+  const cancelled = withTotal.filter(x => x.order.status === 'CANCELLED');
+
+  function computeStats(list) {
+    if (!list.length) return null;
+    let minItem = list[0], maxItem = list[0], sum = 0;
+    for (const x of list) {
+      sum += x.totalAmount;
+      if (x.totalAmount < minItem.totalAmount) minItem = x;
+      if (x.totalAmount > maxItem.totalAmount) maxItem = x;
+    }
+    const fmt = x => ({ maDon: x.order.id, tongTien: x.totalAmount, sanPham: x.order.items?.[0]?.name ?? '', trangThai: ORDER_STATUS_LABEL[x.order.status] ?? x.order.status });
+    return { donReNhat: fmt(minItem), donDatNhat: fmt(maxItem), tongChiTieu: sum, soDon: list.length };
+  }
+
+  const stats = {
+    donConHieuLuc: computeStats(active),
+    donDaHuy: computeStats(cancelled),
+  };
+
+  // Trả tóm tắt từng đơn + thống kê tính sẵn.
+  const summaries = withTotal.map(x => ({
+    id: x.order.id,
+    status: x.order.status,
+    statusLabel: ORDER_STATUS_LABEL[x.order.status] ?? x.order.status,
+    totalAmount: x.totalAmount,
+    itemCount: x.order.items?.length ?? 0,
+    firstItemName: x.order.items?.[0]?.name ?? '',
+    createdAt: x.order.createdAt,
+  }));
+  return { totalOrders: orders.length, countsByStatus, stats, orders: summaries };
 }
